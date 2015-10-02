@@ -11,3 +11,12 @@
 *.lai
 *.la
 *.a
+
+# Sublime
+*.sublime-workspace
+
+# Python
+*.pyc
+*.pyx
+*.pyo
+__pycache__/*
