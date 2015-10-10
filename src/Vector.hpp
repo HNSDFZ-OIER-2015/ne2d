@@ -5,6 +5,8 @@
 #ifndef NE2D_VECTOR_HPP_
 #define NE2D_VECTOR_HPP_
 
+#include <cmath>
+
 #include <stdexcept>
 #include <algorithm>
 #include <limits>
@@ -12,8 +14,6 @@
 #include "StringFormat.hpp"
 #include "ClassAttribute.hpp"
 #include "TypeConfiguration.hpp"
-
-#include <cmath>
 
 namespace ne {
 
@@ -25,18 +25,15 @@ template <typename T>
 struct BasicVector2D : public IObject {
     NONCOMPARABLE(BasicVector2D)
 
+    typedef T ValueType;
+
     BasicVector2D() : X(0.0f), Y(0.0f) {}
     BasicVector2D(T x, T y) : X(x), Y(y) {}
 
     T X;
     T Y;
 
-    typedef T ValueType;
-
-    BasicVector2D(const BasicVector2D &lhs) {
-        X = lhs.X;
-        Y = lhs.Y;
-    }
+    BasicVector2D(const BasicVector2D &lhs) : X(lhs.X), Y(lhs.Y) {}
     BasicVector2D &operator=(const BasicVector2D &lhs) {
         X = lhs.X;
         Y = lhs.Y;
@@ -44,10 +41,7 @@ struct BasicVector2D : public IObject {
         return *this;
     }
 
-    BasicVector2D(BasicVector2D &&rhs) {
-        X = rhs.X;
-        Y = rhs.Y;
-    }
+    BasicVector2D(BasicVector2D &&rhs) : X(rhs.X), Y(rhs.Y) {}
     BasicVector2D &operator=(BasicVector2D &&rhs) {
         X = rhs.X;
         Y = rhs.Y;
