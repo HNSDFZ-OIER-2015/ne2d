@@ -32,9 +32,9 @@ int main(/*int argc, char *argv[]*/) {
     // cout << vec.ToString() << endl;
     // cout << vec2.ToString() << endl;
     // cout << vec3.ToString() << endl;
-    assert(vec.ToString() == "(3, 4)");
-    assert(vec2.ToString() == "(3, 4)");
-    assert(vec3.ToString() == "(1, 1)");
+    assert(vec.ToString() == "(X = 3, Y = 4)");
+    assert(vec2.ToString() == "(X = 3, Y = 4)");
+    assert(vec3.ToString() == "(X = 1, Y = 1)");
     assert(vec.HashCode() == vec2.HashCode());
     assert(vec2.HashCode() != vec3.HashCode());
     assert(vec2 == vec);

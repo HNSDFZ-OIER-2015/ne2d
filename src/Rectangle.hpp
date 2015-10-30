@@ -51,27 +51,98 @@ struct BasicRectangle : public IObject {
     ValueType Right() const { return Position.X + Size.X; }
 
     VectorType LeftTop() const { return Position; }
+
     VectorType RightTop() const {
         return VectorType(Position.X + Size.X, Position.Y);
     }
+
     VectorType LeftBottom() const {
         return VectorType(Position.X, Position.Y + Size.Y);
     }
+
     VectorType RightBottom() const { return Position + Size; }
 
+    /**
+     * 检测点是否在矩形内
+     * @param  x 点的横坐标
+     * @param  y 点的纵坐标
+     * @return   返回一个布尔值
+     */
     bool Contain(const ValueType x, const ValueType y) const {
         return Left() <= x && x <= Right() && Top() <= y && y <= Bottom();
     }
 
-    bool Contain(const VectorType &vector) const {
-        return Contain(vector.X, vector.Y);
-    }
+    /**
+     * 检测点是否在矩形内
+     * @param  vec 二维向量表示点
+     * @return     返回一个布尔值
+     */
+    bool Contain(const VectorType &vec) const { return Contain(vec.X, vec.Y); }
 
+    /**
+     * 检测矩形是否在本矩形内
+     * @param  rect 目标矩形
+     * @return      返回一个布尔值
+     */
     bool Contain(const BasicRectangle &rect) const {
         return Contain(rect.LeftTop()) && Contain(rect.RightBottom());
     }
 
-    // TODO(riteme): Add IntersectWith, Offest functions.
+    /**
+     * 检测该矩形是否与另外一个矩形相交
+     * @param  rect 另外一个矩形
+     * @return      返回一个布尔值，表示是否相交
+     * @remark:
+     *     如果需求出相交矩形，请使用Intersect。
+     */
+    bool IntersectWith(const BasicRectangle &rect) const {
+        ValueType nx1 = std::max(Left(), rect.Left());
+        ValueType ny1 = std::max(Top(), rect.Top());
+        ValueType nx2 = std::min(Right(), rect.Right());
+        ValueType ny2 = std::min(Bottom(), rect.Bottom());
+
+        return !(nx1 > nx2 && ny1 > ny2);
+    }
+
+    /**
+     * 将矩形平移
+     * @param x 横向平移量
+     * @param y 纵向平移量
+     */
+    void Offest(const ValueType x, const ValueType y) {
+        Position.X += x;
+        Position.Y += y;
+    }
+
+    /**
+     * 将矩形平移
+     * @param vec 表示平移的二维向量
+     * @remark:
+     *     vec.X: 横向平移量
+     *     vec.Y: 纵向平移量
+     */
+    void Offest(const VectorType &vec) { Offest(vec.X, vec.Y); }
+
+    /**
+     * 增长或减少矩形的大小
+     * @param  x    横向的变化量
+     * @param  y    纵向的变化量
+     * @remark
+     *     该函数不会检查处理后的矩形的合法性，可能产生意外的结果
+     */
+    void Inflate(const ValueType x, const ValueType y) {
+        Size.X += x;
+        Size.Y += y;
+    }
+
+    /**
+     * 增长或减少矩形的大小
+     * @param  size 横向和纵向的变化量
+     * @remark
+     *     size.X: 横向变化量
+     *     size.Y: 纵向变化量
+     */
+    void Inflate(const VectorType &size) { Inflate(size.X, size.Y); }
 
     BasicRectangle(const BasicRectangle &lhs)
             : Position(lhs.Position), Size(lhs.Size) {}
@@ -100,14 +171,54 @@ struct BasicRectangle : public IObject {
     }
 
     virtual std::string ToString() const {
-        // (X, Y, W, H)
-        VectorType vectorDifference = Size - Position;
-        return Format("({}, {}, {}, {})", Position.X, Position.Y,
-                      vectorDifference.X, vectorDifference.Y);
+        // (X = $X, Y = $Y, Width = $W, Height = $H)
+
+        return Format("(X = {}, Y = {}, Width = {}, Height = {})", Position.X,
+                      Position.Y, Size.X, Size.Y);
     }
 
     virtual SizeType HashCode() const {
-        return Position.HashCode() + Size.HashCode() % 31;
+        return Position.HashCode() + Size.HashCode();
+    }
+
+    /**
+     * 求得相交矩形
+     * @param  rect1 第一个矩形
+     * @param  rect2 第二个矩形
+     * @return       返回两个矩形的交集
+     */
+    template <typename TRectangle = BasicRectangle<Float>>
+    inline static TRectangle Intersect(const TRectangle &rect1,
+                                       const TRectangle &rect2) noexcept {
+        ValueType nx1 = std::max(rect1.Left(), rect2.Left());
+        ValueType ny1 = std::max(rect1.Top(), rect2.Top());
+        ValueType nx2 = std::min(rect1.Right(), rect2.Right());
+        ValueType ny2 = std::min(rect1.Bottom(), rect2.Bottom());
+
+        // 需先确定相交矩形是否存在
+        if (nx1 > nx2 and ny1 > ny2)
+            return TRectangle();  // 返回空矩形
+        else
+            return TRectangle::FromLTRB(nx1, ny1, nx2, ny2);
+    }
+
+    /**
+     * 返回合并矩形
+     * @param  rect1 第一个矩形
+     * @param  rect2 第二个矩形
+     * @return       返回两个矩形的并集
+     * @remark:
+     *     实质上是包含两个矩形的最小矩形
+     */
+    template <typename TRectangle = BasicRectangle<Float>>
+    inline static TRectangle Union(const TRectangle &rect1,
+                                   const TRectangle &rect2) noexcept {
+        ValueType nx1 = std::min(rect1.Left(), rect2.Left());
+        ValueType ny1 = std::min(rect1.Top(), rect2.Top());
+        ValueType nx2 = std::max(rect1.Right(), rect2.Right());
+        ValueType ny2 = std::max(rect1.Bottom(), rect2.Bottom());
+
+        return TRectangle::FromLTRB(nx1, ny1, nx2, ny2);
     }
 
     /**
@@ -143,42 +254,6 @@ struct BasicRectangle : public IObject {
                           TRectangle::VectorType::Max(vec1, vec2) -
                               TRectangle::VectorType::Min(vec1, vec2));
     }
-
-    /**
-     * 增长或减少某个矩形的大小
-     * @param  rect 目标矩形
-     * @param  x    横向的变化量
-     * @param  y    纵向的变化量
-     * @return      返回处理后的矩形
-     * @remark
-     *     该函数不会检查处理后的矩形的合法性，可能产生意外的结果
-     */
-    template <typename TRectangle = BasicRectangle<Float>>
-    inline static TRectangle Inflate(
-        const TRectangle &rect,
-        const typename TRectangle::ValueType x,
-        const typename TRectangle::ValueType y) noexcept {
-        return TRectangle(rect.Left(), rect.Top(), rect.Right() + x,
-                          rect.Bottom() + y);
-    }
-
-    /**
-     * 增长或减少摸个矩形的大小
-     * @param  rect 目标矩形
-     * @param  size 横向和纵向的变化量
-     * @return      返回处理后的矩形
-     * @remark
-     *     size.X: 横向变化量
-     *     size.Y: 纵向变化量
-     */
-    template <typename TRectangle = BasicRectangle<Float>>
-    inline static TRectangle Inflate(
-        const TRectangle &rect,
-        const typename TRectangle::VectorType &size) noexcept {
-        return Inflate(rect, size.X, size.Y);
-    }
-
-    // TODO(riteme): Complete other helper functions.
 };  // struct BasicRectangle
 
 typedef BasicRectangle<Float> Rectangle;

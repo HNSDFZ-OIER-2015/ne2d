@@ -14,6 +14,7 @@
 #include "StringFormat.hpp"
 #include "ClassAttribute.hpp"
 #include "TypeConfiguration.hpp"
+#include "FloatComparison.hpp"
 
 namespace ne {
 
@@ -50,8 +51,7 @@ struct BasicVector2D : public IObject {
     }
 
     bool operator==(const BasicVector2D &lhs) const {
-        return fabs(X - lhs.X) < std::numeric_limits<T>::epsilon() &&
-               fabs(Y - lhs.Y) < std::numeric_limits<T>::epsilon();
+        return IsSame(X, lhs.X) && IsSame(Y, lhs.Y);
     }
 
     bool operator!=(const BasicVector2D &lhs) const {
@@ -108,8 +108,9 @@ struct BasicVector2D : public IObject {
     }
 
     virtual std::string ToString() const {
-        // (X, Y)
-        return Format("({}, {})", X, Y);
+        // (X = $X, Y = $Y)
+
+        return Format("(X = {}, Y = {})", X, Y);
     }
 
     virtual SizeType HashCode() const {
@@ -134,7 +135,7 @@ struct BasicVector2D : public IObject {
     template <typename TVector = BasicVector2D<Float>>
     inline static typename TVector::ValueType Length(
         const TVector &vec) noexcept {
-        return std::sqrt(vec.X * vec.X + vec.Y * vec.Y);
+        return std::hypot(vec.X, vec.Y);
     }
 
     /**
