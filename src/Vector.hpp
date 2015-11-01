@@ -122,7 +122,7 @@ struct BasicVector2D : public IObject {
      * @param  vec 一个二维向量
      * @return     经过绝对值操作的二维向量
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static TVector Abs(const TVector &vec) noexcept {
         return { std::abs(vec.X), std::abs(vec.Y) };
     }
@@ -132,7 +132,7 @@ struct BasicVector2D : public IObject {
      * @param  vec 一个二维向量
      * @return     长度值
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static typename TVector::ValueType Length(
         const TVector &vec) noexcept {
         return std::hypot(vec.X, vec.Y);
@@ -144,7 +144,7 @@ struct BasicVector2D : public IObject {
      * @param  vec2 第二个二维向量
      * @return      点乘结果
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static typename TVector::ValueType Dot(
         const TVector &vec1, const TVector &vec2) noexcept {
         return vec1 * vec2;
@@ -156,7 +156,7 @@ struct BasicVector2D : public IObject {
      * @param  vec2 第二个二维向量
      * @return      叉乘结果
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static typename TVector::ValueType Cross(
         const TVector &vec1, const TVector &vec2) noexcept {
         return vec1 & vec2;
@@ -168,7 +168,7 @@ struct BasicVector2D : public IObject {
      * @param  vec2 第二个二维向量
      * @return      相加结果
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static TVector Add(const TVector &vec1,
                               const TVector &vec2) noexcept {
         return vec1 + vec2;
@@ -180,7 +180,7 @@ struct BasicVector2D : public IObject {
      * @param  vec2 第二个二维向量
      * @return      相减结果
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static TVector Subtract(const TVector &vec1,
                                    const TVector &vec2) noexcept {
         return vec1 - vec2;
@@ -192,7 +192,7 @@ struct BasicVector2D : public IObject {
      * @param  scale 缩放比例
      * @return       缩放后的结果
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static TVector Sacle(
         const TVector &vec, const typename TVector::ValueType scale) noexcept {
         return vec * scale;
@@ -204,7 +204,7 @@ struct BasicVector2D : public IObject {
      * @param  vec2 第二个二维向量
      * @return      取X和Y的最大值组成新的二维向量
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static TVector Max(const TVector &vec1,
                               const TVector &vec2) noexcept {
         return { std::max(vec1.X, vec2.X), std::max(vec1.Y, vec2.Y) };
@@ -216,7 +216,7 @@ struct BasicVector2D : public IObject {
      * @param  vec2 第二个二维向量
      * @return      取X和Y的最小值组成新的二维向量
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static TVector Min(const TVector &vec1,
                               const TVector &vec2) noexcept {
         return { std::min(vec1.X, vec2.X), std::min(vec1.Y, vec2.Y) };
@@ -231,7 +231,7 @@ struct BasicVector2D : public IObject {
      * @remark
      *     将二维向量根据offest平移后，以原点为旋转中心再旋转，然后再平移回去。
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static TVector Rotate(
         const TVector &vec, const TVector &offest,
         const typename TVector::ValueType angle) noexcept {
@@ -254,7 +254,7 @@ struct BasicVector2D : public IObject {
      * @param  vec 原二维向量
      * @return     标准化后的向量
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static TVector Normalize(const TVector &vec) {
         auto length = Length(vec);
 
@@ -270,7 +270,7 @@ struct BasicVector2D : public IObject {
      * @param  percentage 插值的位置
      * @return            返回对应的二维向量
      */
-    template <typename TVector = BasicVector2D<Float>>
+    template <typename TVector = BasicVector2D<T>>
     inline static TVector Lerp(const TVector &start, const TVector &end,
                         const typename TVector::ValueType percentage) noexcept {
         return (end - start) * percentage + start;

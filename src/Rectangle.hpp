@@ -187,7 +187,7 @@ struct BasicRectangle : public IObject {
      * @param  rect2 第二个矩形
      * @return       返回两个矩形的交集
      */
-    template <typename TRectangle = BasicRectangle<Float>>
+    template <typename TRectangle = BasicRectangle<T>>
     inline static TRectangle Intersect(const TRectangle &rect1,
                                        const TRectangle &rect2) noexcept {
         ValueType nx1 = std::max(rect1.Left(), rect2.Left());
@@ -210,7 +210,7 @@ struct BasicRectangle : public IObject {
      * @remark:
      *     实质上是包含两个矩形的最小矩形
      */
-    template <typename TRectangle = BasicRectangle<Float>>
+    template <typename TRectangle = BasicRectangle<T>>
     inline static TRectangle Union(const TRectangle &rect1,
                                    const TRectangle &rect2) noexcept {
         ValueType nx1 = std::min(rect1.Left(), rect2.Left());
@@ -231,7 +231,7 @@ struct BasicRectangle : public IObject {
      * @remark
      *     该函数不会检查其正确性，可能产生意外的结果
      */
-    template <typename TRectangle = BasicRectangle<Float>>
+    template <typename TRectangle = BasicRectangle<T>>
     inline static TRectangle FromLTRB(
         const typename TRectangle::ValueType left,
         const typename TRectangle::ValueType top,
@@ -246,7 +246,7 @@ struct BasicRectangle : public IObject {
      * @param  vec2 第二个二维向量
      * @return      返回最小矩形
      */
-    template <typename TRectangle = BasicRectangle<Float>>
+    template <typename TRectangle = BasicRectangle<T>>
     inline static TRectangle FromTwoVector(
         const typename TRectangle::VectorType &vec1,
         const typename TRectangle::VectorType &vec2) noexcept {
