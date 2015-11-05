@@ -5,8 +5,7 @@
 #ifndef NE2D_CLASS_ATTRIBUTE_HPP_
 #define NE2D_CLASS_ATTRIBUTE_HPP_
 
-#include <string>
-
+#include "String.hpp"
 #include "TypeConfiguration.hpp"
 
 /**
@@ -58,8 +57,8 @@ class IObject {
  public:
     virtual ~IObject() = default;
 
-    virtual std::string ToString() const { return typeid(*this).name(); }
-    virtual SizeType HashCode() const { return reinterpret_cast<SizeType>(this); }
+    virtual ne::String ToString() const { return typeid(*this).name(); }
+    virtual ne::SizeType HashCode() const { return reinterpret_cast<SizeType>(this); }
 };  // class IObject
 
 }  // namespace ne
