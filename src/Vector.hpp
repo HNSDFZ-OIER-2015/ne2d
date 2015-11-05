@@ -23,7 +23,7 @@ namespace ne {
  * 可以指定数据的类型
  */
 template <typename T>
-struct BasicVector2D : public IObject {
+struct BasicVector2D : public ne::IObject {
     NONCOMPARABLE(BasicVector2D)
 
     typedef T ValueType;

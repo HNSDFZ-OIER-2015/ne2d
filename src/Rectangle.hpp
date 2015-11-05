@@ -18,7 +18,7 @@ namespace ne {
  * 表示一个矩形
  */
 template <typename T>
-struct BasicRectangle : public IObject {
+struct BasicRectangle : public ne::IObject {
     NONCOMPARABLE(BasicRectangle)
 
     typedef T ValueType;
