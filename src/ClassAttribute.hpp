@@ -57,8 +57,13 @@ class IObject {
  public:
     virtual ~IObject() = default;
 
-    virtual ne::String ToString() const { return typeid(*this).name(); }
-    virtual ne::SizeType HashCode() const { return reinterpret_cast<SizeType>(this); }
+    virtual auto ToString() const -> ne::String {
+        return ne::String(typeid(*this).name());
+    }
+
+    virtual auto HashCode() const -> ne::SizeType {
+        return reinterpret_cast<SizeType>(this);
+    }
 };  // class IObject
 
 }  // namespace ne

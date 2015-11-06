@@ -34,33 +34,33 @@ struct BasicRectangle : public ne::IObject {
     BasicVector2D<T> Position;
     BasicVector2D<T> Size;
 
-    ValueType X() const { return Position.X; }
-    ValueType Y() const { return Position.Y; }
-    ValueType Width() const { return Size.X; }
-    ValueType Height() const { return Size.Y; }
+    auto X() const -> ValueType { return Position.X; }
+    auto Y() const -> ValueType { return Position.Y; }
+    auto Width() const -> ValueType { return Size.X; }
+    auto Height() const -> ValueType { return Size.Y; }
 
     // 可做左值
-    ValueType &X() { return Position.X; }
-    ValueType &Y() { return Position.Y; }
-    ValueType &Width() { return Size.X; }
-    ValueType &Height() { return Size.Y; }
+    auto X() -> ValueType & { return Position.X; }
+    auto Y() -> ValueType & { return Position.Y; }
+    auto Width() -> ValueType & { return Size.X; }
+    auto Height() -> ValueType & { return Size.Y; }
 
-    ValueType Top() const { return Position.Y; }
-    ValueType Bottom() const { return Position.Y + Size.Y; }
-    ValueType Left() const { return Position.X; }
-    ValueType Right() const { return Position.X + Size.X; }
+    auto Top() const -> ValueType { return Position.Y; }
+    auto Bottom() const -> ValueType { return Position.Y + Size.Y; }
+    auto Left() const -> ValueType { return Position.X; }
+    auto Right() const -> ValueType { return Position.X + Size.X; }
 
-    VectorType LeftTop() const { return Position; }
+    auto LeftTop() const -> VectorType { return Position; }
 
-    VectorType RightTop() const {
+    auto RightTop() const -> VectorType {
         return VectorType(Position.X + Size.X, Position.Y);
     }
 
-    VectorType LeftBottom() const {
+    auto LeftBottom() const -> VectorType {
         return VectorType(Position.X, Position.Y + Size.Y);
     }
 
-    VectorType RightBottom() const { return Position + Size; }
+    auto RightBottom() const -> VectorType { return Position + Size; }
 
     /**
      * 检测点是否在矩形内
@@ -68,7 +68,7 @@ struct BasicRectangle : public ne::IObject {
      * @param  y 点的纵坐标
      * @return   返回一个布尔值
      */
-    bool Contain(const ValueType x, const ValueType y) const {
+    auto Contain(const ValueType x, const ValueType y) const -> bool {
         return Left() <= x && x <= Right() && Top() <= y && y <= Bottom();
     }
 
@@ -77,14 +77,16 @@ struct BasicRectangle : public ne::IObject {
      * @param  vec 二维向量表示点
      * @return     返回一个布尔值
      */
-    bool Contain(const VectorType &vec) const { return Contain(vec.X, vec.Y); }
+    auto Contain(const VectorType &vec) const -> bool {
+        return Contain(vec.X, vec.Y);
+    }
 
     /**
      * 检测矩形是否在本矩形内
      * @param  rect 目标矩形
      * @return      返回一个布尔值
      */
-    bool Contain(const BasicRectangle &rect) const {
+    auto Contain(const BasicRectangle &rect) const -> bool {
         return Contain(rect.LeftTop()) && Contain(rect.RightBottom());
     }
 
@@ -95,7 +97,7 @@ struct BasicRectangle : public ne::IObject {
      * @remark:
      *     如果需求出相交矩形，请使用Intersect。
      */
-    bool IntersectWith(const BasicRectangle &rect) const {
+    auto IntersectWith(const BasicRectangle &rect) const -> bool {
         ValueType nx1 = std::max(Left(), rect.Left());
         ValueType ny1 = std::max(Top(), rect.Top());
         ValueType nx2 = std::min(Right(), rect.Right());
@@ -146,7 +148,7 @@ struct BasicRectangle : public ne::IObject {
 
     BasicRectangle(const BasicRectangle &lhs)
             : Position(lhs.Position), Size(lhs.Size) {}
-    BasicRectangle &operator=(const BasicRectangle &lhs) {
+    auto operator=(const BasicRectangle &lhs) -> BasicRectangle & {
         Position = lhs.Position;
         Size = lhs.Size;
 
@@ -155,29 +157,29 @@ struct BasicRectangle : public ne::IObject {
 
     BasicRectangle(BasicRectangle &&rhs)
             : Position(rhs.Position), Size(rhs.Size) {}
-    BasicRectangle &operator=(BasicRectangle &&rhs) {
+    auto operator=(BasicRectangle &&rhs) -> BasicRectangle & {
         Position = rhs.Position;
         Size = rhs.Size;
 
         return *this;
     }
 
-    bool operator==(const BasicRectangle &lhs) const {
+    auto operator==(const BasicRectangle &lhs) const -> bool {
         return Position == lhs.Position && Size == lhs.Size;
     }
 
-    bool operator!=(const BasicRectangle &lhs) const {
+    auto operator!=(const BasicRectangle &lhs) const -> bool {
         return !((*this) == lhs);
     }
 
-    virtual std::string ToString() const {
+    virtual auto ToString() const -> ne::String {
         // (X = $X, Y = $Y, Width = $W, Height = $H)
 
-        return Format("(X = {}, Y = {}, Width = {}, Height = {})", Position.X,
-                      Position.Y, Size.X, Size.Y);
+        return ne::String("(X = {}, Y = {}, Width = {}, Height = {})")
+            .Format(Position.X, Position.Y, Size.X, Size.Y);
     }
 
-    virtual SizeType HashCode() const {
+    virtual auto HashCode() const -> ne::SizeType {
         return Position.HashCode() + Size.HashCode();
     }
 
@@ -188,8 +190,9 @@ struct BasicRectangle : public ne::IObject {
      * @return       返回两个矩形的交集
      */
     template <typename TRectangle = BasicRectangle<T>>
-    inline static TRectangle Intersect(const TRectangle &rect1,
-                                       const TRectangle &rect2) noexcept {
+    inline static auto Intersect(const TRectangle &rect1,
+                                 const TRectangle &rect2) noexcept
+        -> TRectangle {
         ValueType nx1 = std::max(rect1.Left(), rect2.Left());
         ValueType ny1 = std::max(rect1.Top(), rect2.Top());
         ValueType nx2 = std::min(rect1.Right(), rect2.Right());
@@ -211,14 +214,29 @@ struct BasicRectangle : public ne::IObject {
      *     实质上是包含两个矩形的最小矩形
      */
     template <typename TRectangle = BasicRectangle<T>>
-    inline static TRectangle Union(const TRectangle &rect1,
-                                   const TRectangle &rect2) noexcept {
+    inline static auto Union(const TRectangle &rect1,
+                             const TRectangle &rect2) noexcept -> TRectangle {
         ValueType nx1 = std::min(rect1.Left(), rect2.Left());
         ValueType ny1 = std::min(rect1.Top(), rect2.Top());
         ValueType nx2 = std::max(rect1.Right(), rect2.Right());
         ValueType ny2 = std::max(rect1.Bottom(), rect2.Bottom());
 
         return TRectangle::FromLTRB(nx1, ny1, nx2, ny2);
+    }
+
+    /**
+     * 生成包含两个二维向量的最小矩形
+     * @param  vec1 第一个二维向量
+     * @param  vec2 第二个二维向量
+     * @return      返回最小矩形
+     */
+    template <typename TRectangle = BasicRectangle<T>>
+    inline static auto FromTwoVector(
+        const typename TRectangle::VectorType &vec1,
+        const typename TRectangle::VectorType &vec2) noexcept -> TRectangle {
+        return TRectangle(TRectangle::VectorType::Min(vec1, vec2),
+                          TRectangle::VectorType::Max(vec1, vec2) -
+                              TRectangle::VectorType::Min(vec1, vec2));
     }
 
     /**
@@ -232,27 +250,12 @@ struct BasicRectangle : public ne::IObject {
      *     该函数不会检查其正确性，可能产生意外的结果
      */
     template <typename TRectangle = BasicRectangle<T>>
-    inline static TRectangle FromLTRB(
+    inline static auto FromLTRB(
         const typename TRectangle::ValueType left,
         const typename TRectangle::ValueType top,
         const typename TRectangle::ValueType right,
-        const typename TRectangle::ValueType bottom) noexcept {
+        const typename TRectangle::ValueType bottom) noexcept -> TRectangle {
         return TRectangle(left, top, right - left, bottom - top);
-    }
-
-    /**
-     * 生成包含两个二维向量的最小矩形
-     * @param  vec1 第一个二维向量
-     * @param  vec2 第二个二维向量
-     * @return      返回最小矩形
-     */
-    template <typename TRectangle = BasicRectangle<T>>
-    inline static TRectangle FromTwoVector(
-        const typename TRectangle::VectorType &vec1,
-        const typename TRectangle::VectorType &vec2) noexcept {
-        return TRectangle(TRectangle::VectorType::Min(vec1, vec2),
-                          TRectangle::VectorType::Max(vec1, vec2) -
-                              TRectangle::VectorType::Min(vec1, vec2));
     }
 };  // struct BasicRectangle
 

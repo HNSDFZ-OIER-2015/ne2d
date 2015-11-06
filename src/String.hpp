@@ -6,8 +6,10 @@
 #define NE2D_STRING_HPP_
 
 #include <string>
+#include <vector>
 #include <memory>
 #include <utility>
+#include <initializer_list>
 
 #include "TypeConfiguration.hpp"
 
@@ -30,6 +32,9 @@ class String {
     String(const StringType &stdstr, SizeType repeat);
     String(const StringType &stdstr, SizeType begin, SizeType end);
 
+    explicit String(const CharType c);
+    explicit String(const CharType c, SizeType repeat);
+
     explicit String(const CharType *cstr);
     explicit String(const CharType *cstr, SizeType repeat);
     explicit String(const CharType *cstr, SizeType begin, SizeType end);
@@ -37,36 +42,85 @@ class String {
     String(const String &str, SizeType repeat);
     String(const String &str, SizeType begin, SizeType end);
 
-    virtual ~String() = default;
+    virtual ~String(void) = default;
 
-    SizeType Length() const;
+    template <typename... Args>
+    auto Format(const Args &... args) const -> ne::String;
 
-    ne::String SubString(const SizeType from, const SizeType to) const;
+    template <typename... Args>
+    auto Join(const Args &... args) const -> ne::String;
 
-    CharType IndexOf(const SizeType index) const;
-    CharType *CString() const;
+    template <typename TForwardIterator>
+    auto Join(TForwardIterator begin, TForwardIterator end) const -> ne::String;
+
+    template <typename TElement>
+    auto Join(const std::initializer_list<TElement> &il) const -> ne::String;
+
+    template <typename TReturn>
+    auto Split(const ne::String &separator) const -> TReturn;
+
+    // template <>
+    // auto Split(const ne::String &separator) const -> std::vector<ne::String>;
+
+    auto PadLeft(const SizeType size, const CharType c = ' ') const
+        -> ne::String;
+    auto PadRight(const SizeType size, const CharType c = ' ') const
+        -> ne::String;
+
+    auto Remove(const CharType c, const SizeType count = 0) const -> ne::String;
+
+    auto Replace(const CharType from, const CharType to) const -> ne::String;
+
+    auto Replace(const ne::String from, const ne::String to) const
+        -> ne::String;
+
+    auto StartWith(const ne::String &str) const -> bool;
+
+    auto EndWith(const ne::String &str) const -> bool;
+
+    auto SubString(const SizeType from, const SizeType to) const -> ne::String;
+
+    auto ToLower(void) const -> ne::String;
+
+    auto ToUpper(void) const -> ne::String;
+
+    auto Trim(void) const -> ne::String;
+
+    auto TrimBegin(void) const -> ne::String;
+
+    auto TrimEnd(void) const -> ne::String;
+
+    auto Length(void) const -> SizeType;
+
+    auto IndexOf(const SizeType index) const -> CharType;
+
+    auto LastIndexOf(const Integer rindex) const -> CharType;
+
+    auto CString(void) const -> CharType *;
 
     String(const ne::String &lhs);
-    ne::String &operator=(const ne::String &lhs);
+    auto operator=(const ne::String &lhs) -> ne::String &;
 
     String(ne::String &&rhs);
-    ne::String &operator=(ne::String &&rhs);
+    auto operator=(ne::String &&rhs) -> ne::String &;
 
-    CharType operator[](const SizeType index) const;
+    auto operator[](const SizeType index) const -> CharType;
 
-    bool operator==(const ne::String &lhs) const;
-    bool operator!=(const ne::String &lhs) const;
+    auto operator==(const ne::String &lhs) const -> bool;
+    auto operator!=(const ne::String &lhs) const -> bool;
 
-    bool operator<(const ne::String &lhs) const;
-    bool operator>(const ne::String &lhs) const;
-    bool operator<=(const ne::String &lhs) const;
-    bool operator>=(const ne::String &lhs) const;
+    auto operator<(const ne::String &lhs) const -> bool;
+    auto operator>(const ne::String &lhs) const -> bool;
+    auto operator<=(const ne::String &lhs) const -> bool;
+    auto operator>=(const ne::String &lhs) const -> bool;
 
-    friend ne::String operator+(const ne::String &a, const ne::String &b);
-    friend ne::String operator*(const ne::String &a, const SizeType repeat);
+    friend auto operator+(const ne::String &a, const ne::String &b)
+        -> ne::String;
+    friend auto operator*(const ne::String &a, const SizeType repeat)
+        -> ne::String;
 
-    virtual ne::String ToString() const;
-    virtual SizeType HashCode() const;
+    virtual auto ToString() const -> ne::String;
+    virtual auto HashCode() const -> SizeType;
 
  private:
     std::shared_ptr<StringType> m_pString;

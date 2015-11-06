@@ -35,7 +35,7 @@ struct BasicVector2D : public ne::IObject {
     T Y;
 
     BasicVector2D(const BasicVector2D &lhs) : X(lhs.X), Y(lhs.Y) {}
-    BasicVector2D &operator=(const BasicVector2D &lhs) {
+    auto operator=(const BasicVector2D &lhs) -> BasicVector2D & {
         X = lhs.X;
         Y = lhs.Y;
 
@@ -43,77 +43,83 @@ struct BasicVector2D : public ne::IObject {
     }
 
     BasicVector2D(BasicVector2D &&rhs) : X(rhs.X), Y(rhs.Y) {}
-    BasicVector2D &operator=(BasicVector2D &&rhs) {
+    auto operator=(BasicVector2D &&rhs) -> BasicVector2D & {
         X = rhs.X;
         Y = rhs.Y;
 
         return *this;
     }
 
-    bool operator==(const BasicVector2D &lhs) const {
+    auto operator==(const BasicVector2D &lhs) const -> bool {
         return IsSame(X, lhs.X) && IsSame(Y, lhs.Y);
     }
 
-    bool operator!=(const BasicVector2D &lhs) const {
+    auto operator!=(const BasicVector2D &lhs) const -> bool {
         return !((*this) == lhs);
     }
 
-    BasicVector2D operator+(const BasicVector2D &lhs) const {
+    auto operator+(const BasicVector2D &lhs) const -> BasicVector2D {
         return { X + lhs.X, Y + lhs.Y };
     }
 
-    BasicVector2D operator-(const BasicVector2D &lhs) const {
+    auto operator-(const BasicVector2D &lhs) const -> BasicVector2D {
         return { X - lhs.X, Y - lhs.Y };
     }
 
-    BasicVector2D operator+() const { return *this; }
-    BasicVector2D operator-() const { return { -X, -Y }; }
-    BasicVector2D operator*(const T &lhs) const { return { X * lhs, Y * lhs }; }
-    BasicVector2D operator/(const T &lhs) const { return { X / lhs, Y / lhs }; }
+    auto operator+() const -> BasicVector2D { return *this; }
+    auto operator-() const -> BasicVector2D { return { -X, -Y }; }
 
-    T operator*(const BasicVector2D &lhs) const {
+    auto operator*(const T &lhs) const -> BasicVector2D {
+        return { X * lhs, Y * lhs };
+    }
+
+    auto operator/(const T &lhs) const -> BasicVector2D {
+        return { X / lhs, Y / lhs };
+    }
+
+    auto operator*(const BasicVector2D &lhs) const -> T {
         return X * lhs.X + Y * lhs.Y;
     }
 
-    T operator%(const BasicVector2D &lhs) const {
+    auto operator%(const BasicVector2D &lhs) const -> T {
         return X * lhs.Y - lhs.X * Y;
     }
 
-    BasicVector2D &operator+=(const BasicVector2D &lhs) {
+    auto operator+=(const BasicVector2D &lhs) -> BasicVector2D & {
         X += lhs.X;
         Y += lhs.Y;
 
         return *this;
     }
 
-    BasicVector2D &operator-=(const BasicVector2D &lhs) {
+    auto operator-=(const BasicVector2D &lhs) -> BasicVector2D & {
         X -= lhs.X;
         Y -= lhs.Y;
 
         return *this;
     }
 
-    BasicVector2D &operator*=(const T &lhs) {
+    auto operator*=(const T &lhs) -> BasicVector2D & {
         X *= lhs;
         Y *= lhs;
 
         return *this;
     }
 
-    BasicVector2D &operator/=(const T &lhs) {
+    auto operator/=(const T &lhs) -> BasicVector2D & {
         X /= lhs;
         Y /= lhs;
 
         return *this;
     }
 
-    virtual std::string ToString() const {
+    virtual auto ToString() const -> ne::String {
         // (X = $X, Y = $Y)
 
-        return Format("(X = {}, Y = {})", X, Y);
+        return ne::String("(X = {}, Y = {})").Format(X, Y);
     }
 
-    virtual SizeType HashCode() const {
+    virtual auto HashCode() const -> ne::SizeType {
         return static_cast<SizeType>(X * Y) / (static_cast<SizeType>(X) % 31);
     }
 
@@ -123,7 +129,7 @@ struct BasicVector2D : public ne::IObject {
      * @return     经过绝对值操作的二维向量
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static TVector Abs(const TVector &vec) noexcept {
+    inline static auto Abs(const TVector &vec) noexcept -> TVector {
         return { std::abs(vec.X), std::abs(vec.Y) };
     }
 
@@ -133,8 +139,8 @@ struct BasicVector2D : public ne::IObject {
      * @return     长度值
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static typename TVector::ValueType Length(
-        const TVector &vec) noexcept {
+    inline static auto Length(const TVector &vec) noexcept ->
+        typename TVector::ValueType {
         return std::hypot(vec.X, vec.Y);
     }
 
@@ -145,8 +151,8 @@ struct BasicVector2D : public ne::IObject {
      * @return      点乘结果
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static typename TVector::ValueType Dot(
-        const TVector &vec1, const TVector &vec2) noexcept {
+    inline static auto Dot(const TVector &vec1, const TVector &vec2) noexcept ->
+        typename TVector::ValueType {
         return vec1 * vec2;
     }
 
@@ -157,8 +163,8 @@ struct BasicVector2D : public ne::IObject {
      * @return      叉乘结果
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static typename TVector::ValueType Cross(
-        const TVector &vec1, const TVector &vec2) noexcept {
+    inline static auto Cross(const TVector &vec1, const TVector &vec2) noexcept
+        -> typename TVector::ValueType {
         return vec1 & vec2;
     }
 
@@ -169,8 +175,8 @@ struct BasicVector2D : public ne::IObject {
      * @return      相加结果
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static TVector Add(const TVector &vec1,
-                              const TVector &vec2) noexcept {
+    inline static auto Add(const TVector &vec1, const TVector &vec2) noexcept
+        -> TVector {
         return vec1 + vec2;
     }
 
@@ -181,8 +187,8 @@ struct BasicVector2D : public ne::IObject {
      * @return      相减结果
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static TVector Subtract(const TVector &vec1,
-                                   const TVector &vec2) noexcept {
+    inline static auto Subtract(const TVector &vec1,
+                                const TVector &vec2) noexcept -> TVector {
         return vec1 - vec2;
     }
 
@@ -193,8 +199,9 @@ struct BasicVector2D : public ne::IObject {
      * @return       缩放后的结果
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static TVector Sacle(
-        const TVector &vec, const typename TVector::ValueType scale) noexcept {
+    inline static auto Sacle(const TVector &vec,
+                             const typename TVector::ValueType scale) noexcept
+        -> TVector {
         return vec * scale;
     }
 
@@ -205,8 +212,8 @@ struct BasicVector2D : public ne::IObject {
      * @return      取X和Y的最大值组成新的二维向量
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static TVector Max(const TVector &vec1,
-                              const TVector &vec2) noexcept {
+    inline static auto Max(const TVector &vec1, const TVector &vec2) noexcept
+        -> TVector {
         return { std::max(vec1.X, vec2.X), std::max(vec1.Y, vec2.Y) };
     }
 
@@ -217,8 +224,8 @@ struct BasicVector2D : public ne::IObject {
      * @return      取X和Y的最小值组成新的二维向量
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static TVector Min(const TVector &vec1,
-                              const TVector &vec2) noexcept {
+    inline static auto Min(const TVector &vec1, const TVector &vec2) noexcept
+        -> TVector {
         return { std::min(vec1.X, vec2.X), std::min(vec1.Y, vec2.Y) };
     }
 
@@ -232,9 +239,9 @@ struct BasicVector2D : public ne::IObject {
      *     将二维向量根据offest平移后，以原点为旋转中心再旋转，然后再平移回去。
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static TVector Rotate(
-        const TVector &vec, const TVector &offest,
-        const typename TVector::ValueType angle) noexcept {
+    inline static auto Rotate(const TVector &vec, const TVector &offest,
+                              const typename TVector::ValueType angle) noexcept
+        -> TVector {
         TVector result;
 
         auto cosAngle = std::cos(angle * M_PI / 180.0f);
@@ -255,7 +262,7 @@ struct BasicVector2D : public ne::IObject {
      * @return     标准化后的向量
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static TVector Normalize(const TVector &vec) {
+    inline static auto Normalize(const TVector &vec) -> TVector {
         auto length = Length(vec);
 
         if (length == 0.0f) { throw std::invalid_argument("vec"); } else {
@@ -271,8 +278,8 @@ struct BasicVector2D : public ne::IObject {
      * @return            返回对应的二维向量
      */
     template <typename TVector = BasicVector2D<T>>
-    inline static TVector Lerp(const TVector &start, const TVector &end,
-                        const typename TVector::ValueType percentage) noexcept {
+    inline static auto Lerp(const TVector &start, const TVector &end,
+                        const typename TVector::ValueType percentage) noexcept ->TVector{
         return (end - start) * percentage + start;
     }
 };  // struct BasicVector2D
