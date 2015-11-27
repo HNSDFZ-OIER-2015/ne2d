@@ -36,7 +36,5 @@ int main(/*int argc, char *argv[]*/) {
     assert(IsLessEqual(1.0, 2.0));
     assert(IsLessEqual(1.0, 1.0) == true);
 
-    cout << "PASSED" << endl;
-
     return 0;
 }  // function main

@@ -14,7 +14,5 @@ int main(/*int argc, char *argv[]*/) {
     // assert(expr)
     // ...
 
-    cout << "PASSED" << endl;
-
     return 0;
 }  // function main

@@ -109,8 +109,6 @@ int main(/*int argc, char *argv[]*/) {
     assert(Vector2D::Lerp(Vector2D(1.0f, 1.0f), Vector2D(3.0f, 3.0f), 2.0f) ==
            Vector2D(5.0f, 5.0f));
 
-    cout << "PASSED" << endl;
-
     return 0;
 }  // function main
 

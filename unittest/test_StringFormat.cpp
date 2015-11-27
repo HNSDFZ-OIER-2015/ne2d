@@ -21,7 +21,5 @@ int main(/*int argc, char *argv[]*/) {
     assert(Format("{:>10}", "ALIGN") == "     ALIGN");
     assert(Format("{:=^20}", "CENTERED") == "======CENTERED======");
 
-    cout << "PASSED" << endl;
-
     return 0;
 }  // function main

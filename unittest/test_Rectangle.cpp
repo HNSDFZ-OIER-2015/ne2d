@@ -162,7 +162,5 @@ int main(/*int argc, char *argv[]*/) {
         Rectangle::FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) !=
         Rectangle::FromTwoVector(Vector2D(1.0f, 1.0f), Vector2D(9.0f, 9.0f)));
 
-    cout << "PASSED" << endl;
-
     return 0;
 }  // function main
