@@ -172,11 +172,11 @@ struct BasicRectangle : public ne::IObject {
         return !((*this) == lhs);
     }
 
-    virtual auto ToString() const -> ne::String {
+    virtual auto ToString() const -> std::string {
         // (X = $X, Y = $Y, Width = $W, Height = $H)
 
-        return ne::String("(X = {}, Y = {}, Width = {}, Height = {})")
-            .Format(Position.X, Position.Y, Size.X, Size.Y);
+        return Format("(X = {}, Y = {}, Width = {}, Height = {})", Position.X,
+                      Position.Y, Size.X, Size.Y);
     }
 
     virtual auto HashCode() const -> ne::SizeType {

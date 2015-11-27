@@ -113,10 +113,10 @@ struct BasicVector2D : public ne::IObject {
         return *this;
     }
 
-    virtual auto ToString() const -> ne::String {
+    virtual auto ToString() const -> std::string {
         // (X = $X, Y = $Y)
 
-        return ne::String("(X = {}, Y = {})").Format(X, Y);
+        return ne::Format("(X = {}, Y = {})", X, Y);
     }
 
     virtual auto HashCode() const -> ne::SizeType {
