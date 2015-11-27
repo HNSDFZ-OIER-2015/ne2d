@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "Vector.hpp"
+#include "Vector2D.hpp"
 #include "ClassAttribute.hpp"
 #include "TypeConfiguration.hpp"
 #include "StringFormat.hpp"
@@ -181,81 +181,6 @@ struct BasicRectangle : public ne::IObject {
 
     virtual auto HashCode() const -> ne::SizeType {
         return Position.HashCode() + Size.HashCode();
-    }
-
-    /**
-     * 求得相交矩形
-     * @param  rect1 第一个矩形
-     * @param  rect2 第二个矩形
-     * @return       返回两个矩形的交集
-     */
-    template <typename TRectangle = BasicRectangle<T>>
-    inline static auto Intersect(const TRectangle &rect1,
-                                 const TRectangle &rect2) noexcept
-        -> TRectangle {
-        ValueType nx1 = std::max(rect1.Left(), rect2.Left());
-        ValueType ny1 = std::max(rect1.Top(), rect2.Top());
-        ValueType nx2 = std::min(rect1.Right(), rect2.Right());
-        ValueType ny2 = std::min(rect1.Bottom(), rect2.Bottom());
-
-        // 需先确定相交矩形是否存在
-        if (nx1 > nx2 and ny1 > ny2)
-            return TRectangle();  // 返回空矩形
-        else
-            return TRectangle::FromLTRB(nx1, ny1, nx2, ny2);
-    }
-
-    /**
-     * 返回合并矩形
-     * @param  rect1 第一个矩形
-     * @param  rect2 第二个矩形
-     * @return       返回两个矩形的并集
-     * @remark:
-     *     实质上是包含两个矩形的最小矩形
-     */
-    template <typename TRectangle = BasicRectangle<T>>
-    inline static auto Union(const TRectangle &rect1,
-                             const TRectangle &rect2) noexcept -> TRectangle {
-        ValueType nx1 = std::min(rect1.Left(), rect2.Left());
-        ValueType ny1 = std::min(rect1.Top(), rect2.Top());
-        ValueType nx2 = std::max(rect1.Right(), rect2.Right());
-        ValueType ny2 = std::max(rect1.Bottom(), rect2.Bottom());
-
-        return TRectangle::FromLTRB(nx1, ny1, nx2, ny2);
-    }
-
-    /**
-     * 生成包含两个二维向量的最小矩形
-     * @param  vec1 第一个二维向量
-     * @param  vec2 第二个二维向量
-     * @return      返回最小矩形
-     */
-    template <typename TRectangle = BasicRectangle<T>>
-    inline static auto FromTwoVector(
-        const typename TRectangle::VectorType &vec1,
-        const typename TRectangle::VectorType &vec2) noexcept -> TRectangle {
-        return TRectangle(TRectangle::VectorType::Min(vec1, vec2),
-                          TRectangle::VectorType::Max(vec1, vec2) -
-                              TRectangle::VectorType::Min(vec1, vec2));
-    }
-
-    /**
-     * 根据上下左右的数据来生成一个矩形
-     * @param  left   左边界
-     * @param  top    上边界
-     * @param  right  右边界
-     * @param  bottom 下边界
-     * @return        返回生成的矩形
-     * @remark
-     *     该函数不会检查其正确性，可能产生意外的结果
-     */
-    template <typename TRectangle = BasicRectangle<T>>
-    inline static auto FromLTRB(
-        const typename TRectangle::ValueType left,
-        const typename TRectangle::ValueType top,
-        const typename TRectangle::ValueType right,
-        const typename TRectangle::ValueType bottom) noexcept -> TRectangle {
-        return TRectangle(left, top, right - left, bottom - top);
     }
 };  // struct BasicRectangle
 

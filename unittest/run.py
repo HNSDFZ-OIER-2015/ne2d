@@ -25,7 +25,7 @@ def compile_test(filename):
         # print('(info) Compilation succeeded.')
         return True
     else:
-        print('(error) Compilation failed! Compiler returned {}', result)
+        print('(error) Compilation failed! Compiler returned {}'.format(result))
         return False
 
 def run_test(filename):

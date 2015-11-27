@@ -2,7 +2,8 @@
 // Copyright 2015 riteme
 //
 
-#include "../src/Vector.hpp"
+#include "../src/Vector2D.hpp"
+#include "../src/Math.hpp"
 
 #include <cmath>
 #include <cfloat>
@@ -70,43 +71,39 @@ int main(/*int argc, char *argv[]*/) {
     vec /= 2.0f;
     assert(vec == Vector2D(3.0f, 4.0f));
 
-    assert(Vector2D::Abs(Vector2D(-1.0f, -1.0f)) == Vector2D(1.0f, 1.0f));
-    assert(Vector2D::Abs(Vector2D(-1.0f, 1.0f)) == Vector2D(1.0f, 1.0f));
-    assert(Vector2D::Abs(Vector2D(1.0f, 1.0f)) == Vector2D(1.0f, 1.0f));
+    assert(ne::Abs(Vector2D(-1.0f, -1.0f)) == Vector2D(1.0f, 1.0f));
+    assert(ne::Abs(Vector2D(-1.0f, 1.0f)) == Vector2D(1.0f, 1.0f));
+    assert(ne::Abs(Vector2D(1.0f, 1.0f)) == Vector2D(1.0f, 1.0f));
 
-    assert(IsSame(Vector2D::Length(Vector2D(1.0f, 1.0f)), std::sqrt(2.0f)));
-    assert(IsSame(Vector2D::Length(Vector2D(2.0f, 2.0f)), std::sqrt(8.0f)));
-    assert(IsSame(Vector2D::Length(Vector2D(3.0f, 4.0f)), 5.0f));
+    assert(IsSame(ne::Length(Vector2D(1.0f, 1.0f)), std::sqrt(2.0f)));
+    assert(IsSame(ne::Length(Vector2D(2.0f, 2.0f)), std::sqrt(8.0f)));
+    assert(IsSame(ne::Length(Vector2D(3.0f, 4.0f)), 5.0f));
 
-    assert(Vector2D::Min(Vector2D(1.0f, 2.0f), Vector2D(2.0f, 1.0f)) ==
+    assert(ne::Min(Vector2D(1.0f, 2.0f), Vector2D(2.0f, 1.0f)) ==
            Vector2D(1.0f, 1.0f));
-    assert(Vector2D::Max(Vector2D(1.0f, 2.0f), Vector2D(2.0f, 1.0f)) ==
+    assert(ne::Max(Vector2D(1.0f, 2.0f), Vector2D(2.0f, 1.0f)) ==
            Vector2D(2.0f, 2.0f));
 
-    // auto v = Vector2D::Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f),
+    // auto v = ne::Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f),
     // 90.0f);
-    assert(Vector2D::Rotate(Vector2D(1.0f, 1.0f),
-                            Vector2D(0.0f, 0.0f),
-                            90.0f) == -Vector2D(1.0f, -1.0f));
-    assert(Vector2D::Rotate(Vector2D(1.0f, 1.0f),
-                            Vector2D(0.0f, 0.0f),
-                            -90.0f) == -Vector2D(-1.0f, 1.0f));
-    assert(
-        Vector2D::Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f), 180.0f) ==
-        Vector2D::Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f), -180.0f));
-    assert(Vector2D::Rotate(Vector2D(1.0f, 1.0f),
-                            Vector2D(1.0f, 1.0f),
-                            90.0f) == Vector2D(1.0f, 1.0f));
+    assert(ne::Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f), 90.0f) ==
+           -Vector2D(1.0f, -1.0f));
+    assert(ne::Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f), -90.0f) ==
+           -Vector2D(-1.0f, 1.0f));
+    assert(ne::Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f), 180.0f) ==
+           ne::Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f), -180.0f));
+    assert(ne::Rotate(Vector2D(1.0f, 1.0f), Vector2D(1.0f, 1.0f), 90.0f) ==
+           Vector2D(1.0f, 1.0f));
 
-    assert(Vector2D::Normalize(Vector2D(1.0f, 0.0f)) == Vector2D(1.0f, 0.0f));
-    assert(Vector2D::Normalize(Vector2D(1.0f, 1.0f)) ==
+    assert(ne::Normalize(Vector2D(1.0f, 0.0f)) == Vector2D(1.0f, 0.0f));
+    assert(ne::Normalize(Vector2D(1.0f, 1.0f)) ==
            Vector2D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f));
 
-    assert(Vector2D::Lerp(Vector2D(1.0f, 1.0f), Vector2D(3.0f, 3.0f), 0.5f) ==
+    assert(ne::Lerp(Vector2D(1.0f, 1.0f), Vector2D(3.0f, 3.0f), 0.5f) ==
            Vector2D(2.0f, 2.0f));
-    assert(Vector2D::Lerp(Vector2D(0.0f, 0.0f), Vector2D(4.0f, 4.0f), 0.5f) ==
+    assert(ne::Lerp(Vector2D(0.0f, 0.0f), Vector2D(4.0f, 4.0f), 0.5f) ==
            Vector2D(2.0f, 2.0f));
-    assert(Vector2D::Lerp(Vector2D(1.0f, 1.0f), Vector2D(3.0f, 3.0f), 2.0f) ==
+    assert(ne::Lerp(Vector2D(1.0f, 1.0f), Vector2D(3.0f, 3.0f), 2.0f) ==
            Vector2D(5.0f, 5.0f));
 
     return 0;
