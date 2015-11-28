@@ -2,7 +2,8 @@
 // Copyright 2015 riteme
 //
 
-#ifndef NE2D_MATH_HPP
+#ifndef NE2D_MATH_HPP_
+#define NE2D_MATH_HPP_
 
 #include "Vector2D.hpp"
 #include "Rectangle.hpp"
@@ -247,4 +248,4 @@ inline static auto Union(const TRectangle &rect1,
 
 }  // namespace ne
 
-#endif  // IFNDEF NE2D_MATH_HPP
+#endif  // NE2D_MATH_HPP_

@@ -21,6 +21,9 @@ namespace ne {
 /**
  * 二维向量的基本结构
  * 可以指定数据的类型
+ * @remark:
+ *     其中Z仅用于辅助与矩阵运算，
+ *     不会参与二维向量的运算和比较运算
  */
 template <typename T>
 struct BasicVector2D : public ne::IObject {
@@ -28,24 +31,29 @@ struct BasicVector2D : public ne::IObject {
 
     typedef T ValueType;
 
-    BasicVector2D() : X(0.0f), Y(0.0f) {}
-    BasicVector2D(T x, T y) : X(x), Y(y) {}
+    BasicVector2D() : X(0.0f), Y(0.0f), Z(1.0f) {}
+    BasicVector2D(const ValueType x, const ValueType y) : X(x), Y(y), Z(1.0f) {}
+    BasicVector2D(const ValueType x, const ValueType y, const ValueType z)
+            : X(x), Y(y), Z(z) {}
 
-    T X;
-    T Y;
+    ValueType X;
+    ValueType Y;
+    ValueType Z;
 
-    BasicVector2D(const BasicVector2D &lhs) : X(lhs.X), Y(lhs.Y) {}
+    BasicVector2D(const BasicVector2D &lhs) : X(lhs.X), Y(lhs.Y), Z(lhs.Z) {}
     auto operator=(const BasicVector2D &lhs) -> BasicVector2D & {
         X = lhs.X;
         Y = lhs.Y;
+        Z = lhs.Z;
 
         return *this;
     }
 
-    BasicVector2D(BasicVector2D &&rhs) : X(rhs.X), Y(rhs.Y) {}
+    BasicVector2D(BasicVector2D &&rhs) : X(rhs.X), Y(rhs.Y), Z(rhs.Z) {}
     auto operator=(BasicVector2D &&rhs) -> BasicVector2D & {
         X = rhs.X;
         Y = rhs.Y;
+        Z = rhs.Z;
 
         return *this;
     }

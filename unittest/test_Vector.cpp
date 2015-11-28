@@ -19,14 +19,20 @@ int main(/*int argc, char *argv[]*/) {
     Vector2D vec;
     assert(vec.X == 0.0f);
     assert(vec.Y == 0.0f);
+    assert(vec.Z == 1.0f);
 
     vec = Vector2D(1.0f, 2.0f);
     assert(vec.X == 1.0f);
     assert(vec.Y == 2.0f);
+    assert(vec.Z == 1.0f);
 
     vec = { 3.0f, 4.0f };
     assert(vec.X == 3.0f);
     assert(vec.Y == 4.0f);
+    assert(vec.Z == 1.0f);
+
+    vec.Z = 233.0f;
+    assert(vec.Z == 233.0f);
 
     Vector2D vec2 = vec;
     Vector2D vec3 = { 1.0f, 1.0f };
