@@ -14,6 +14,8 @@ namespace ne {
 // 原始类型的别名 //
 ///////////////////
 
+typedef bool Bool;
+
 typedef int Integer;
 typedef unsigned int Unsigned;
 
