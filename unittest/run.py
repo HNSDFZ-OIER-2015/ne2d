@@ -10,7 +10,7 @@ import re
 
 COMPILER = 'clang++ -std=c++11 -stdlib=libc++ -O2 -g'
 RUN_COMMAND = './test.out'
-REGEX_PATTERN = 'test_'
+REGEX_PATTERN = 'test_.*\.cpp'
 
 def match_test(filename):
     result = re.match(REGEX_PATTERN, filename)
@@ -44,10 +44,13 @@ def run_test(filename):
             print('(error) {}: **FAILED**.'.format(filename))
             return False
 
+# Main
 if __name__ != '__main__':
     print('(warn) This program may run in a uncorrect situation.')
 
 print('(info) Running all the tests...')
+
+status = 0
 
 for filename in os.listdir():
     if not match_test(filename):
@@ -55,6 +58,8 @@ for filename in os.listdir():
 
     if not run_test(filename):
         print('(fatal) Test of {} has not passed.'.format(filename))
+        status = -1
             
 
 print('(info) Program exited.')
+exit(status)
