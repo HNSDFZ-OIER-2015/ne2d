@@ -11,27 +11,27 @@
 namespace ne {
 
 template <typename TFloat>
-auto IsSame(const TFloat a, const TFloat b) noexcept -> bool {
+auto IsSame(const TFloat &a, const TFloat &b) noexcept -> bool {
     return fabs(a - b) < std::numeric_limits<TFloat>::epsilon();
 }
 
 template <typename TFloat>
-auto IsGreater(const TFloat a, const TFloat b) noexcept -> bool {
+auto IsGreater(const TFloat &a, const TFloat &b) noexcept -> bool {
     return a > b && !IsSame(a, b);
 }
 
 template <typename TFloat>
-auto IsLess(const TFloat a, const TFloat b) noexcept -> bool {
+auto IsLess(const TFloat &a, const TFloat &b) noexcept -> bool {
     return a < b && !IsSame(a, b);
 }
 
 template <typename TFloat>
-auto IsGreaterEqual(const TFloat a, const TFloat b) noexcept -> bool {
+auto IsGreaterEqual(const TFloat &a, const TFloat &b) noexcept -> bool {
     return a > b || IsSame(a, b);
 }
 
 template <typename TFloat>
-auto IsLessEqual(const TFloat a, const TFloat b) noexcept -> bool {
+auto IsLessEqual(const TFloat &a, const TFloat &b) noexcept -> bool {
     return a < b || IsSame(a, b);
 }
 

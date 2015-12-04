@@ -38,10 +38,11 @@ struct BasicMatrix3 : public ne::IObject {
 
         SetMatrix(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
     }
-    BasicMatrix3(const ValueType m11, const ValueType m12, const ValueType m13,
-                 const ValueType m21, const ValueType m22, const ValueType m23,
-                 const ValueType m31, const ValueType m32, const ValueType m33,
-                 const bool transposed = false) {
+    BasicMatrix3(const ValueType &m11, const ValueType &m12,
+                 const ValueType &m13, const ValueType &m21,
+                 const ValueType &m22, const ValueType &m23,
+                 const ValueType &m31, const ValueType &m32,
+                 const ValueType &m33, const bool transposed = false) {
         m_pMatrix = new ValueType[ArraySize];
 
         SetMatrix(m11, m12, m13, m21, m22, m23, m31, m32, m33);
@@ -61,31 +62,31 @@ struct BasicMatrix3 : public ne::IObject {
         m_bIsTransposed = transposed;
     }
 
-    auto M11() -> ValueType & { return m_pMatrix[0][0]; }
-    auto M12() -> ValueType & {
+    auto M11() noexcept -> ValueType & { return m_pMatrix[0][0]; }
+    auto M12() noexcept -> ValueType & {
         return m_bIsTransposed ? m_pMatrix[1][0] : m_pMatrix[0][1];
     }
-    auto M13() -> ValueType & {
+    auto M13() noexcept -> ValueType & {
         return m_bIsTransposed ? m_pMatrix[2][0] : m_pMatrix[0][2];
     }
-    auto M21() -> ValueType & {
+    auto M21() noexcept -> ValueType & {
         return m_bIsTransposed ? m_pMatrix[0][1] : m_pMatrix[1][0];
     }
-    auto M22() -> ValueType & { return m_pMatrix[1][1]; }
-    auto M23() -> ValueType & {
+    auto M22() noexcept -> ValueType & { return m_pMatrix[1][1]; }
+    auto M23() noexcept -> ValueType & {
         return m_bIsTransposed ? m_pMatrix[2][1] : m_pMatrix[1][2];
     }
-    auto M31() -> ValueType & {
+    auto M31() noexcept -> ValueType & {
         return m_bIsTransposed ? m_pMatrix[0][2] : m_pMatrix[2][0];
     }
-    auto M32() -> ValueType & {
+    auto M32() noexcept -> ValueType & {
         return m_bIsTransposed ? m_pMatrix[1][2] : m_pMatrix[2][1];
     }
-    auto M33() -> ValueType & { return m_pMatrix[2][2]; }
+    auto M33() noexcept -> ValueType & { return m_pMatrix[2][2]; }
 
-    void Transpose() { m_bIsTransposed = true; }
-    auto GetMatrixArray() const -> ValueType * { return m_pMatrix; }
-    auto IsVaild() const -> bool { return m_pMatrix != nullptr; }
+    void Transpose() noexcept { m_bIsTransposed = true; }
+    auto GetMatrixArray() const noexcept -> ValueType * { return m_pMatrix; }
+    auto IsVaild() const noexcept -> bool { return m_pMatrix != nullptr; }
 
     BasicMatrix3(const BasicMatrix3 &lhs) {
         SetMatrix(lhs.M11(), lhs.M12(), lhs.M13(), lhs.M21(), lhs.M22(),
@@ -134,7 +135,7 @@ struct BasicMatrix3 : public ne::IObject {
         return mat;
     }
 
-    auto operator*(const ValueType lhs) const -> BasicMatrix3 {
+    auto operator*(const ValueType &lhs) const -> BasicMatrix3 {
         BasicMatrix3 mat = { M11() * lhs, M12() * lhs, M13() * lhs,
                              M21() * lhs, M22() * lhs, M23() * lhs,
                              M31() * lhs, M32() * lhs, M33() * lhs };
@@ -142,7 +143,7 @@ struct BasicMatrix3 : public ne::IObject {
         return mat;
     }
 
-    auto operator/(const ValueType lhs) const -> BasicMatrix3 {
+    auto operator/(const ValueType &lhs) const -> BasicMatrix3 {
         BasicMatrix3 mat = { M11() / lhs, M12() / lhs, M13() / lhs,
                              M21() / lhs, M22() / lhs, M23() / lhs,
                              M31() / lhs, M32() / lhs, M33() / lhs };
@@ -186,13 +187,13 @@ struct BasicMatrix3 : public ne::IObject {
         return *this;
     }
 
-    auto operator*=(const ValueType lhs) -> BasicMatrix3 & {
+    auto operator*=(const ValueType &lhs) -> BasicMatrix3 & {
         *this = std::move(*this * lhs);
 
         return *this;
     }
 
-    auto operator/=(const ValueType lhs) -> BasicMatrix3 & {
+    auto operator/=(const ValueType &lhs) -> BasicMatrix3 & {
         *this = std::move(*this / lhs);
 
         return *this;
@@ -205,27 +206,28 @@ struct BasicMatrix3 : public ne::IObject {
     }
 
     virtual auto ToString() const -> std::string {
-        // [[a11, a12] [a21, a22]]
+        // [[a11, a12, a13] [a21, a22, a23] [a31, a32, a33]]
 
-        return ne::Format("[[{0}, {1}] [{2}, {3}]]", M11(), M12(), M21(),
-                          M22());
+        return ne::Format("[[{}, {}, {}] [{}, {}, {}] [{}, {}, {}]]", M11(),
+                          M12(), M13(), M21(), M22(), M23(), M31(), M32(),
+                          M33());
     }
 
     virtual auto HashCode() const -> ne::SizeType {
-        return static_cast<SizeType>(M11()) *
-               (static_cast<SizeType>(M12() - M21()) /
-                static_cast<SizeType>(M22()));
+        return (static_cast<SizeType>(M11() + M12() + M21()) *
+                static_cast<SizeType>(M33() + M23() + M32())) %
+               static_cast<SizeType>(M13() * M22() * M31());
     }
 
  private:
     constexpr static SizeType ArraySize = 9;
     constexpr static Bool IsTransposed = true;
 
-    void SetMatrix(const ValueType m11, const ValueType m12,
-                   const ValueType m13, const ValueType m21,
-                   const ValueType m22, const ValueType m23,
-                   const ValueType m31, const ValueType m32,
-                   const ValueType m33) {
+    void SetMatrix(const ValueType &m11, const ValueType &m12,
+                   const ValueType &m13, const ValueType &m21,
+                   const ValueType &m22, const ValueType &m23,
+                   const ValueType &m31, const ValueType &m32,
+                   const ValueType &m33) {
         M11() = m11, M12() = m12, M13() = m13;
         M21() = m21, M22() = m22, M23() = m23;
         M31() = m31, M32() = m32, M33() = m33;

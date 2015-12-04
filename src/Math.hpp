@@ -16,7 +16,7 @@ namespace ne {
  * @return     经过绝对值操作的二维向量
  */
 template <typename TVector = BasicVector2D<Float>>
-inline static auto Abs(const TVector &vec) noexcept -> TVector {
+inline auto Abs(const TVector &vec) noexcept -> TVector {
     return { std::abs(vec.X), std::abs(vec.Y) };
 }
 
@@ -26,8 +26,7 @@ inline static auto Abs(const TVector &vec) noexcept -> TVector {
  * @return     长度值
  */
 template <typename TVector = BasicVector2D<Float>>
-inline static auto Length(const TVector &vec) noexcept ->
-    typename TVector::ValueType {
+inline auto Length(const TVector &vec) noexcept -> typename TVector::ValueType {
     return std::hypot(vec.X, vec.Y);
 }
 
@@ -38,7 +37,7 @@ inline static auto Length(const TVector &vec) noexcept ->
  * @return      点乘结果
  */
 template <typename TVector = BasicVector2D<Float>>
-inline static auto Dot(const TVector &vec1, const TVector &vec2) noexcept ->
+inline auto Dot(const TVector &vec1, const TVector &vec2) noexcept ->
     typename TVector::ValueType {
     return vec1 * vec2;
 }
@@ -50,46 +49,67 @@ inline static auto Dot(const TVector &vec1, const TVector &vec2) noexcept ->
  * @return      叉乘结果
  */
 template <typename TVector = BasicVector2D<Float>>
-inline static auto Cross(const TVector &vec1, const TVector &vec2) noexcept ->
+inline auto Cross(const TVector &vec1, const TVector &vec2) noexcept ->
     typename TVector::ValueType {
     return vec1 & vec2;
 }
 
-/**
- * 将两个二维向量相加
- * @param  vec1 第一个二维向量
- * @param  vec2 第二个二维向量
- * @return      相加结果
- */
-template <typename TVector = BasicVector2D<Float>>
-inline static auto Add(const TVector &vec1, const TVector &vec2) noexcept
-    -> TVector {
-    return vec1 + vec2;
+// 二维向量和矩阵共用以下方法
+// /**
+//  * 将两个二维向量相加
+//  * @param  vec1 第一个二维向量
+//  * @param  vec2 第二个二维向量
+//  * @return      相加结果
+//  */
+// template <typename TVector = BasicVector2D<Float>>
+// inline auto Add(const TVector &vec1, const TVector &vec2) noexcept
+//     -> TVector {
+//     return vec1 + vec2;
+// }
+//
+// /**
+//  * 将两个二维向量相减
+//  * @param  vec1 第一个二维向量
+//  * @param  vec2 第二个二维向量
+//  * @return      相减结果
+//  */
+// template <typename TVector = BasicVector2D<Float>>
+// inline auto Subtract(const TVector &vec1, const TVector &vec2)
+// noexcept
+//     -> TVector {
+//     return vec1 - vec2;
+// }
+//
+// /**
+//  * 缩放二维向量
+//  * @param  vec   原二维向量
+//  * @param  scale 缩放比例
+//  * @return       缩放后的结果
+//  */
+// template <typename TVector = BasicVector2D<Float>>
+// inline auto Sacle(const TVector &vec,
+//                   const typename TVector::ValueType &scale) noexcept
+//     -> TVector {
+//     return vec * scale;
+// }
+
+template <typename TMathObject>
+inline auto Add(const TMathObject &a, const TMathObject &b) noexcept
+    -> TMathObject {
+    return a + b;
 }
 
-/**
- * 将两个二维向量相减
- * @param  vec1 第一个二维向量
- * @param  vec2 第二个二维向量
- * @return      相减结果
- */
-template <typename TVector = BasicVector2D<Float>>
-inline static auto Subtract(const TVector &vec1, const TVector &vec2) noexcept
-    -> TVector {
-    return vec1 - vec2;
+template <typename TMathObject>
+inline auto Subtract(const TMathObject &a, const TMathObject &b) noexcept
+    -> TMathObject {
+    return a - b;
 }
 
-/**
- * 缩放二维向量
- * @param  vec   原二维向量
- * @param  scale 缩放比例
- * @return       缩放后的结果
- */
-template <typename TVector = BasicVector2D<Float>>
-inline static auto Sacle(const TVector &vec,
-                         const typename TVector::ValueType scale) noexcept
-    -> TVector {
-    return vec * scale;
+template <typename TMathObject>
+inline auto Scale(const TMathObject &target,
+                  const typename TMathObject::ValueType &scale) noexcept
+    -> TMathObject {
+    return target * scale;
 }
 
 /**
@@ -99,8 +119,7 @@ inline static auto Sacle(const TVector &vec,
  * @return      取X和Y的最大值组成新的二维向量
  */
 template <typename TVector = BasicVector2D<Float>>
-inline static auto Max(const TVector &vec1, const TVector &vec2) noexcept
-    -> TVector {
+inline auto Max(const TVector &vec1, const TVector &vec2) noexcept -> TVector {
     return { std::max(vec1.X, vec2.X), std::max(vec1.Y, vec2.Y) };
 }
 
@@ -111,8 +130,7 @@ inline static auto Max(const TVector &vec1, const TVector &vec2) noexcept
  * @return      取X和Y的最小值组成新的二维向量
  */
 template <typename TVector = BasicVector2D<Float>>
-inline static auto Min(const TVector &vec1, const TVector &vec2) noexcept
-    -> TVector {
+inline auto Min(const TVector &vec1, const TVector &vec2) noexcept -> TVector {
     return { std::min(vec1.X, vec2.X), std::min(vec1.Y, vec2.Y) };
 }
 
@@ -126,8 +144,8 @@ inline static auto Min(const TVector &vec1, const TVector &vec2) noexcept
  *     将二维向量根据offest平移后，以原点为旋转中心再旋转，然后再平移回去。
  */
 template <typename TVector = BasicVector2D<Float>>
-inline static auto Rotate(const TVector &vec, const TVector &offest,
-                          const typename TVector::ValueType angle) noexcept
+inline auto Rotate(const TVector &vec, const TVector &offest,
+                   const typename TVector::ValueType &angle) noexcept
     -> TVector {
     TVector result;
 
@@ -149,7 +167,7 @@ inline static auto Rotate(const TVector &vec, const TVector &offest,
  * @return     标准化后的向量
  */
 template <typename TVector = BasicVector2D<Float>>
-inline static auto Normalize(const TVector &vec) -> TVector {
+inline auto Normalize(const TVector &vec) -> TVector {
     auto length = Length(vec);
 
     if (length == 0.0f) { throw std::invalid_argument("vec"); } else {
@@ -165,8 +183,8 @@ inline static auto Normalize(const TVector &vec) -> TVector {
  * @return            返回对应的二维向量
  */
 template <typename TVector = BasicVector2D<Float>>
-inline static auto Lerp(const TVector &start, const TVector &end,
-                        const typename TVector::ValueType percentage) noexcept
+inline auto Lerp(const TVector &start, const TVector &end,
+                 const typename TVector::ValueType &percentage) noexcept
     -> TVector {
     return (end - start) * percentage + start;
 }
@@ -178,9 +196,9 @@ inline static auto Lerp(const TVector &start, const TVector &end,
  * @return      返回最小矩形
  */
 template <typename TRectangle = BasicRectangle<Float>>
-inline static auto FromTwoVector(
-    const typename TRectangle::VectorType &vec1,
-    const typename TRectangle::VectorType &vec2) noexcept -> TRectangle {
+inline auto FromTwoVector(const typename TRectangle::VectorType &vec1,
+                          const typename TRectangle::VectorType &vec2) noexcept
+    -> TRectangle {
     return TRectangle(ne::Min(vec1, vec2),
                       ne::Max(vec1, vec2) - ne::Min(vec1, vec2));
 }
@@ -196,11 +214,11 @@ inline static auto FromTwoVector(
  *     该函数不会检查其正确性，可能产生意外的结果
  */
 template <typename TRectangle = BasicRectangle<Float>>
-inline static auto FromLTRB(
-    const typename TRectangle::ValueType left,
-    const typename TRectangle::ValueType top,
-    const typename TRectangle::ValueType right,
-    const typename TRectangle::ValueType bottom) noexcept -> TRectangle {
+inline auto FromLTRB(const typename TRectangle::ValueType &left,
+                     const typename TRectangle::ValueType &top,
+                     const typename TRectangle::ValueType &right,
+                     const typename TRectangle::ValueType &bottom) noexcept
+    -> TRectangle {
     return TRectangle(left, top, right - left, bottom - top);
 }
 
@@ -211,8 +229,8 @@ inline static auto FromLTRB(
  * @return       返回两个矩形的交集
  */
 template <typename TRectangle = BasicRectangle<Float>>
-inline static auto Intersect(const TRectangle &rect1,
-                             const TRectangle &rect2) noexcept -> TRectangle {
+inline auto Intersect(const TRectangle &rect1, const TRectangle &rect2) noexcept
+    -> TRectangle {
     typename TRectangle::ValueType nx1 = std::max(rect1.Left(), rect2.Left());
     typename TRectangle::ValueType ny1 = std::max(rect1.Top(), rect2.Top());
     typename TRectangle::ValueType nx2 = std::min(rect1.Right(), rect2.Right());
@@ -235,7 +253,7 @@ inline static auto Intersect(const TRectangle &rect1,
  *     实质上是包含两个矩形的最小矩形
  */
 template <typename TRectangle = BasicRectangle<Float>>
-inline static auto Union(const TRectangle &rect1,
+inline auto Union(const TRectangle &rect1,
                          const TRectangle &rect2) noexcept -> TRectangle {
     typename TRectangle::ValueType nx1 = std::min(rect1.Left(), rect2.Left());
     typename TRectangle::ValueType ny1 = std::min(rect1.Top(), rect2.Top());

@@ -32,8 +32,9 @@ struct BasicVector2D : public ne::IObject {
     typedef T ValueType;
 
     BasicVector2D() : X(0.0f), Y(0.0f), Z(1.0f) {}
-    BasicVector2D(const ValueType x, const ValueType y) : X(x), Y(y), Z(1.0f) {}
-    BasicVector2D(const ValueType x, const ValueType y, const ValueType z)
+    BasicVector2D(const ValueType &x, const ValueType &y)
+            : X(x), Y(y), Z(1.0f) {}
+    BasicVector2D(const ValueType &x, const ValueType &y, const ValueType &z)
             : X(x), Y(y), Z(z) {}
 
     ValueType X;
@@ -77,19 +78,19 @@ struct BasicVector2D : public ne::IObject {
     auto operator+() const -> BasicVector2D { return *this; }
     auto operator-() const -> BasicVector2D { return { -X, -Y }; }
 
-    auto operator*(const T &lhs) const -> BasicVector2D {
+    auto operator*(const ValueType &lhs) const -> BasicVector2D {
         return { X * lhs, Y * lhs };
     }
 
-    auto operator/(const T &lhs) const -> BasicVector2D {
+    auto operator/(const ValueType &lhs) const -> BasicVector2D {
         return { X / lhs, Y / lhs };
     }
 
-    auto operator*(const BasicVector2D &lhs) const -> T {
+    auto operator*(const BasicVector2D &lhs) const -> ValueType {
         return X * lhs.X + Y * lhs.Y;
     }
 
-    auto operator%(const BasicVector2D &lhs) const -> T {
+    auto operator%(const BasicVector2D &lhs) const -> ValueType {
         return X * lhs.Y - lhs.X * Y;
     }
 
@@ -107,14 +108,14 @@ struct BasicVector2D : public ne::IObject {
         return *this;
     }
 
-    auto operator*=(const T &lhs) -> BasicVector2D & {
+    auto operator*=(const ValueType &lhs) -> BasicVector2D & {
         X *= lhs;
         Y *= lhs;
 
         return *this;
     }
 
-    auto operator/=(const T &lhs) -> BasicVector2D & {
+    auto operator/=(const ValueType &lhs) -> BasicVector2D & {
         X /= lhs;
         Y /= lhs;
 

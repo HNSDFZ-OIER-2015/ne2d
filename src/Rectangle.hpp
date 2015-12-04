@@ -22,45 +22,45 @@ struct BasicRectangle : public ne::IObject {
     NONCOMPARABLE(BasicRectangle)
 
     typedef T ValueType;
-    typedef BasicVector2D<T> VectorType;
+    typedef BasicVector2D<ValueType> VectorType;
 
     BasicRectangle() : Position(), Size() {}
     BasicRectangle(const VectorType &position, const VectorType &size)
             : Position(position), Size(size) {}
-    BasicRectangle(const ValueType x, const ValueType y, const ValueType w,
-                   const ValueType h)
+    BasicRectangle(const ValueType &x, const ValueType &y, const ValueType &w,
+                   const ValueType &h)
             : Position(x, y), Size(w, h) {}
 
-    BasicVector2D<T> Position;
-    BasicVector2D<T> Size;
+    BasicVector2D<ValueType> Position;
+    BasicVector2D<ValueType> Size;
 
-    auto X() const -> ValueType { return Position.X; }
-    auto Y() const -> ValueType { return Position.Y; }
-    auto Width() const -> ValueType { return Size.X; }
-    auto Height() const -> ValueType { return Size.Y; }
+    auto X() const noexcept -> ValueType { return Position.X; }
+    auto Y() const noexcept -> ValueType { return Position.Y; }
+    auto Width() const noexcept -> ValueType { return Size.X; }
+    auto Height() const noexcept -> ValueType { return Size.Y; }
 
     // 可做左值
-    auto X() -> ValueType & { return Position.X; }
-    auto Y() -> ValueType & { return Position.Y; }
-    auto Width() -> ValueType & { return Size.X; }
-    auto Height() -> ValueType & { return Size.Y; }
+    auto X() noexcept -> ValueType & { return Position.X; }
+    auto Y() noexcept -> ValueType & { return Position.Y; }
+    auto Width() noexcept -> ValueType & { return Size.X; }
+    auto Height() noexcept -> ValueType & { return Size.Y; }
 
-    auto Top() const -> ValueType { return Position.Y; }
-    auto Bottom() const -> ValueType { return Position.Y + Size.Y; }
-    auto Left() const -> ValueType { return Position.X; }
-    auto Right() const -> ValueType { return Position.X + Size.X; }
+    auto Top() const noexcept -> ValueType { return Position.Y; }
+    auto Bottom() const noexcept -> ValueType { return Position.Y + Size.Y; }
+    auto Left() const noexcept -> ValueType { return Position.X; }
+    auto Right() const noexcept -> ValueType { return Position.X + Size.X; }
 
-    auto LeftTop() const -> VectorType { return Position; }
+    auto LeftTop() const noexcept -> VectorType { return Position; }
 
-    auto RightTop() const -> VectorType {
+    auto RightTop() const noexcept -> VectorType {
         return VectorType(Position.X + Size.X, Position.Y);
     }
 
-    auto LeftBottom() const -> VectorType {
+    auto LeftBottom() const noexcept -> VectorType {
         return VectorType(Position.X, Position.Y + Size.Y);
     }
 
-    auto RightBottom() const -> VectorType { return Position + Size; }
+    auto RightBottom() const noexcept -> VectorType { return Position + Size; }
 
     /**
      * 检测点是否在矩形内
@@ -68,7 +68,7 @@ struct BasicRectangle : public ne::IObject {
      * @param  y 点的纵坐标
      * @return   返回一个布尔值
      */
-    auto Contain(const ValueType x, const ValueType y) const -> bool {
+    auto Contain(const ValueType &x, const ValueType &y) const -> bool {
         return Left() <= x && x <= Right() && Top() <= y && y <= Bottom();
     }
 
@@ -111,7 +111,7 @@ struct BasicRectangle : public ne::IObject {
      * @param x 横向平移量
      * @param y 纵向平移量
      */
-    void Offest(const ValueType x, const ValueType y) {
+    void Offest(const ValueType &x, const ValueType &y) {
         Position.X += x;
         Position.Y += y;
     }
@@ -132,7 +132,7 @@ struct BasicRectangle : public ne::IObject {
      * @remark
      *     该函数不会检查处理后的矩形的合法性，可能产生意外的结果
      */
-    void Inflate(const ValueType x, const ValueType y) {
+    void Inflate(const ValueType &x, const ValueType &y) {
         Size.X += x;
         Size.Y += y;
     }
