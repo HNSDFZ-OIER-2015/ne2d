@@ -68,7 +68,8 @@ struct BasicRectangle : public ne::IObject {
      * @param  y 点的纵坐标
      * @return   返回一个布尔值
      */
-    auto Contain(const ValueType &x, const ValueType &y) const -> bool {
+    auto Contain(const ValueType &x, const ValueType &y) const noexcept
+        -> bool {
         return Left() <= x && x <= Right() && Top() <= y && y <= Bottom();
     }
 
@@ -77,7 +78,7 @@ struct BasicRectangle : public ne::IObject {
      * @param  vec 二维向量表示点
      * @return     返回一个布尔值
      */
-    auto Contain(const VectorType &vec) const -> bool {
+    auto Contain(const VectorType &vec) const noexcept -> bool {
         return Contain(vec.X, vec.Y);
     }
 
@@ -86,7 +87,7 @@ struct BasicRectangle : public ne::IObject {
      * @param  rect 目标矩形
      * @return      返回一个布尔值
      */
-    auto Contain(const BasicRectangle &rect) const -> bool {
+    auto Contain(const BasicRectangle &rect) const noexcept -> bool {
         return Contain(rect.LeftTop()) && Contain(rect.RightBottom());
     }
 
@@ -97,7 +98,7 @@ struct BasicRectangle : public ne::IObject {
      * @remark:
      *     如果需求出相交矩形，请使用Intersect。
      */
-    auto IntersectWith(const BasicRectangle &rect) const -> bool {
+    auto IntersectWith(const BasicRectangle &rect) const noexcept -> bool {
         ValueType nx1 = std::max(Left(), rect.Left());
         ValueType ny1 = std::max(Top(), rect.Top());
         ValueType nx2 = std::min(Right(), rect.Right());
@@ -111,7 +112,7 @@ struct BasicRectangle : public ne::IObject {
      * @param x 横向平移量
      * @param y 纵向平移量
      */
-    void Offest(const ValueType &x, const ValueType &y) {
+    void Offest(const ValueType &x, const ValueType &y) noexcept {
         Position.X += x;
         Position.Y += y;
     }
@@ -123,7 +124,7 @@ struct BasicRectangle : public ne::IObject {
      *     vec.X: 横向平移量
      *     vec.Y: 纵向平移量
      */
-    void Offest(const VectorType &vec) { Offest(vec.X, vec.Y); }
+    void Offest(const VectorType &vec) noexcept { Offest(vec.X, vec.Y); }
 
     /**
      * 增长或减少矩形的大小
@@ -132,7 +133,7 @@ struct BasicRectangle : public ne::IObject {
      * @remark
      *     该函数不会检查处理后的矩形的合法性，可能产生意外的结果
      */
-    void Inflate(const ValueType &x, const ValueType &y) {
+    void Inflate(const ValueType &x, const ValueType &y) noexcept {
         Size.X += x;
         Size.Y += y;
     }
@@ -144,7 +145,7 @@ struct BasicRectangle : public ne::IObject {
      *     size.X: 横向变化量
      *     size.Y: 纵向变化量
      */
-    void Inflate(const VectorType &size) { Inflate(size.X, size.Y); }
+    void Inflate(const VectorType &size) noexcept { Inflate(size.X, size.Y); }
 
     BasicRectangle(const BasicRectangle &lhs)
             : Position(lhs.Position), Size(lhs.Size) {}

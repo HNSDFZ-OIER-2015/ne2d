@@ -19,6 +19,10 @@ int main(/*int argc, char *argv[]*/) {
     assert(IsSame(100000.0, 0.01 * 10000000.0));
     assert(IsSame(10.0 / 9.0, 8.0 / 7.0) == false);
     assert(IsSame(1.2 * 3.0, 1.3 * 2.0) == false);
+    assert(IsSame(-1.0, 1.0) == false);
+    assert(IsSame(-1.0, -1.0));
+    assert(IsSame(-1.0, -2.0) == false);
+    assert(IsSame(-2.0001, -2.001) == false);
 
     assert(IsGreater(2.0, 1.0));
     assert(IsGreater(1.0, 2.0) == false);
