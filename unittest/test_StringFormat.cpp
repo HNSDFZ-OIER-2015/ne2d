@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace ne;
+using namespace ne::utility;
 
 int main(/*int argc, char *argv[]*/) {
     assert(Format("Hello, world!") == "Hello, world!");

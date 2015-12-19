@@ -12,6 +12,8 @@
 
 using namespace std;
 using namespace ne;
+using namespace ne::math;
+using namespace ne::utility;
 
 int main(/*int argc, char *argv[]*/) {
     BasicMatrix3<double> mat = Identity<double>();

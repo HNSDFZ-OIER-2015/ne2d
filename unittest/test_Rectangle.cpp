@@ -12,6 +12,8 @@
 
 using namespace std;
 using namespace ne;
+using namespace ne::math;
+using namespace ne::utility;
 
 int main(/*int argc, char *argv[]*/) {
     // assert(expr)
@@ -123,42 +125,42 @@ int main(/*int argc, char *argv[]*/) {
     assert(Rectangle(1.0f, 1.0f, 5.0f, 5.0f)
                .IntersectWith(Rectangle(0.0f, 0.0f, 0.5f, 0.5f)) == false);
 
-    assert(ne::Intersect(Rectangle(1.0f, 1.0f, 2.0f, 2.0f),
-                         Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+    assert(Intersect(Rectangle(1.0f, 1.0f, 2.0f, 2.0f),
+                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
            Rectangle(2.0f, 2.0f, 1.0f, 1.0f));
-    assert(ne::Intersect(Rectangle(100.0f, 100.0f, 2.0f, 2.0f),
-                         Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+    assert(Intersect(Rectangle(100.0f, 100.0f, 2.0f, 2.0f),
+                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
            Rectangle(0.0f, 0.0f, 0.0f, 0.0f));
-    assert(ne::Intersect(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
-                         Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+    assert(Intersect(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
+                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
            Rectangle(2.0f, 2.0f, 0.0f, 0.0f));
 
-    assert(ne::Union(Rectangle(1.0f, 1.0f, 2.0f, 2.0f),
-                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+    assert(Union(Rectangle(1.0f, 1.0f, 2.0f, 2.0f),
+                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
            Rectangle(1.0f, 1.0f, 3.0f, 3.0f));
-    assert(ne::Union(Rectangle(100.0f, 100.0f, 2.0f, 2.0f),
-                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+    assert(Union(Rectangle(100.0f, 100.0f, 2.0f, 2.0f),
+                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
            Rectangle(2.0f, 2.0f, 100.0f, 100.0f));
-    assert(ne::Union(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
-                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) !=
+    assert(Union(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
+                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) !=
            Rectangle(1.0f, 1.0f, 4.0f, 4.0f));
-    assert(ne::Union(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
-                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+    assert(Union(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
+                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
            Rectangle(1.0f, 1.0f, 3.0f, 3.0f));
 
-    assert(ne::FromLTRB(0.0f, 0.0f, 10.0f, 10.0f) ==
+    assert(FromLTRB(0.0f, 0.0f, 10.0f, 10.0f) ==
            Rectangle(0.0f, 0.0f, 10.0f, 10.0f));
-    assert(ne::FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) ==
+    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) ==
            Rectangle(1.0f, 1.0f, 9.0f, 9.0f));
-    assert(ne::FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) !=
+    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) !=
            Rectangle(1.0f, 1.0f, 10.0f, 10.0f));
 
-    assert(ne::FromLTRB(0.0f, 0.0f, 10.0f, 10.0f) ==
-           ne::FromTwoVector(Vector2D(0.0f, 0.0f), Vector2D(10.0f, 10.0f)));
-    assert(ne::FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) ==
-           ne::FromTwoVector(Vector2D(1.0f, 1.0f), Vector2D(10.0f, 10.0f)));
-    assert(ne::FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) !=
-           ne::FromTwoVector(Vector2D(1.0f, 1.0f), Vector2D(9.0f, 9.0f)));
+    assert(FromLTRB(0.0f, 0.0f, 10.0f, 10.0f) ==
+           FromTwoVector(Vector2D(0.0f, 0.0f), Vector2D(10.0f, 10.0f)));
+    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) ==
+           FromTwoVector(Vector2D(1.0f, 1.0f), Vector2D(10.0f, 10.0f)));
+    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) !=
+           FromTwoVector(Vector2D(1.0f, 1.0f), Vector2D(9.0f, 9.0f)));
 
     return 0;
 }  // function main
