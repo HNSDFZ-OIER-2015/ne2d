@@ -17,49 +17,50 @@ namespace ne::math {
     /**
      * 表示一个矩形
      */
-    template <typename T>
-    struct BasicRectangle : public ne::IObject {
-        NONCOMPARABLE(BasicRectangle)
+    struct Rectangle : public ne::IObject {
+        NONCOMPARABLE(Rectangle)
 
-        typedef T ValueType;
-        typedef BasicVector2D<ValueType> VectorType;
+        typedef Float ValueType;
+        typedef Vector2D VectorType;
 
-        BasicRectangle() : Position(), Size() {}
-        BasicRectangle(const VectorType &position, const VectorType &size)
+        Rectangle() : Position(), Size() {}
+        Rectangle(const VectorType &position, const VectorType &size)
                 : Position(position), Size(size) {}
-        BasicRectangle(const ValueType &x, const ValueType &y,
-                       const ValueType &w, const ValueType &h)
+        Rectangle(const ValueType &x, const ValueType &y, const ValueType &w,
+                  const ValueType &h)
                 : Position(x, y), Size(w, h) {}
 
-        BasicVector2D<ValueType> Position;
-        BasicVector2D<ValueType> Size;
+        Vector2D Position;
+        Vector2D Size;
 
-        auto X() const noexcept -> ValueType { return Position.X; }
-        auto Y() const noexcept -> ValueType { return Position.Y; }
-        auto Width() const noexcept -> ValueType { return Size.X; }
-        auto Height() const noexcept -> ValueType { return Size.Y; }
+        auto X() const noexcept -> ValueType { return Position.X(); }
+        auto Y() const noexcept -> ValueType { return Position.Y(); }
+        auto Width() const noexcept -> ValueType { return Size.X(); }
+        auto Height() const noexcept -> ValueType { return Size.Y(); }
 
         // 可做左值
-        auto X() noexcept -> ValueType & { return Position.X; }
-        auto Y() noexcept -> ValueType & { return Position.Y; }
-        auto Width() noexcept -> ValueType & { return Size.X; }
-        auto Height() noexcept -> ValueType & { return Size.Y; }
+        auto X() noexcept -> ValueType & { return Position.X(); }
+        auto Y() noexcept -> ValueType & { return Position.Y(); }
+        auto Width() noexcept -> ValueType & { return Size.X(); }
+        auto Height() noexcept -> ValueType & { return Size.Y(); }
 
-        auto Top() const noexcept -> ValueType { return Position.Y; }
+        auto Top() const noexcept -> ValueType { return Position.Y(); }
         auto Bottom() const noexcept -> ValueType {
-            return Position.Y + Size.Y;
+            return Position.Y() + Size.Y();
         }
-        auto Left() const noexcept -> ValueType { return Position.X; }
-        auto Right() const noexcept -> ValueType { return Position.X + Size.X; }
+        auto Left() const noexcept -> ValueType { return Position.X(); }
+        auto Right() const noexcept -> ValueType {
+            return Position.X() + Size.X();
+        }
 
         auto LeftTop() const noexcept -> VectorType { return Position; }
 
         auto RightTop() const noexcept -> VectorType {
-            return VectorType(Position.X + Size.X, Position.Y);
+            return VectorType(Position.X() + Size.X(), Position.Y());
         }
 
         auto LeftBottom() const noexcept -> VectorType {
-            return VectorType(Position.X, Position.Y + Size.Y);
+            return VectorType(Position.X(), Position.Y() + Size.Y());
         }
 
         auto RightBottom() const noexcept -> VectorType {
@@ -83,7 +84,7 @@ namespace ne::math {
          * @return     返回一个布尔值
          */
         auto Contain(const VectorType &vec) const noexcept -> bool {
-            return Contain(vec.X, vec.Y);
+            return Contain(vec.X(), vec.Y());
         }
 
         /**
@@ -91,7 +92,7 @@ namespace ne::math {
          * @param  rect 目标矩形
          * @return      返回一个布尔值
          */
-        auto Contain(const BasicRectangle &rect) const noexcept -> bool {
+        auto Contain(const Rectangle &rect) const noexcept -> bool {
             return Contain(rect.LeftTop()) && Contain(rect.RightBottom());
         }
 
@@ -102,7 +103,7 @@ namespace ne::math {
          * @remark:
          *     如果需求出相交矩形，请使用Intersect。
          */
-        auto IntersectWith(const BasicRectangle &rect) const noexcept -> bool {
+        auto IntersectWith(const Rectangle &rect) const noexcept -> bool {
             ValueType nx1 = std::max(Left(), rect.Left());
             ValueType ny1 = std::max(Top(), rect.Top());
             ValueType nx2 = std::min(Right(), rect.Right());
@@ -117,8 +118,8 @@ namespace ne::math {
          * @param y 纵向平移量
          */
         void Offest(const ValueType &x, const ValueType &y) noexcept {
-            Position.X += x;
-            Position.Y += y;
+            Position.X() += x;
+            Position.Y() += y;
         }
 
         /**
@@ -128,7 +129,9 @@ namespace ne::math {
          *     vec.X: 横向平移量
          *     vec.Y: 纵向平移量
          */
-        void Offest(const VectorType &vec) noexcept { Offest(vec.X, vec.Y); }
+        void Offest(const VectorType &vec) noexcept {
+            Offest(vec.X(), vec.Y());
+        }
 
         /**
          * 增长或减少矩形的大小
@@ -138,8 +141,8 @@ namespace ne::math {
          *     该函数不会检查处理后的矩形的合法性，可能产生意外的结果
          */
         void Inflate(const ValueType &x, const ValueType &y) noexcept {
-            Size.X += x;
-            Size.Y += y;
+            Size.X() += x;
+            Size.Y() += y;
         }
 
         /**
@@ -150,48 +153,45 @@ namespace ne::math {
          *     size.Y: 纵向变化量
          */
         void Inflate(const VectorType &size) noexcept {
-            Inflate(size.X, size.Y);
+            Inflate(size.X(), size.Y());
         }
 
-        BasicRectangle(const BasicRectangle &lhs)
+        Rectangle(const Rectangle &lhs)
                 : Position(lhs.Position), Size(lhs.Size) {}
-        auto operator=(const BasicRectangle &lhs) -> BasicRectangle & {
+        auto operator=(const Rectangle &lhs) -> Rectangle & {
             Position = lhs.Position;
             Size = lhs.Size;
 
             return *this;
         }
 
-        BasicRectangle(BasicRectangle &&rhs)
-                : Position(rhs.Position), Size(rhs.Size) {}
-        auto operator=(BasicRectangle &&rhs) -> BasicRectangle & {
+        Rectangle(Rectangle &&rhs) : Position(rhs.Position), Size(rhs.Size) {}
+        auto operator=(Rectangle &&rhs) -> Rectangle & {
             Position = rhs.Position;
             Size = rhs.Size;
 
             return *this;
         }
 
-        auto operator==(const BasicRectangle &lhs) const -> bool {
+        auto operator==(const Rectangle &lhs) const -> bool {
             return Position == lhs.Position && Size == lhs.Size;
         }
 
-        auto operator!=(const BasicRectangle &lhs) const -> bool {
+        auto operator!=(const Rectangle &lhs) const -> bool {
             return !((*this) == lhs);
     }
 
     virtual auto ToString() const -> std::string {
         // (X = $X, Y = $Y, Width = $W, Height = $H)
 
-        return Format("(X = {}, Y = {}, Width = {}, Height = {})", Position.X,
-                      Position.Y, Size.X, Size.Y);
+        return ne::utility::Format("(X = {}, Y = {}, Width = {}, Height = {})", Position.X(),
+                      Position.Y(), Size.X(), Size.Y());
     }
 
     virtual auto HashCode() const -> ne::SizeType {
         return Position.HashCode() + Size.HashCode();
     }
-};  // struct BasicRectangle
-
-typedef BasicRectangle<Float> Rectangle;
+};  // struct Rectangle
 
 }  // namespace ne
 

@@ -10,6 +10,8 @@
 
 using namespace std;
 using namespace ne;
+using namespace ne::math;
+using namespace ne::utility;
 
 int main(/*int argc, char *argv[]*/) {
     assert(IsSame(static_cast<Float>(M_PI) / 4.0f, ToRadians(45.0f)));
@@ -25,10 +27,10 @@ int main(/*int argc, char *argv[]*/) {
     assert(IsSame(720.0f, ToAngle(static_cast<Float>(M_PI) * 4.0f)));
 
     Vector2D vec1 = { 1.0, 2.0 };
-    Vector2D vec2 = { 4.0, 233.33, 35.0 };
-    Vector2D vec3 = { -1.0, -233.77, 0.0 };
+    Vector2D vec2 = { 4.0, 233.33 };
+    Vector2D vec3 = { -1.0, -233.77 };
 
-    Matrix3 mat1 = Identity();
+    Matrix3 mat1 = IdentityMatrix();
     Matrix3 mat2 = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
     Matrix3 mat3 = { -9.0, 8.0, -76.5, 233.4, 123.321, 2.2, 0.0, 0.0, 4.3 };
 

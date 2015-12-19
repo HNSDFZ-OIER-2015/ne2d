@@ -8,7 +8,7 @@ import os
 import os.path
 import re
 
-COMPILER = 'clang++ -std=c++11 -O2'
+COMPILER = 'clang++ -std=c++1z -O2'
 RUN_COMMAND = './test.out'
 REGEX_PATTERN = 'test_.*\.cpp'
 

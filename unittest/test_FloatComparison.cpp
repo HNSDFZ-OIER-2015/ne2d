@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace ne;
+using namespace ne::utility;
 
 int main(/*int argc, char *argv[]*/) {
     assert(IsSame(1.0, 1.0));

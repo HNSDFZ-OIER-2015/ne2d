@@ -20,31 +20,30 @@ namespace ne::math {
     /**
      * 表示一个3x3的矩阵
      */
-    template <typename T>
-    struct BasicMatrix3 : public ne::IObject {
-        NONCOMPARABLE(BasicMatrix3)
+    struct Matrix3 : public ne::IObject {
+        NONCOMPARABLE(Matrix3)
 
-        typedef T ValueType;
-        typedef BasicVector2D<T> VectorType;
+        typedef Float ValueType;
+        typedef Vector2D VectorType;
 
-        BasicMatrix3() {
+        Matrix3() {
             m_pMatrix = new ValueType[ArraySize];
 
-            SetMatrix(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
+            SetMatrix(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         }
-        BasicMatrix3(const ValueType &m11, const ValueType &m12,
-                     const ValueType &m13, const ValueType &m21,
-                     const ValueType &m22, const ValueType &m23,
-                     const ValueType &m31, const ValueType &m32,
-                     const ValueType &m33, const bool transposed = false) {
+        Matrix3(const ValueType &m11, const ValueType &m12,
+                const ValueType &m13, const ValueType &m21,
+                const ValueType &m22, const ValueType &m23,
+                const ValueType &m31, const ValueType &m32,
+                const ValueType &m33, const bool transposed = false) {
             m_pMatrix = new ValueType[ArraySize];
 
             SetMatrix(m11, m12, m13, m21, m22, m23, m31, m32, m33);
 
             m_bIsTransposed = transposed;
         }
-        BasicMatrix3(const std::initializer_list<ValueType> &li,
-                     const bool transposed = false) {
+        Matrix3(const std::initializer_list<ValueType> &li,
+                const bool transposed = false) {
             if (li.size() != ArraySize)
                 throw std::invalid_argument("Wrong initializer list.");
 
@@ -132,13 +131,13 @@ namespace ne::math {
             return m_pMatrix;
         }
 
-        BasicMatrix3(const BasicMatrix3 &lhs) {
+        Matrix3(const Matrix3 &lhs) {
             m_pMatrix = new ValueType[ArraySize];
 
             SetMatrix(lhs.M11(), lhs.M12(), lhs.M13(), lhs.M21(), lhs.M22(),
                       lhs.M23(), lhs.M31(), lhs.M32(), lhs.M33());
         }
-        auto operator=(const BasicMatrix3 &lhs) -> BasicMatrix3 & {
+        auto operator=(const Matrix3 &lhs) -> Matrix3 & {
             if (m_pMatrix == nullptr) m_pMatrix = new ValueType[ArraySize];
 
             SetMatrix(lhs.M11(), lhs.M12(), lhs.M13(), lhs.M21(), lhs.M22(),
@@ -147,10 +146,10 @@ namespace ne::math {
             return *this;
         }
 
-        BasicMatrix3(BasicMatrix3 &&lhs) : m_pMatrix(lhs.m_pMatrix) {
+        Matrix3(Matrix3 &&lhs) : m_pMatrix(lhs.m_pMatrix) {
             lhs.m_pMatrix = nullptr;
         }
-        auto operator=(BasicMatrix3 &&lhs) -> BasicMatrix3 & {
+        auto operator=(Matrix3 &&lhs) -> Matrix3 & {
             if (m_pMatrix != nullptr) delete[] m_pMatrix;
 
             m_pMatrix = lhs.m_pMatrix;
@@ -159,68 +158,73 @@ namespace ne::math {
             return *this;
         }
 
-        virtual ~BasicMatrix3() noexcept {
+        virtual ~Matrix3() noexcept {
             if (m_pMatrix != nullptr) delete[] m_pMatrix;
         }
 
-        auto operator==(const BasicMatrix3 &lhs) const -> bool {
-            return IsSame(M11(), lhs.M11()) and IsSame(M12(), lhs.M12()) and
-                   IsSame(M13(), lhs.M13()) and IsSame(M21(), lhs.M21()) and
-                   IsSame(M22(), lhs.M22()) and IsSame(M23(), lhs.M23()) and
-                   IsSame(M31(), lhs.M31()) and IsSame(M32(), lhs.M32()) and
-                   IsSame(M33(), lhs.M33());
+        auto operator==(const Matrix3 &lhs) const -> bool {
+            return ne::utility::IsSame(M11(), lhs.M11()) and
+                   ne::utility::IsSame(M12(), lhs.M12()) and
+                   ne::utility::IsSame(M13(), lhs.M13()) and
+                   ne::utility::IsSame(M21(), lhs.M21()) and
+                   ne::utility::IsSame(M22(), lhs.M22()) and
+                   ne::utility::IsSame(M23(), lhs.M23()) and
+                   ne::utility::IsSame(M31(), lhs.M31()) and
+                   ne::utility::IsSame(M32(), lhs.M32()) and
+                   ne::utility::IsSame(M33(), lhs.M33());
         }
 
-        auto operator!=(const BasicMatrix3 &lhs) const -> bool {
+        auto operator!=(const Matrix3 &lhs) const -> bool {
             return !(*this == lhs);
         }
 
-        auto operator+(const BasicMatrix3 &lhs) const -> BasicMatrix3 {
-            BasicMatrix3 mat = { M11() + lhs.M11(), M12() + lhs.M12(),
-                                 M13() + lhs.M13(), M21() + lhs.M21(),
-                                 M22() + lhs.M22(), M23() + lhs.M23(),
-                                 M31() + lhs.M31(), M32() + lhs.M32(),
-                                 M33() + lhs.M33() };
+        auto operator+(const Matrix3 &lhs) const -> Matrix3 {
+            Matrix3 mat = { M11() + lhs.M11(), M12() + lhs.M12(),
+                            M13() + lhs.M13(), M21() + lhs.M21(),
+                            M22() + lhs.M22(), M23() + lhs.M23(),
+                            M31() + lhs.M31(), M32() + lhs.M32(),
+                            M33() + lhs.M33() };
 
             return mat;
         }
 
-        auto operator-(const BasicMatrix3 &lhs) const -> BasicMatrix3 {
-            BasicMatrix3 mat = { M11() - lhs.M11(), M12() - lhs.M12(),
-                                 M13() - lhs.M13(), M21() - lhs.M21(),
-                                 M22() - lhs.M22(), M23() - lhs.M23(),
-                                 M31() - lhs.M31(), M32() - lhs.M32(),
-                                 M33() - lhs.M33() };
+        auto operator-(const Matrix3 &lhs) const -> Matrix3 {
+            Matrix3 mat = { M11() - lhs.M11(), M12() - lhs.M12(),
+                            M13() - lhs.M13(), M21() - lhs.M21(),
+                            M22() - lhs.M22(), M23() - lhs.M23(),
+                            M31() - lhs.M31(), M32() - lhs.M32(),
+                            M33() - lhs.M33() };
 
             return mat;
         }
 
-        auto operator*(const ValueType &lhs) const -> BasicMatrix3 {
-            BasicMatrix3 mat = { M11() * lhs, M12() * lhs, M13() * lhs,
-                                 M21() * lhs, M22() * lhs, M23() * lhs,
-                                 M31() * lhs, M32() * lhs, M33() * lhs };
+        auto operator*(const ValueType &lhs) const -> Matrix3 {
+            Matrix3 mat = { M11() * lhs, M12() * lhs, M13() * lhs,
+                            M21() * lhs, M22() * lhs, M23() * lhs,
+                            M31() * lhs, M32() * lhs, M33() * lhs };
 
             return mat;
         }
 
-        auto operator/(const ValueType &lhs) const -> BasicMatrix3 {
-            BasicMatrix3 mat = { M11() / lhs, M12() / lhs, M13() / lhs,
-                                 M21() / lhs, M22() / lhs, M23() / lhs,
-                                 M31() / lhs, M32() / lhs, M33() / lhs };
+        auto operator/(const ValueType &lhs) const -> Matrix3 {
+            Matrix3 mat = { M11() / lhs, M12() / lhs, M13() / lhs,
+                            M21() / lhs, M22() / lhs, M23() / lhs,
+                            M31() / lhs, M32() / lhs, M33() / lhs };
 
             return mat;
         }
 
         auto operator*(const VectorType &lhs) const -> VectorType {
-            VectorType vec = { M11() * lhs.X + M12() * lhs.Y + M13() * lhs.Z,
-                               M21() * lhs.X + M22() * lhs.Y + M23() * lhs.Z,
-                               M31() * lhs.X + M32() * lhs.Y + M33() * lhs.Z };
+            VectorType vec = {
+                M11() * lhs.X() + M12() * lhs.Y() + M13() * lhs.Z(),
+                M21() * lhs.X() + M22() * lhs.Y() + M23() * lhs.Z()
+            };
 
             return vec;
         }
 
-        auto operator*(const BasicMatrix3 &lhs) const -> BasicMatrix3 {
-            BasicMatrix3 mat = {
+        auto operator*(const Matrix3 &lhs) const -> Matrix3 {
+            Matrix3 mat = {
                 M11() * lhs.M11() + M12() * lhs.M21() + M13() * lhs.M31(),
                 M11() * lhs.M12() + M12() * lhs.M22() + M13() * lhs.M32(),
                 M11() * lhs.M13() + M12() * lhs.M23() + M13() * lhs.M33(),
@@ -235,31 +239,31 @@ namespace ne::math {
             return mat;
         }
 
-        auto operator+=(const BasicMatrix3 &lhs) -> BasicMatrix3 & {
+        auto operator+=(const Matrix3 &lhs) -> Matrix3 & {
             *this = std::move(*this + lhs);
 
             return *this;
         }
 
-        auto operator-=(const BasicMatrix3 &lhs) -> BasicMatrix3 & {
+        auto operator-=(const Matrix3 &lhs) -> Matrix3 & {
             *this = std::move(*this - lhs);
 
             return *this;
         }
 
-        auto operator*=(const ValueType &lhs) -> BasicMatrix3 & {
+        auto operator*=(const ValueType &lhs) -> Matrix3 & {
             *this = std::move(*this * lhs);
 
             return *this;
         }
 
-        auto operator/=(const ValueType &lhs) -> BasicMatrix3 & {
+        auto operator/=(const ValueType &lhs) -> Matrix3 & {
             *this = std::move(*this / lhs);
 
             return *this;
         }
 
-        auto operator*=(const BasicMatrix3 &lhs) -> BasicMatrix3 & {
+        auto operator*=(const Matrix3 &lhs) -> Matrix3 & {
             *this = std::move(*this * lhs);
 
             return *this;
@@ -295,12 +299,7 @@ namespace ne::math {
 
         ValueType *m_pMatrix = nullptr;
         bool m_bIsTransposed = false;
-};  // struct BasicMatrix3
-
-/**
- * 单精度浮点数的模板特化
- */
-typedef BasicMatrix3<Float> Matrix3;
+    };  // struct Matrix3
 
 }  // namespace ne
 
