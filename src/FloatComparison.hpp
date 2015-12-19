@@ -8,32 +8,32 @@
 #include <cmath>
 #include <limits>
 
-namespace ne {
+namespace ne::utility {
 
-template <typename TFloat>
-auto IsSame(const TFloat &a, const TFloat &b) noexcept -> bool {
-    return fabs(a - b) < std::numeric_limits<TFloat>::epsilon();
-}
+    template <typename TFloat>
+    auto IsSame(const TFloat &a, const TFloat &b) noexcept->bool {
+        return fabs(a - b) < std::numeric_limits<TFloat>::epsilon();
+    }
 
-template <typename TFloat>
-auto IsGreater(const TFloat &a, const TFloat &b) noexcept -> bool {
-    return a > b && !IsSame(a, b);
-}
+    template <typename TFloat>
+    auto IsGreater(const TFloat &a, const TFloat &b) noexcept->bool {
+        return a > b && !IsSame(a, b);
+    }
 
-template <typename TFloat>
-auto IsLess(const TFloat &a, const TFloat &b) noexcept -> bool {
-    return a < b && !IsSame(a, b);
-}
+    template <typename TFloat>
+    auto IsLess(const TFloat &a, const TFloat &b) noexcept->bool {
+        return a < b && !IsSame(a, b);
+    }
 
-template <typename TFloat>
-auto IsGreaterEqual(const TFloat &a, const TFloat &b) noexcept -> bool {
-    return a > b || IsSame(a, b);
-}
+    template <typename TFloat>
+    auto IsGreaterEqual(const TFloat &a, const TFloat &b) noexcept->bool {
+        return a > b || IsSame(a, b);
+    }
 
-template <typename TFloat>
-auto IsLessEqual(const TFloat &a, const TFloat &b) noexcept -> bool {
-    return a < b || IsSame(a, b);
-}
+    template <typename TFloat>
+    auto IsLessEqual(const TFloat &a, const TFloat &b) noexcept->bool {
+        return a < b || IsSame(a, b);
+    }
 
 }  // namespace ne
 
