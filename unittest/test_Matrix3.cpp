@@ -202,9 +202,8 @@ int main(/*int argc, char *argv[]*/) {
     assert((RotateMatrix(180.0) * vec).ToString() ==
            Vector2D(-1, -1).ToString());
 
-    // TODO(riteme): bug.
     vec = Vector2D(1, 1);
-    Matrix3 final;
+    Matrix3 final = IdentityMatrix();
     final = TranslateMatrix(final, 5.0, 5.0);
     assert((final * vec).ToString() == Vector2D(6, 6).ToString());
 
