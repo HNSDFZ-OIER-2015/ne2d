@@ -2,13 +2,12 @@
 // Copyright 2015 riteme
 //
 
-#include "../src/Rectangle.hpp"
-#include "../src/Math.hpp"
-
 #include <cassert>
 #include <iostream>
 
-#include "../src/FloatComparison.hpp"
+#include "../src/math/Rectangle.hpp"
+
+#include "../src/utility/FloatComparison.hpp"
 
 using namespace std;
 using namespace ne;
@@ -124,43 +123,6 @@ int main(/*int argc, char *argv[]*/) {
                .IntersectWith(Rectangle(4.0f, 4.0f, 1.0f, 1.0f)) == false);
     assert(Rectangle(1.0f, 1.0f, 5.0f, 5.0f)
                .IntersectWith(Rectangle(0.0f, 0.0f, 0.5f, 0.5f)) == false);
-
-    assert(Intersect(Rectangle(1.0f, 1.0f, 2.0f, 2.0f),
-                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
-           Rectangle(2.0f, 2.0f, 1.0f, 1.0f));
-    assert(Intersect(Rectangle(100.0f, 100.0f, 2.0f, 2.0f),
-                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
-           Rectangle(0.0f, 0.0f, 0.0f, 0.0f));
-    assert(Intersect(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
-                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
-           Rectangle(2.0f, 2.0f, 0.0f, 0.0f));
-
-    assert(Union(Rectangle(1.0f, 1.0f, 2.0f, 2.0f),
-                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
-           Rectangle(1.0f, 1.0f, 3.0f, 3.0f));
-    assert(Union(Rectangle(100.0f, 100.0f, 2.0f, 2.0f),
-                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
-           Rectangle(2.0f, 2.0f, 100.0f, 100.0f));
-    assert(Union(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
-                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) !=
-           Rectangle(1.0f, 1.0f, 4.0f, 4.0f));
-    assert(Union(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
-                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
-           Rectangle(1.0f, 1.0f, 3.0f, 3.0f));
-
-    assert(FromLTRB(0.0f, 0.0f, 10.0f, 10.0f) ==
-           Rectangle(0.0f, 0.0f, 10.0f, 10.0f));
-    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) ==
-           Rectangle(1.0f, 1.0f, 9.0f, 9.0f));
-    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) !=
-           Rectangle(1.0f, 1.0f, 10.0f, 10.0f));
-
-    assert(FromLTRB(0.0f, 0.0f, 10.0f, 10.0f) ==
-           FromTwoVector(Vector2D(0.0f, 0.0f), Vector2D(10.0f, 10.0f)));
-    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) ==
-           FromTwoVector(Vector2D(1.0f, 1.0f), Vector2D(10.0f, 10.0f)));
-    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) !=
-           FromTwoVector(Vector2D(1.0f, 1.0f), Vector2D(9.0f, 9.0f)));
 
     return 0;
 }  // function main

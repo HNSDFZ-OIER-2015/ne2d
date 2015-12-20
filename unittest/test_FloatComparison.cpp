@@ -2,10 +2,10 @@
 // Copyright 2015 riteme
 //
 
-#include "../src/FloatComparison.hpp"
-
 #include <cassert>
 #include <iostream>
+
+#include "../src/utility/FloatComparison.hpp"
 
 using namespace std;
 using namespace ne;

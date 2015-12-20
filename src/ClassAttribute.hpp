@@ -6,6 +6,7 @@
 #define NE2D_CLASS_ATTRIBUTE_HPP_
 
 #include <string>
+#include <typeinfo>
 
 #include "TypeConfiguration.hpp"
 

@@ -5,14 +5,11 @@
 #ifndef NE2D_MATH_HPP_
 #define NE2D_MATH_HPP_
 
-#include <cmath>
-
 #include "Vector2D.hpp"
 #include "Rectangle.hpp"
 #include "Matrix3.hpp"
 
 namespace ne::math {
-
     //////////////
     // 通用操作 //
     /////////////
@@ -25,7 +22,7 @@ namespace ne::math {
      *     r = (a * PI) / 180
      */
     template <typename T>
-    inline auto ToRadians(const T &angle) noexcept->T {
+    auto ToRadians(const T &angle) noexcept->T {
         return (M_PI * angle) / 180.0;
     }
 
@@ -37,7 +34,7 @@ namespace ne::math {
      *     a = (180 * r) / PI
      */
     template <typename T>
-    inline auto ToAngle(const T &radians) noexcept->T {
+    auto ToAngle(const T &radians) noexcept->T {
         return (180.0 * radians) / M_PI;
     }
 
@@ -50,9 +47,8 @@ namespace ne::math {
      * @param  b 右参数
      * @return   返回相加结果
      */
-    template <typename TMathObject>
-    inline auto Add(const TMathObject &a,
-                    const TMathObject &b) noexcept->TMathObject {
+    template <typename TMathObject1, typename TMathObject2>
+    auto Add(const TMathObject1 &a, const TMathObject2 &b) noexcept {
         return a + b;
     }
 
@@ -62,21 +58,19 @@ namespace ne::math {
      * @param  b 右参数
      * @return   返回相减结果
      */
-    template <typename TMathObject>
-    inline auto Subtract(const TMathObject &a,
-                         const TMathObject &b) noexcept->TMathObject {
+    template <typename TMathObject1, typename TMathObject2>
+    auto Subtract(const TMathObject1 &a, const TMathObject2 &b) noexcept {
         return a - b;
     }
 
     /**
-     * 矩阵乘法
+     * 乘法
      * @param  a 左参数
      * @param  b 右参数
      * @return   返回相乘结果
      */
-    template <typename TMatrix3, typename TReturn = TMatrix3>
-    inline auto Multiply(const TMatrix3 &a,
-                         const TMatrix3 &b) noexcept->TReturn {
+    template <typename TMathObject1, typename TMathObject2>
+    auto Multiply(const TMathObject1 &a, const TMathObject2 &b) noexcept {
         return a * b;
     }
 
@@ -87,10 +81,22 @@ namespace ne::math {
      * @return        返回相乘结果
      */
     template <typename TMathObject>
-    inline auto Scale(
+    auto Scale(
         const TMathObject &target,
         const typename TMathObject::ValueType &scale) noexcept->TMathObject {
         return target * scale;
+    }
+
+    /**
+     * 标量乘法
+     * @param  scale  标量
+     * @param  target 向量或矩阵
+     * @return        返回相乘结果
+     */
+    template <typename TMathObject>
+    auto Scale(const typename TMathObject::ValueType &scale,
+               const TMathObject &target) noexcept->TMathObject {
+        return scale * target;
     }
 
     //////////////////
@@ -102,19 +108,14 @@ namespace ne::math {
      * @param  vec 一个二维向量
      * @return     经过绝对值操作的二维向量
      */
-    inline auto Abs(const Vector2D &vec) noexcept->Vector2D {
-        return { std::abs(vec.X()), std::abs(vec.Y()) };
-    }
+    auto Abs(const Vector2D &vec) noexcept->Vector2D;
 
     /**
      * 获取二维向量的长度
      * @param  vec 一个二维向量
      * @return     长度值
      */
-    inline auto Length(const Vector2D &vec) noexcept->
-        typename Vector2D::ValueType {
-        return std::hypot(vec.X(), vec.Y());
-    }
+    auto Length(const Vector2D &vec) noexcept->typename Vector2D::ValueType;
 
     /**
      * 二维向量的点乘
@@ -122,11 +123,8 @@ namespace ne::math {
      * @param  vec2 第二个二维向量
      * @return      点乘结果
      */
-    inline auto DotMultiply(const Vector2D &vec1,
-                            const Vector2D &vec2) noexcept->
-        typename Vector2D::ValueType {
-        return vec1 * vec2;
-    }
+    auto DotMultiply(const Vector2D &vec1, const Vector2D &vec2) noexcept->
+        typename Vector2D::ValueType;
 
     /**
      * 二维向量的叉乘
@@ -134,11 +132,8 @@ namespace ne::math {
      * @param  vec2 第二个二维向量
      * @return      叉乘结果
      */
-    inline auto CrossMultiply(const Vector2D &vec1,
-                              const Vector2D &vec2) noexcept->
-        typename Vector2D::ValueType {
-        return vec1 % vec2;
-    }
+    auto CrossMultiply(const Vector2D &vec1, const Vector2D &vec2) noexcept->
+        typename Vector2D::ValueType;
 
     /**
      * 计算最大向量
@@ -146,10 +141,7 @@ namespace ne::math {
      * @param  vec2 第二个二维向量
      * @return      取X和Y的最大值组成新的二维向量
      */
-    inline auto Max(const Vector2D &vec1,
-                    const Vector2D &vec2) noexcept->Vector2D {
-        return { std::max(vec1.X(), vec2.X()), std::max(vec1.Y(), vec2.Y()) };
-    }
+    auto Max(const Vector2D &vec1, const Vector2D &vec2) noexcept->Vector2D;
 
     /**
      * 计算最小向量
@@ -157,10 +149,7 @@ namespace ne::math {
      * @param  vec2 第二个二维向量
      * @return      取X和Y的最小值组成新的二维向量
      */
-    inline auto Min(const Vector2D &vec1,
-                    const Vector2D &vec2) noexcept->Vector2D {
-        return { std::min(vec1.X(), vec2.X()), std::min(vec1.Y(), vec2.Y()) };
-    }
+    auto Min(const Vector2D &vec1, const Vector2D &vec2) noexcept->Vector2D;
 
     /**
      * 旋转二维向量
@@ -171,36 +160,15 @@ namespace ne::math {
      * @remark
      *     将二维向量根据offest平移后，以原点为旋转中心再旋转，然后再平移回去。
      */
-    inline auto Rotate(
-        const Vector2D &vec, const Vector2D &offest,
-        const typename Vector2D::ValueType &angle) noexcept->Vector2D {
-        Vector2D result;
-
-        auto cosAngle = std::cos(angle * M_PI / 180.0f);
-        auto sinAngle = std::sin(angle * M_PI / 180.0f);
-
-        auto distanceX = vec.X() - offest.X();
-        auto distanceY = vec.Y() - offest.Y();
-
-        result.X() = cosAngle * distanceX - sinAngle * distanceY + offest.X();
-        result.Y() = sinAngle * distanceX + cosAngle * distanceY + offest.Y();
-
-        return result;
-    }
+    auto Rotate(const Vector2D &vec, const Vector2D &offest,
+                const typename Vector2D::ValueType &angle) noexcept->Vector2D;
 
     /**
      * 将二维向量标准化
      * @param  vec 原二维向量
      * @return     标准化后的向量
      */
-    inline auto Normalize(const Vector2D &vec)->Vector2D {
-        auto length = Length(vec);
-
-        if (length == 0.0f)
-            throw std::invalid_argument("vec");
-        else
-            return vec / length;
-    }
+    auto Normalize(const Vector2D &vec)->Vector2D;
 
     /**
      * 两个二维向量之间进行线性插值
@@ -209,11 +177,9 @@ namespace ne::math {
      * @param  percentage 插值的位置
      * @return            返回对应的二维向量
      */
-    inline auto Lerp(
+    auto Lerp(
         const Vector2D &start, const Vector2D &end,
-        const typename Vector2D::ValueType &percentage) noexcept->Vector2D {
-        return (end - start) * percentage + start;
-    }
+        const typename Vector2D::ValueType &percentage) noexcept->Vector2D;
 
     //////////////
     // 矩阵操作 //
@@ -230,7 +196,7 @@ namespace ne::math {
      *     [0, 0, 0]
      *     [0, 0, 0]
      */
-    inline auto ZeroMatrix() noexcept->Matrix3 { return Matrix3(); }
+    auto ZeroMatrix() noexcept->Matrix3;
 
     /**
      * 生成单位矩阵
@@ -241,20 +207,7 @@ namespace ne::math {
      *     [0, 1, 0]
      *     [0, 0, 1]
      */
-    inline auto IdentityMatrix() noexcept->Matrix3 {
-        return Matrix3(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f);
-    }
-
-    /**
-     * 矩阵与向量乘法
-     * @param  mat 矩阵
-     * @param  vec 向量
-     * @return     返回相乘结果
-     */
-    inline auto Multiply(const Matrix3 &mat,
-                         const Vector2D &vec) noexcept->Vector2D {
-        return mat * vec;
-    }
+    auto IdentityMatrix() noexcept->Matrix3;
 
     /**
      * 生成平移矩阵
@@ -267,11 +220,8 @@ namespace ne::math {
      *     [0 1 Y]
      *     [0 0 1]
      */
-    inline auto TranslateMatrix(
-        const Matrix3::ValueType &dx,
-        const Matrix3::ValueType &dy) noexcept->Matrix3 {
-        return { 1.0, 0.0, dx, 0.0, 1.0, dy, 0.0, 0.0, 1.0 };
-    }
+    auto TranslateMatrix(const Matrix3::ValueType &dx,
+                         const Matrix3::ValueType &dy) noexcept->Matrix3;
 
     /**
      * 生成一个平移矩阵并与现有矩阵相乘
@@ -280,12 +230,10 @@ namespace ne::math {
      * @param  dy  纵向平移量
      * @return     返回合成后的矩阵
      */
-    inline auto TranslateMatrix(
+    auto TranslateMatrix(
         const Matrix3 &mat,
         const typename Matrix3::ValueType &dx,
-        const typename Matrix3::ValueType &dy) noexcept->Matrix3 {
-        return TranslateMatrix(dx, dy) * mat;
-    }
+        const typename Matrix3::ValueType &dy) noexcept->Matrix3;
 
     /**
      * 生成缩放矩阵
@@ -298,10 +246,8 @@ namespace ne::math {
      *     [0 Y 0]
      *     [0 0 1]
      */
-    inline auto ScaleMatrix(const Matrix3::ValueType &sx,
-                            const Matrix3::ValueType &sy) noexcept->Matrix3 {
-        return { sx, 0.0, 0.0, 0.0, sy, 0.0, 0.0, 0.0, 1.0 };
-    }
+    auto ScaleMatrix(const Matrix3::ValueType &sx,
+                     const Matrix3::ValueType &sy) noexcept->Matrix3;
 
     /**
      * 生成一个缩放矩阵并与现有矩阵相乘
@@ -310,12 +256,9 @@ namespace ne::math {
      * @param  sy  纵向缩放比例
      * @return     返回合成后的矩阵
      */
-    inline auto ScaleMatrix(
-        const Matrix3 &mat,
-        const typename Matrix3::ValueType &sx,
-        const typename Matrix3::ValueType &sy) noexcept->Matrix3 {
-        return ScaleMatrix(sx, sy) * mat;
-    }
+    auto ScaleMatrix(const Matrix3 &mat,
+                     const typename Matrix3::ValueType &sx,
+                     const typename Matrix3::ValueType &sy) noexcept->Matrix3;
 
     /**
      * 生成旋转矩阵
@@ -327,12 +270,7 @@ namespace ne::math {
      *     [sin(a) cos(a)  0]
      *     [  0      0     1]
      */
-    inline auto RotateMatrix(
-        const Matrix3::ValueType &angle) noexcept->Matrix3 {
-        auto r = ToRadians(-angle);
-        return { std::cos(r), -std::sin(r), 0.0, std::sin(r), std::cos(r),
-                 0.0,         0.0,          0.0, 1.0 };
-    }
+    auto RotateMatrix(const Matrix3::ValueType &angle) noexcept->Matrix3;
 
     /**
      * 生成旋转矩阵并与现有矩阵相乘
@@ -340,11 +278,9 @@ namespace ne::math {
      * @param  angle 旋转角度
      * @return       返回合成的矩阵
      */
-    inline auto RotateMatrix(
+    auto RotateMatrix(
         const Matrix3 &mat,
-        const typename Matrix3::ValueType &angle) noexcept->Matrix3 {
-        return RotateMatrix(angle) * mat;
-    }
+        const typename Matrix3::ValueType &angle) noexcept->Matrix3;
 
     /**
      * 计算矩阵的倒置
@@ -353,12 +289,7 @@ namespace ne::math {
      * @remark:
      *     该操作时间复杂度为O(1)
      */
-    inline auto Transpose(const Matrix3 &mat) noexcept->Matrix3 {
-        auto tmp = mat;
-        tmp.Transpose();
-
-        return tmp;
-    }
+    auto Transpose(const Matrix3 &mat) noexcept->Matrix3;
 
     //////////////
     // 矩形操作 //
@@ -370,10 +301,8 @@ namespace ne::math {
      * @param  vec2 第二个二维向量
      * @return      返回最小矩形
      */
-    inline auto FromTwoVector(const Vector2D &vec1,
-                              const Vector2D &vec2) noexcept->Rectangle {
-        return Rectangle(Min(vec1, vec2), Max(vec1, vec2) - Min(vec1, vec2));
-    }
+    auto FromTwoVector(const Vector2D &vec1,
+                       const Vector2D &vec2) noexcept->Rectangle;
 
     /**
      * 根据上下左右的数据来生成一个矩形
@@ -385,54 +314,31 @@ namespace ne::math {
      * @remark
      *     该函数不会检查其正确性，可能产生意外的结果
      */
-    inline auto FromLTRB(
+     auto FromLTRB(
         const Rectangle::ValueType &left,
         const Rectangle::ValueType &top,
         const Rectangle::ValueType &right,
-        const Rectangle::ValueType &bottom) noexcept->Rectangle {
-    return Rectangle(left, top, right - left, bottom - top);
-}
+        const Rectangle::ValueType &bottom) noexcept->Rectangle;
 
-/**
- * 求得相交矩形
- * @param  rect1 第一个矩形
- * @param  rect2 第二个矩形
- * @return       返回两个矩形的交集
- */
-inline auto Intersect(const Rectangle &rect1, const Rectangle &rect2) noexcept
-    -> Rectangle {
-    Rectangle::ValueType nx1 = std::max(rect1.Left(), rect2.Left());
-    Rectangle::ValueType ny1 = std::max(rect1.Top(), rect2.Top());
-    Rectangle::ValueType nx2 = std::min(rect1.Right(), rect2.Right());
-    Rectangle::ValueType ny2 =
-        std::min(rect1.Bottom(), rect2.Bottom());
+    /**
+     * 求得相交矩形
+     * @param  rect1 第一个矩形
+     * @param  rect2 第二个矩形
+     * @return       返回两个矩形的交集
+     */
+     auto Intersect(const Rectangle &rect1, const Rectangle &rect2) noexcept
+            ->Rectangle;
 
-    // 需先确定相交矩形是否存在
-    if (nx1 > nx2 and ny1 > ny2)
-        return Rectangle();  // 返回空矩形
-    else
-        return FromLTRB(nx1, ny1, nx2, ny2);
-}
-
-/**
- * 返回合并矩形
- * @param  rect1 第一个矩形
- * @param  rect2 第二个矩形
- * @return       返回两个矩形的并集
- * @remark:
- *     实质上是包含两个矩形的最小矩形
- */
-inline auto Union(const Rectangle &rect1,
-                         const Rectangle &rect2) noexcept -> Rectangle {
-    Rectangle::ValueType nx1 = std::min(rect1.Left(), rect2.Left());
-    Rectangle::ValueType ny1 = std::min(rect1.Top(), rect2.Top());
-    Rectangle::ValueType nx2 = std::max(rect1.Right(), rect2.Right());
-    Rectangle::ValueType ny2 =
-        std::max(rect1.Bottom(), rect2.Bottom());
-
-    return FromLTRB(nx1, ny1, nx2, ny2);
-}
-
-}  // namespace ne
+    /**
+     * 返回合并矩形
+     * @param  rect1 第一个矩形
+     * @param  rect2 第二个矩形
+     * @return       返回两个矩形的并集
+     * @remark:
+     *     实质上是包含两个矩形的最小矩形
+     */
+     auto Union(const Rectangle &rect1,
+                const Rectangle &rect2) noexcept->Rectangle;
+}  // namespace ne::math
 
 #endif  // NE2D_MATH_HPP_

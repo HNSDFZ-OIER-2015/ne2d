@@ -2,10 +2,10 @@
 // Copyright 2015 riteme
 //
 
-#include "../src/StringFormat.hpp"
-
 #include <cassert>
 #include <iostream>
+
+#include "../src/utility/StringFormat.hpp"
 
 using namespace std;
 using namespace ne;

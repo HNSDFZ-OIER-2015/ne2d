@@ -7,8 +7,11 @@
 import os
 import os.path
 import re
+import sys
 
-COMPILER = 'clang++ -std=c++1z -O2'
+import conf
+
+COMPILER = 'clang++ -std=c++1z -O2 -I../src/'
 RUN_COMMAND = './test.out'
 REGEX_PATTERN = 'test_.*\.cpp'
 
@@ -21,6 +24,8 @@ COLOR_BLUE = '\033[34m'
 COLOR_PURPLE = '\033[35m'
 COLOR_DARK_GREEN = '\033[36m'
 COLOR_WHITE = '\033[37m'
+
+DEBUG = True
 
 
 def log_info(message):
@@ -48,6 +53,9 @@ def log_fatal(message):
 
 
 def log_debug(message):
+    if not DEBUG:
+        return
+
     print(
         COLOR_DARK_GREEN + "(debug) " + COLOR_NONE + message
     )
@@ -61,9 +69,25 @@ def match_test(filename):
 def compile_test(filename):
     log_info('Compiling {}...'.format(filename))
 
-    result = os.system(
-        '{0} {1} -o {2}'.format(COMPILER, filename, RUN_COMMAND)
+    attach = None
+    for key in conf.ATTACH_SOURCE:
+        if key in filename:
+            attach = conf.ATTACH_SOURCE[key]
+            break
+
+    attached_files = ''
+    if attach is not None:
+        attached_files = ' '.join(attach)
+
+    command = '{0} {1} {2} -o {3}'.format(
+        COMPILER,
+        filename,
+        attached_files,
+        RUN_COMMAND
     )
+    result = os.system(command)
+
+    log_debug('Run: ' + command)
 
     if result == 0:
         return True
@@ -98,13 +122,19 @@ if __name__ != '__main__':
 
 log_info('Running all the tests...')
 
+test_list = None
+if len(sys.argv) > 1:
+    test_list = sys.argv[1:]
+else:
+    test_list = os.listdir()
+
 status = 0
 count = 0
 passed_count = 0
 failed_count = 0
 unpassed = []
 
-for filename in os.listdir():
+for filename in test_list:
     if not match_test(filename):
         continue  # Not a unittest.
 
@@ -127,5 +157,5 @@ if len(unpassed) != 0:
     print('\tUnpassed: \n\t\t' + COLOR_YELLOW +
           '{}'.format(',\n\t\t'.join(unpassed)) + COLOR_NONE)
 
-print('(info) Program exited.')
+log_info('Program exited.')
 exit(status)

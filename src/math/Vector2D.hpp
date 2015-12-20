@@ -2,22 +2,15 @@
 // Copyright 2015 riteme
 //
 
-#ifndef NE2D_VECTOR_HPP_
-#define NE2D_VECTOR_HPP_
+#ifndef NE2D_MATH_VECTOR2D_HPP_
+#define NE2D_MATH_VECTOR2D_HPP_
 
-#include <cmath>
-
-#include <stdexcept>
-#include <algorithm>
-#include <limits>
-
-#include "StringFormat.hpp"
 #include "ClassAttribute.hpp"
 #include "TypeConfiguration.hpp"
-#include "FloatComparison.hpp"
+
+#include "utility/StringFormat.hpp"
 
 namespace ne::math {
-
     /**
      * 二维向量的基本结构
      * 可以指定数据的类型
@@ -49,18 +42,18 @@ namespace ne::math {
             return *this;
         }
 
-        auto X() const -> ValueType { return m_x; }
-        auto Y() const -> ValueType { return m_y; }
-        auto Z() const -> ValueType { return 1; }
+        auto X() const -> ValueType;
+        auto Y() const -> ValueType;
+        auto Z() const -> ValueType;
 
-        auto X() -> ValueType & { return m_x; }
-        auto Y() -> ValueType & { return m_y; }
+        auto X() -> ValueType &;
+        auto Y() -> ValueType &;
 
         friend auto operator==(const Vector2D &a, const Vector2D &b) -> bool;
         friend auto operator!=(const Vector2D &a, const Vector2D &b) -> bool;
 
-        friend auto operator+(const Vector2D a) -> Vector2D;
-        friend auto operator-(const Vector2D a) -> Vector2D;
+        friend auto operator+(Vector2D a) -> Vector2D;
+        friend auto operator-(Vector2D a) -> Vector2D;
 
         friend auto operator+(const Vector2D &a, const Vector2D &lhs)
             -> Vector2D;
@@ -98,72 +91,6 @@ namespace ne::math {
         ValueType m_x;
         ValueType m_y;
     };  // struct Vector2D
+}  // namespace ne::math
 
-    auto operator==(const Vector2D &a, const Vector2D &b)->bool {
-        return ne::utility::IsSame(a.X(), b.X()) &&
-               ne::utility::IsSame(a.Y(), b.Y());
-    }
-
-    auto operator!=(const Vector2D &a, const Vector2D &b)->bool {
-        return !(a == b);
-    }
-
-    auto operator+(const Vector2D a)->Vector2D { return a; }
-
-    auto operator-(const Vector2D a)->Vector2D { return { -a.X(), -a.Y() }; }
-
-    auto operator+(const Vector2D &a, const Vector2D &b)->Vector2D {
-        return { a.X() + b.X(), a.Y() + b.Y() };
-    }
-
-    auto operator-(const Vector2D &a, const Vector2D &b)->Vector2D {
-        return { a.X() - b.X(), a.Y() - b.Y() };
-    }
-
-    auto operator*(const Vector2D &a, const Vector2D::ValueType &b)->Vector2D {
-        return { a.X() * b, a.Y() * b };
-    }
-
-    auto operator/(const Vector2D &a, const Vector2D::ValueType &b)->Vector2D {
-        return { a.X() / b, a.Y() / b };
-    }
-
-    auto operator*(const Vector2D &a, const Vector2D &b)->Vector2D::ValueType {
-        return a.X() * b.X() + a.Y() * b.Y();
-    }
-
-    auto operator%(const Vector2D &a, const Vector2D &b)->Vector2D::ValueType {
-        return a.X() * b.Y() - b.X() * a.Y();
-    }
-
-    auto operator+=(Vector2D & a, const Vector2D &b)->Vector2D & {
-        a.X() += b.X();
-        a.Y() += b.Y();
-
-        return a;
-    }
-
-    auto operator-=(Vector2D & a, const Vector2D &b)->Vector2D & {
-        a.X() -= b.X();
-        a.Y() -= b.Y();
-
-        return a;
-    }
-
-    auto operator*=(Vector2D & a, const Vector2D::ValueType &b)->Vector2D & {
-        a.X() *= b;
-        a.Y() *= b;
-
-        return a;
-    }
-
-    auto operator/=(Vector2D & a, const Vector2D::ValueType &b)->Vector2D & {
-        a.X() /= b;
-        a.Y() /= b;
-
-        return a;
-    }
-
-}  // namespace ne
-
-#endif  // NE2D_VECTOR_HPP_
+#endif  // NE2D_MATH_VECTOR2D_HPP_

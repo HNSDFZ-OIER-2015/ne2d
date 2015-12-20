@@ -2,10 +2,10 @@
 // Copyright 2015 riteme
 //
 
-#include "../src/which"
-
 #include <cassert>
 #include <iostream>
+
+#include "../src/which"
 
 using namespace std;
 using namespace ne;

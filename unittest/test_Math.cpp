@@ -2,11 +2,13 @@
 // Copyright 2015 riteme
 //
 
-#include "../src/Math.hpp"
-#include "../src/FloatComparison.hpp"
-
 #include <cassert>
 #include <iostream>
+
+#include "../src/math/Math.hpp"
+#include "../src/math/Vector2D.hpp"
+
+#include "../src/utility/FloatComparison.hpp"
 
 using namespace std;
 using namespace ne;
@@ -51,18 +53,136 @@ int main(/*int argc, char *argv[]*/) {
     assert(Scale(vec1, 1) == vec1 * 1);
     assert(Scale(vec2, 2) == vec2 * 2);
     assert(Scale(vec3, 3) == vec3 * 3);
-    assert(Scale(mat1, 4) == mat1 * 4);
-    assert(Scale(mat2, 5) == mat2 * 5);
-    assert(Scale(mat3, 6) == mat3 * 6);
+    assert(Scale(4, mat1) == mat1 * 4);
+    assert(Scale(5, mat2) == mat2 * 5);
+    assert(Scale(6, mat3) == mat3 * 6);
 
     assert(Multiply(mat1, mat2) == mat1 * mat2);
     assert(Multiply(mat2, mat3) == mat2 * mat3);
     assert(Multiply(mat3, mat1) == mat3 * mat1);
+    assert(Multiply(mat2, mat3) != Multiply(mat3, mat2));
+    assert(Multiply(mat1, mat2) == Multiply(mat2, mat1));
+    assert(Multiply(mat1, mat3) == Multiply(mat3, mat1));
+
+    assert(Multiply(mat1, ZeroMatrix()) == ZeroMatrix());
+    assert(Multiply(ZeroMatrix(), mat3) == ZeroMatrix());
+    assert(Multiply(ZeroMatrix(), mat2) == Multiply(mat2, ZeroMatrix()));
 
     assert(Add(vec1, vec2) != vec2 + vec3);
     assert(Subtract(mat2, mat3) != mat1 - mat3);
     assert(Scale(vec3, 3.4) != vec3 * 2.4);
     assert(Multiply(mat1, mat1) != mat1 * mat2);
+
+    Vector2D vec = { 1.2, 55.98 };
+    assert(IsSame(vec * vec2, DotMultiply(vec, vec2)));
+    assert(IsSame(vec2 * vec3, DotMultiply(vec2, vec3)));
+    assert(IsSame(vec3 * vec, DotMultiply(vec, vec3)));
+
+    assert(IsSame(vec % vec2, CrossMultiply(vec, vec2)));
+    assert(IsSame(vec % vec3, CrossMultiply(vec, vec3)));
+    assert(IsSame(vec2 % vec, CrossMultiply(vec2, vec)));
+
+    assert(Abs(Vector2D(-1.0f, -1.0f)) == Vector2D(1.0f, 1.0f));
+    assert(Abs(Vector2D(-1.0f, 1.0f)) == Vector2D(1.0f, 1.0f));
+    assert(Abs(Vector2D(1.0f, 1.0f)) == Vector2D(1.0f, 1.0f));
+
+    assert(IsSame(Length(Vector2D(1.0f, 1.0f)), std::sqrt(2.0f)));
+    assert(IsSame(Length(Vector2D(2.0f, 2.0f)), std::sqrt(8.0f)));
+    assert(IsSame(Length(Vector2D(3.0f, 4.0f)), 5.0f));
+
+    assert(Min(Vector2D(1.0f, 2.0f), Vector2D(2.0f, 1.0f)) ==
+           Vector2D(1.0f, 1.0f));
+    assert(Max(Vector2D(1.0f, 2.0f), Vector2D(2.0f, 1.0f)) ==
+           Vector2D(2.0f, 2.0f));
+
+    // auto v = Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f),
+    // 90.0f);
+    assert(Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f), 90.0f) ==
+           -Vector2D(1.0f, -1.0f));
+    assert(Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f), -90.0f) ==
+           -Vector2D(-1.0f, 1.0f));
+    assert(Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f), 180.0f) ==
+           Rotate(Vector2D(1.0f, 1.0f), Vector2D(0.0f, 0.0f), -180.0f));
+    assert(Rotate(Vector2D(1.0f, 1.0f), Vector2D(1.0f, 1.0f), 90.0f) ==
+           Vector2D(1.0f, 1.0f));
+
+    assert(Normalize(Vector2D(1.0f, 0.0f)) == Vector2D(1.0f, 0.0f));
+    assert(Normalize(Vector2D(1.0f, 1.0f)) ==
+           Vector2D(std::sqrt(2.0f) / 2.0f, std::sqrt(2.0f) / 2.0f));
+
+    assert(Lerp(Vector2D(1.0f, 1.0f), Vector2D(3.0f, 3.0f), 0.5f) ==
+           Vector2D(2.0f, 2.0f));
+    assert(Lerp(Vector2D(0.0f, 0.0f), Vector2D(4.0f, 4.0f), 0.5f) ==
+           Vector2D(2.0f, 2.0f));
+    assert(Lerp(Vector2D(1.0f, 1.0f), Vector2D(3.0f, 3.0f), 2.0f) ==
+           Vector2D(5.0f, 5.0f));
+
+    assert(Intersect(Rectangle(1.0f, 1.0f, 2.0f, 2.0f),
+                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+           Rectangle(2.0f, 2.0f, 1.0f, 1.0f));
+    assert(Intersect(Rectangle(100.0f, 100.0f, 2.0f, 2.0f),
+                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+           Rectangle(0.0f, 0.0f, 0.0f, 0.0f));
+    assert(Intersect(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
+                     Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+           Rectangle(2.0f, 2.0f, 0.0f, 0.0f));
+
+    assert(Union(Rectangle(1.0f, 1.0f, 2.0f, 2.0f),
+                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+           Rectangle(1.0f, 1.0f, 3.0f, 3.0f));
+    assert(Union(Rectangle(100.0f, 100.0f, 2.0f, 2.0f),
+                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+           Rectangle(2.0f, 2.0f, 100.0f, 100.0f));
+    assert(Union(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
+                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) !=
+           Rectangle(1.0f, 1.0f, 4.0f, 4.0f));
+    assert(Union(Rectangle(1.0f, 1.0f, 1.0f, 1.0f),
+                 Rectangle(2.0f, 2.0f, 2.0f, 2.0f)) ==
+           Rectangle(1.0f, 1.0f, 3.0f, 3.0f));
+
+    assert(FromLTRB(0.0f, 0.0f, 10.0f, 10.0f) ==
+           Rectangle(0.0f, 0.0f, 10.0f, 10.0f));
+    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) ==
+           Rectangle(1.0f, 1.0f, 9.0f, 9.0f));
+    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) !=
+           Rectangle(1.0f, 1.0f, 10.0f, 10.0f));
+
+    assert(FromLTRB(0.0f, 0.0f, 10.0f, 10.0f) ==
+           FromTwoVector(Vector2D(0.0f, 0.0f), Vector2D(10.0f, 10.0f)));
+    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) ==
+           FromTwoVector(Vector2D(1.0f, 1.0f), Vector2D(10.0f, 10.0f)));
+    assert(FromLTRB(1.0f, 1.0f, 10.0f, 10.0f) !=
+           FromTwoVector(Vector2D(1.0f, 1.0f), Vector2D(9.0f, 9.0f)));
+
+    assert(mat1 * vec == Multiply(mat1, vec));
+    assert(mat2 * vec == Multiply(mat2, vec));
+    assert(mat3 * vec == Multiply(mat3, vec));
+
+    vec = { 1, 1 };
+    assert(TranslateMatrix(1.0, 1.0) * vec == Vector2D(2, 2));
+    assert(TranslateMatrix(-1.0, -1.0) * vec == Vector2D(0, 0));
+    assert(TranslateMatrix(100.0, 1.0) * vec == Vector2D(101, 2));
+
+    assert(ScaleMatrix(1.0, 1.0) * vec == vec);
+    assert(ScaleMatrix(2.0, 2.0) * vec == Vector2D(2, 2));
+    assert(ScaleMatrix(100.0, 0.5) * vec == Vector2D(100, 0.5));
+
+    assert(RotateMatrix(90.0) * vec == Vector2D(1, -1));
+    assert(RotateMatrix(-90.0) * vec == Vector2D(-1, 1));
+    assert((RotateMatrix(360.0) * vec).ToString() == vec.ToString());
+    assert((RotateMatrix(180.0) * vec).ToString() ==
+           Vector2D(-1, -1).ToString());
+
+    vec = Vector2D(1, 1);
+    Matrix3 final = IdentityMatrix();
+    final = TranslateMatrix(final, 5.0, 5.0);
+    assert((final * vec).ToString() == Vector2D(6, 6).ToString());
+
+    final = ScaleMatrix(final, 0.5, 2.0);
+    assert((final * vec).ToString() == Vector2D(3, 12).ToString());
+
+    final = RotateMatrix(final, 90.0);
+    assert((final * vec).ToString() == Vector2D(12, -3).ToString());
 
     return 0;
 }  // function main

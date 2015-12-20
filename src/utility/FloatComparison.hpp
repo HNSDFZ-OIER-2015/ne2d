@@ -9,7 +9,6 @@
 #include <limits>
 
 namespace ne::utility {
-
     template <typename TFloat>
     auto IsSame(const TFloat &a, const TFloat &b) noexcept->bool {
         return fabs(a - b) < std::numeric_limits<TFloat>::epsilon();
@@ -34,7 +33,6 @@ namespace ne::utility {
     auto IsLessEqual(const TFloat &a, const TFloat &b) noexcept->bool {
         return a < b || IsSame(a, b);
     }
-
-}  // namespace ne
+}  // namespace ne::utility
 
 #endif  // NE2D_FLOAT_COMPARISON_HPP_

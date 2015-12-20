@@ -8,10 +8,9 @@
 #include <string>
 
 #define FMT_HEADER_ONLY
-#include "cppformat/format.h"
+#include "thirdparty/cppformat/format.h"
 
 namespace ne::utility {
-
     /**
      * 格式化字符串
      * @param  fmt  格式化的字符串
@@ -24,7 +23,6 @@ namespace ne::utility {
     std::string Format(const std::string &fmt, const Args &... args) {
         return fmt::format(fmt, args...);
     }
-
-}  // namespace ne
+}  // namespace ne::utility
 
 #endif  // NE2D_STRING_FORMAT_HPP_

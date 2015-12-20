@@ -2,18 +2,22 @@
 // Copyright 2015 riteme
 //
 
-#include "../src/Matrix3.hpp"
-#include "../src/Math.hpp"
-#include "../src/FloatComparison.hpp"
-
 #include <cassert>
 #include <utility>
 #include <iostream>
+
+#include "../src/math/Matrix3.hpp"
+
+#include "../src/utility/FloatComparison.hpp"
 
 using namespace std;
 using namespace ne;
 using namespace ne::math;
 using namespace ne::utility;
+
+inline auto IdentityMatrix() -> Matrix3 {
+    return { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+}
 
 int main(/*int argc, char *argv[]*/) {
     Matrix3 mat = Matrix3();
@@ -28,6 +32,17 @@ int main(/*int argc, char *argv[]*/) {
     assert(mat.M31() == 0.0);
     assert(mat.M32() == 0.0);
     assert(mat.M33() == 0.0);
+
+    Matrix3 mat4 = -mat2;
+    assert(IsSame(mat4.M11(), -mat2.M11()));
+    assert(IsSame(mat4.M12(), -mat2.M12()));
+    assert(IsSame(mat4.M13(), -mat2.M13()));
+    assert(IsSame(mat4.M21(), -mat2.M21()));
+    assert(IsSame(mat4.M22(), -mat2.M22()));
+    assert(IsSame(mat4.M23(), -mat2.M23()));
+    assert(IsSame(mat4.M31(), -mat2.M31()));
+    assert(IsSame(mat4.M32(), -mat2.M32()));
+    assert(IsSame(mat4.M33(), -mat2.M33()));
 
     mat = IdentityMatrix();
 
@@ -131,9 +146,6 @@ int main(/*int argc, char *argv[]*/) {
 
     mat2.Transpose();
     mat3.Transpose();
-    assert(Transpose(mat1) == mat);
-    assert(Transpose(mat2) != mat2);
-    assert(Transpose(mat3) != mat3);
 
     Float *m = mat3.GetMatrixArray();
     assert(m[0] == 1.0);
@@ -157,7 +169,7 @@ int main(/*int argc, char *argv[]*/) {
     assert(mat * mat2 == mat2);
     assert(mat * mat3 == mat3);
 
-    assert(mat1 * 3 == Matrix3(3, 0, 0, 0, 3, 0, 0, 0, 3));
+    assert(3 * mat1 == Matrix3(3, 0, 0, 0, 3, 0, 0, 0, 3));
     assert(mat3 * 2 == Matrix3(2, 4, 6, 8, 10, 12, 14, 16, 18));
     assert(mat2 / 2 == Matrix3(0.5, 1.5, 0.5, 1.5, 0.5, 0.5, 0.5, 2.25, 0.5));
 
@@ -183,35 +195,6 @@ int main(/*int argc, char *argv[]*/) {
     assert(mat1.ToString() == "[[1, 0, 0] [0, 1, 0] [0, 0, 1]]");
     assert(mat2.ToString() == "[[2, 6, 2] [6, 2, 2] [2, 9, 2]]");
     assert(mat3.ToString() == "[[1, 2, 3] [4, 5, 6] [7, 8, 9]]");
-
-    assert(mat1 * vec == Multiply(mat1, vec));
-    assert(mat2 * vec == Multiply(mat2, vec));
-    assert(mat3 * vec == Multiply(mat3, vec));
-
-    assert(TranslateMatrix(1.0, 1.0) * vec == Vector2D(2, 2));
-    assert(TranslateMatrix(-1.0, -1.0) * vec == Vector2D(0, 0));
-    assert(TranslateMatrix(100.0, 1.0) * vec == Vector2D(101, 2));
-
-    assert(ScaleMatrix(1.0, 1.0) * vec == vec);
-    assert(ScaleMatrix(2.0, 2.0) * vec == Vector2D(2, 2));
-    assert(ScaleMatrix(100.0, 0.5) * vec == Vector2D(100, 0.5));
-
-    assert(RotateMatrix(90.0) * vec == Vector2D(1, -1));
-    assert(RotateMatrix(-90.0) * vec == Vector2D(-1, 1));
-    assert((RotateMatrix(360.0) * vec).ToString() == vec.ToString());
-    assert((RotateMatrix(180.0) * vec).ToString() ==
-           Vector2D(-1, -1).ToString());
-
-    vec = Vector2D(1, 1);
-    Matrix3 final = IdentityMatrix();
-    final = TranslateMatrix(final, 5.0, 5.0);
-    assert((final * vec).ToString() == Vector2D(6, 6).ToString());
-
-    final = ScaleMatrix(final, 0.5, 2.0);
-    assert((final * vec).ToString() == Vector2D(3, 12).ToString());
-
-    final = RotateMatrix(final, 90.0);
-    assert((final * vec).ToString() == Vector2D(12, -3).ToString());
 
     return 0;
 }  // function main
