@@ -38,6 +38,46 @@ namespace ne::math {
         return (180.0 * radians) / M_PI;
     }
 
+    /**
+     * 余弦函数
+     * @param  x 角度
+     * @return   余弦值
+     */
+    template <typename T>
+    auto Cos(const T &x) noexcept->T {
+        return std::cos(ToRadians(x));
+    }
+
+    /**
+     * 正弦函数
+     * @param  x 角度
+     * @return   正弦值
+     */
+    template <typename T>
+    auto Sin(const T &x) noexcept->T {
+        return std::sin(ToRadians(x));
+    }
+
+    /**
+     * 正切函数
+     * @param  x 角度
+     * @return   正切值
+     */
+    template <typename T>
+    auto Tan(const T &x) noexcept->T {
+        return std::tan(ToRadians(x));
+    }
+
+    /**
+     * 余切函数
+     * @param  x 角度
+     * @return   余切值
+     */
+    template <typename T>
+    auto Cot(const T &x) noexcept->T {
+        return 1.0 / Tan(x);
+    }
+
     // 二维向量和矩阵共用以下方法
     // Add, Subtract, Multiply, Scale
 
