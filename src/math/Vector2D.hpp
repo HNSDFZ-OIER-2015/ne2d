@@ -86,11 +86,9 @@ namespace ne::math {
          */
         friend auto operator*(const Vector2D &a, const ValueType &lhs)
             -> Vector2D;
-        friend auto operator/(const Vector2D &a, const ValueType &lhs)
-            -> Vector2D;
         friend auto operator*(const ValueType &lhs, const Vector2D &a)
             -> Vector2D;
-        friend auto operator/(const ValueType &lhs, const Vector2D &a)
+        friend auto operator/(const Vector2D &a, const ValueType &lhs)
             -> Vector2D;
 
         /**

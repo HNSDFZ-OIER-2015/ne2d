@@ -43,15 +43,11 @@ namespace ne::math {
         return { a.X() * b, a.Y() * b };
     }
 
-    auto operator/(const Vector2D &a, const Vector2D::ValueType &b)->Vector2D {
-        return { a.X() / b, a.Y() / b };
-    }
-
     auto operator*(const Vector2D::ValueType &b, const Vector2D &a)->Vector2D {
         return { a.X() * b, a.Y() * b };
     }
 
-    auto operator/(const Vector2D::ValueType &b, const Vector2D &a)->Vector2D {
+    auto operator/(const Vector2D &a, const Vector2D::ValueType &b)->Vector2D {
         return { a.X() / b, a.Y() / b };
     }
 

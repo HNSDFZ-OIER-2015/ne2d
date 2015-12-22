@@ -9,11 +9,7 @@ import os.path
 import re
 import sys
 
-import conf
-
-COMPILER = 'clang++ -std=c++1z -O2 -I../src/'
-RUN_COMMAND = './test.out'
-REGEX_PATTERN = 'test_.*\.cpp'
+from conf import *
 
 COLOR_NONE = '\033[0m'
 COLOR_BLACK = '\033[30m'
@@ -24,8 +20,6 @@ COLOR_BLUE = '\033[34m'
 COLOR_PURPLE = '\033[35m'
 COLOR_DARK_GREEN = '\033[36m'
 COLOR_WHITE = '\033[37m'
-
-DEBUG = True
 
 
 def log_info(message):
@@ -53,7 +47,7 @@ def log_fatal(message):
 
 
 def log_debug(message):
-    if not DEBUG:
+    if not DEBUG_OUTPUT:
         return
 
     print(
@@ -70,9 +64,9 @@ def compile_test(filename):
     log_info('Compiling {}...'.format(filename))
 
     attach = None
-    for key in conf.ATTACH_SOURCE:
+    for key in ATTACH_SOURCE:
         if key in filename:
-            attach = conf.ATTACH_SOURCE[key]
+            attach = ATTACH_SOURCE[key]
             break
 
     attached_files = ''

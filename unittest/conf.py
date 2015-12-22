@@ -2,6 +2,11 @@
 # Copyright 2015 riteme
 #
 
+DEBUG_OUTPUT = False
+COMPILER = 'clang++ -std=c++1z -stdlib=libc++ -O2 -I../src/'
+RUN_COMMAND = './test.out'
+REGEX_PATTERN = 'test_.*\.cpp'
+
 ATTACH_SOURCE = {
     'test_Vector2D.cpp': [
         '../src/math/Vector2D.cpp'
