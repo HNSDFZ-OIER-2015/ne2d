@@ -256,9 +256,9 @@ namespace ne::math {
      * @return    返回对应的平移矩阵
      * @remark:
      *     平移矩阵如下：
-     *     [1 0 X]
-     *     [0 1 Y]
-     *     [0 0 1]
+     *     [1 0 dx]
+     *     [0 1 dy]
+     *     [0 0 1 ]
      */
     auto TranslateMatrix(const Matrix3::ValueType &dx,
                          const Matrix3::ValueType &dy) noexcept->Matrix3;
@@ -282,9 +282,9 @@ namespace ne::math {
      * @return    返回对于的缩放矩阵
      * @remark:
      *     缩放矩阵如下：
-     *     [X 0 0]
-     *     [0 Y 0]
-     *     [0 0 1]
+     *     [sx 0  0]
+     *     [0  sy 0]
+     *     [0  0  1]
      */
     auto ScaleMatrix(const Matrix3::ValueType &sx,
                      const Matrix3::ValueType &sy) noexcept->Matrix3;
@@ -306,9 +306,9 @@ namespace ne::math {
      * @return       返回对于的旋转矩阵
      * @remark:
      *     旋转矩阵
-     *     [cos(a) -sin(a) 0]
-     *     [sin(a) cos(a)  0]
-     *     [  0      0     1]
+     *     [cos(aangle) -sin(aangle) 0]
+     *     [sin(aangle) cos(aangle)  0]
+     *     [0           0            1]
      */
     auto RotateMatrix(const Matrix3::ValueType &angle) noexcept->Matrix3;
 

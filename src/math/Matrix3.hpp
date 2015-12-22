@@ -55,6 +55,12 @@ namespace ne::math {
             m_bIsTransposed = transposed;
         }
 
+        /**
+         * M11() ~ M33(): 访问矩阵上的元素
+         * @return 元素值
+         * @remark:
+         *     索引方式为先行后列
+         */
         auto M11() const noexcept -> ValueType;
         auto M12() const noexcept -> ValueType;
         auto M13() const noexcept -> ValueType;
@@ -65,7 +71,13 @@ namespace ne::math {
         auto M32() const noexcept -> ValueType;
         auto M33() const noexcept -> ValueType;
 
-        // 可做左值
+        /**
+         * M11() ~ M33(): 访问矩阵上的元素
+         * @return 元素值
+         * @remark:
+         *     索引方式为先行后列
+         *     这些函数是用于修改元素的
+         */
         auto M11() noexcept -> ValueType &;
         auto M12() noexcept -> ValueType &;
         auto M13() noexcept -> ValueType &;
@@ -128,22 +140,41 @@ namespace ne::math {
             if (m_pMatrix != nullptr) delete[] m_pMatrix;
         }
 
+        /**
+         * 矩阵的比较运算
+         */
         friend auto operator==(const Matrix3 &a, const Matrix3 &b) -> bool;
         friend auto operator!=(const Matrix3 &a, const Matrix3 &b) -> bool;
 
+        /**
+         * 矩阵的加法与减法
+         */
         friend auto operator+(const Matrix3 &a, const Matrix3 &b) -> Matrix3;
         friend auto operator-(const Matrix3 &a, const Matrix3 &b) -> Matrix3;
 
+        /**
+         * 矩阵的正与负
+         */
         friend auto operator+(Matrix3 a) -> Matrix3;
         friend auto operator-(Matrix3 a) -> Matrix3;
 
+        /**
+         * 矩阵与标量乘法
+         */
         friend auto operator*(const Matrix3 &a, const ValueType &b) -> Matrix3;
         friend auto operator*(const ValueType &b, const Matrix3 &a) -> Matrix3;
         friend auto operator/(const Matrix3 &a, const ValueType &b) -> Matrix3;
         friend auto operator/(const ValueType &b, const Matrix3 &a) -> Matrix3;
 
+        /**
+         * 矩阵与向量乘法
+         */
         friend auto operator*(const Matrix3 &a, const VectorType &b)
             -> VectorType;
+
+        /**
+         * 矩阵乘法
+         */
         friend auto operator*(const Matrix3 &a, const Matrix3 &b) -> Matrix3;
 
         friend auto operator+=(Matrix3 &a, const Matrix3 &b) -> Matrix3 &;
@@ -152,14 +183,23 @@ namespace ne::math {
         friend auto operator/=(Matrix3 &a, const ValueType &b) -> Matrix3 &;
         friend auto operator*=(Matrix3 &a, const Matrix3 &b) -> Matrix3 &;
 
+        /**
+         * 返回矩阵的字符串形式
+         * @return 一个字符串
+         * @remark:
+         *     格式为：
+         *     [[$M11, $M12, $M13] [$M21, $M22, $M23] [$M31, $M32, $M33]]
+         */
         virtual auto ToString() const -> std::string {
-            // [[a11, a12, a13] [a21, a22, a23] [a31, a32, a33]]
-
             return ne::utility::Format(
                 "[[{}, {}, {}] [{}, {}, {}] [{}, {}, {}]]", M11(), M12(), M13(),
                 M21(), M22(), M23(), M31(), M32(), M33());
         }
 
+        /**
+         * 计算矩阵的哈希值
+         * @return 哈希值
+         */
         virtual auto HashCode() const -> ne::SizeType {
             return (static_cast<SizeType>(M11() + M12() + M21()) *
                     static_cast<SizeType>(M33() + M23() + M32())) *

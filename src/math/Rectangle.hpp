@@ -31,25 +31,55 @@ namespace ne::math {
                   const ValueType &h)
                 : Position(x, y), Size(w, h) {}
 
+        /**
+         * 表示矩形的位置
+         * @remark:
+         *     Position.X(): 矩形横坐标
+         *     Position.Y(): 矩形纵坐标
+         */
         Vector2D Position;
+
+        /**
+         * 表示矩形的大小
+         * @remark:
+         *     Size.X(): 矩形的宽度
+         *     Size.Y(): 矩形的高度
+         */
         Vector2D Size;
 
+        /**
+         * 访问矩形的横坐标，纵坐标，宽度，高度
+         * @return 返回对应的值
+         */
         auto X() const noexcept -> ValueType;
         auto Y() const noexcept -> ValueType;
         auto Width() const noexcept -> ValueType;
         auto Height() const noexcept -> ValueType;
 
-        // 可做左值
+        /**
+         * 访问矩形的横坐标，纵坐标，宽度，高度
+         * @return 返回对应的值
+         * @remark:
+         *     可用于修改矩形的属性
+         */
         auto X() noexcept -> ValueType &;
         auto Y() noexcept -> ValueType &;
         auto Width() noexcept -> ValueType &;
         auto Height() noexcept -> ValueType &;
 
+        /**
+         * 访问矩形的上边界，下边界，左边界和右边界
+         * @return 返回对应的值
+         */
         auto Top() const noexcept -> ValueType;
         auto Bottom() const noexcept -> ValueType;
         auto Left() const noexcept -> ValueType;
         auto Right() const noexcept -> ValueType;
 
+        /**
+         * 访问矩形的坐上角，右上角，左下角和右下角
+         * @return 返回对应的点
+         */
         auto LeftTop() const noexcept -> VectorType;
         auto RightTop() const noexcept -> VectorType;
         auto LeftBottom() const noexcept -> VectorType;
@@ -83,7 +113,7 @@ namespace ne::math {
          * @param  rect 另外一个矩形
          * @return      返回一个布尔值，表示是否相交
          * @remark:
-         *     如果需求出相交矩形，请使用Intersect。
+         *     如果需求出相交矩形，请使用ne::math::Intersect。
          */
         auto IntersectWith(const Rectangle &rect) const noexcept -> bool;
 
@@ -138,16 +168,28 @@ namespace ne::math {
             return *this;
         }
 
+        /**
+         * 矩形的比较函数
+         */
         friend auto operator==(const Rectangle &a, const Rectangle &b) -> bool;
         friend auto operator!=(const Rectangle &a, const Rectangle &b) -> bool;
 
+        /**
+         * 返回矩形的字符串形式
+         * @return 一个字符串
+         * @remark:
+         *     格式为：
+         *     (X = $X, Y = $Y, Width = $Width, Height = $Height)
+         */
         virtual auto ToString() const -> std::string {
-            // (X = $X, Y = $Y, Width = $W, Height = $H)
-
             return ne::utility::Format("(X = {}, Y = {}, Width = {}, Height = {})", Position.X(),
                           Position.Y(), Size.X(), Size.Y());
         }
 
+        /**
+         * 计算矩形的哈希值
+         * @return 哈希值
+         */
         virtual auto HashCode() const -> ne::SizeType {
             return Position.HashCode() * Size.HashCode();
         }

@@ -42,29 +42,60 @@ namespace ne::math {
             return *this;
         }
 
+        /**
+         * 访问二维向量的X与Y
+         * @return 对应的值
+         * @remark:
+         *     Z仅用于参与矩阵与向量运算，永远返回1
+         */
         auto X() const -> ValueType;
         auto Y() const -> ValueType;
         auto Z() const -> ValueType;
 
+        /**
+         * 访问二维向量的X与Y
+         * @return 对应的值
+         * @remark:
+         *     Z不可修改
+         */
         auto X() -> ValueType &;
         auto Y() -> ValueType &;
 
+        /**
+         * 二维向量的比较运算
+         */
         friend auto operator==(const Vector2D &a, const Vector2D &b) -> bool;
         friend auto operator!=(const Vector2D &a, const Vector2D &b) -> bool;
 
+        /**
+         * 二维向量的正与负
+         */
         friend auto operator+(Vector2D a) -> Vector2D;
         friend auto operator-(Vector2D a) -> Vector2D;
 
+        /**
+         * 向量加法与减法
+         */
         friend auto operator+(const Vector2D &a, const Vector2D &lhs)
             -> Vector2D;
         friend auto operator-(const Vector2D &a, const Vector2D &lhs)
             -> Vector2D;
 
+        /**
+         * 向量与标量乘法
+         */
         friend auto operator*(const Vector2D &a, const ValueType &lhs)
             -> Vector2D;
         friend auto operator/(const Vector2D &a, const ValueType &lhs)
             -> Vector2D;
+        friend auto operator*(const ValueType &lhs, const Vector2D &a)
+            -> Vector2D;
+        friend auto operator/(const ValueType &lhs, const Vector2D &a)
+            -> Vector2D;
 
+        /**
+         * 向量的叉乘与点乘
+         */
         friend auto operator*(const Vector2D &a, const Vector2D &lhs)
             -> ValueType;
         friend auto operator%(const Vector2D &a, const Vector2D &lhs)
@@ -76,12 +107,21 @@ namespace ne::math {
         friend auto operator*=(Vector2D &a, const ValueType &lhs) -> Vector2D &;
         friend auto operator/=(Vector2D &a, const ValueType &lhs) -> Vector2D &;
 
+        /**
+         * 返回二维向量的字符串形式
+         * @return 一个字符串
+         * @remark:
+         *     格式为：
+         *     (X = $X, Y = $Y)
+         */
         virtual auto ToString() const -> std::string {
-            // (X = $X, Y = $Y)
-
             return ne::utility::Format("(X = {}, Y = {})", X(), Y());
         }
 
+        /**
+         * 计算二维向量的哈希值
+         * @return 哈希值
+         */
         virtual auto HashCode() const -> ne::SizeType {
             return static_cast<SizeType>(X() * Y()) /
                    (static_cast<SizeType>(X()) % 31);
