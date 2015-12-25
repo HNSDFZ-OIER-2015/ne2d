@@ -23,7 +23,7 @@ namespace ne::math {
      */
     template <typename T>
     auto ToRadians(const T &angle) noexcept->T {
-        return (M_PI * angle) / 180.0;
+        return angle * M_PI / 180.0;
     }
 
     /**
@@ -35,7 +35,7 @@ namespace ne::math {
      */
     template <typename T>
     auto ToAngle(const T &radians) noexcept->T {
-        return (180.0 * radians) / M_PI;
+        return radians * 180.0 / M_PI;
     }
 
     /**

@@ -2,8 +2,7 @@
 // Copyright 2015 riteme
 //
 
-#include <cassert>
-#include <iostream>
+#include "test.hpp"
 
 #include "../src/which"
 

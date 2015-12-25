@@ -3,7 +3,7 @@
 #
 
 DEBUG_OUTPUT = False
-COMPILER = 'clang++ -std=c++1z -stdlib=libc++ -O2 -I../src/'
+COMPILER = 'clang++ -std=c++1z -stdlib=libc++ -O0 -g -I../src/'
 RUN_COMMAND = './test.out'
 REGEX_PATTERN = 'test_.*\.cpp'
 

@@ -34,15 +34,14 @@ namespace ne::math {
                 const ValueType &m13, const ValueType &m21,
                 const ValueType &m22, const ValueType &m23,
                 const ValueType &m31, const ValueType &m32,
-                const ValueType &m33, const bool transposed = false) {
+                const ValueType &m33) {
             m_pMatrix = new ValueType[ArraySize];
 
             SetMatrix(m11, m12, m13, m21, m22, m23, m31, m32, m33);
 
-            m_bIsTransposed = transposed;
+            m_bIsTransposed = false;
         }
-        Matrix3(const std::initializer_list<ValueType> &li,
-                const bool transposed = false) {
+        Matrix3(const std::initializer_list<ValueType> &li) {
             if (li.size() != ArraySize)
                 throw std::invalid_argument("Wrong initializer list.");
 
@@ -52,7 +51,7 @@ namespace ne::math {
                       *(li.begin() + 3), *(li.begin() + 4), *(li.begin() + 5),
                       *(li.begin() + 6), *(li.begin() + 7), *(li.begin() + 8));
 
-            m_bIsTransposed = transposed;
+            m_bIsTransposed = false;
         }
 
         /**

@@ -24,25 +24,25 @@ COLOR_WHITE = '\033[37m'
 
 def log_info(message):
     print(
-        COLOR_GREEN + "(info) " + COLOR_NONE + message
+        COLOR_GREEN + '(info)' + COLOR_NONE + ' ' + message
     )
 
 
 def log_warning(message):
     print(
-        COLOR_YELLOW + "(warn) " + COLOR_NONE + message
+        COLOR_YELLOW + '(warn)' + COLOR_NONE + ' ' + message
     )
 
 
 def log_error(message):
     print(
-        COLOR_RED + "(error) " + COLOR_NONE + message
+        COLOR_RED + '(error)' + COLOR_NONE + ' ' + message
     )
 
 
 def log_fatal(message):
     print(
-        COLOR_PURPLE + "(fatal) " + COLOR_NONE + message
+        COLOR_PURPLE + '(fatal)' + COLOR_NONE + ' ' + message
     )
 
 
@@ -51,7 +51,7 @@ def log_debug(message):
         return
 
     print(
-        COLOR_DARK_GREEN + "(debug) " + COLOR_NONE + message
+        COLOR_DARK_GREEN + '(debug)' + COLOR_NONE + ' ' + message
     )
 
 
@@ -140,6 +140,10 @@ for filename in test_list:
         unpassed.append(filename)
     else:
         passed_count += 1
+
+if count == 0:
+    log_error('No test has been run.')
+    exit(-1)
 
 log_info('Unittest Report:')
 print('\tTested {} unittest(s).'.format(count))

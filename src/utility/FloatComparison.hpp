@@ -8,10 +8,40 @@
 #include <cmath>
 #include <limits>
 
+#include "TypeConfiguration.hpp"
+
 namespace ne::utility {
+    static Float DefaultEpsilon = 0.00001;
+    static Float FloatEpsilon = 0.00001;
+    static Double DoubleEpsilon = 0.0000001;
+    static LongDouble LongDoubleEpsilon = 0.000000001;
+
+    /**
+     * 用于表示精度
+     */
+    template <typename TFloat>
+    struct Epsilon {
+        static auto Value() noexcept -> TFloat { return DefaultEpsilon; }
+    };  // struct Epsilon
+
+    template <>
+    struct Epsilon<Float> {
+        static auto Value() noexcept -> Float { return FloatEpsilon; }
+    };  // struct Epsilon<Float>
+
+    template <>
+    struct Epsilon<Double> {
+        static auto Value() noexcept -> Double { return DoubleEpsilon; }
+    };  // struct Epsilon<Double>
+
+    template <>
+    struct Epsilon<LongDouble> {
+        static auto Value() noexcept -> LongDouble { return LongDoubleEpsilon; }
+    };  // struct Epsilon<LongDouble>
+
     template <typename TFloat>
     auto IsSame(const TFloat &a, const TFloat &b) noexcept->bool {
-        return fabs(a - b) < std::numeric_limits<TFloat>::epsilon();
+        return std::fabs(a - b) < Epsilon<TFloat>::Value();
     }
 
     template <typename TFloat>
@@ -39,8 +69,7 @@ namespace ne::utility {
      */
     template <typename TFloat, typename TOther>
     auto IsSame(const TFloat &a, const TOther &b) noexcept->bool {
-        return fabs(a - static_cast<TFloat>(b)) <
-               std::numeric_limits<TFloat>::epsilon();
+        return std::fabs(a - static_cast<TFloat>(b)) < Epsilon<TFloat>::Value();
     }
 
     template <typename TFloat, typename TOther>
@@ -54,7 +83,7 @@ namespace ne::utility {
     }
 
     template <typename TFloat, typename TOther>
-    auto IsGreaterEqual(const TFloat &a, const TFloat &b) noexcept->bool {
+    auto IsGreaterEqual(const TFloat &a, const TOther &b) noexcept->bool {
         return a > static_cast<TFloat>(b) || IsSame(a, static_cast<TFloat>(b));
     }
 
