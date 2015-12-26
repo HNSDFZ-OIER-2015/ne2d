@@ -6,7 +6,51 @@
 
 import sys
 import os
-import proj_conf
+from proj_conf import *
+
+
+COLOR_NONE = '\033[0m'
+COLOR_BLACK = '\033[30m'
+COLOR_RED = '\033[31m'
+COLOR_GREEN = '\033[32m'
+COLOR_YELLOW = '\033[33m'
+COLOR_BLUE = '\033[34m'
+COLOR_PURPLE = '\033[35m'
+COLOR_DARK_GREEN = '\033[36m'
+COLOR_WHITE = '\033[37m'
+
+
+def log_info(message):
+    print(
+        COLOR_GREEN + '(info)' + COLOR_NONE + ' ' + message
+    )
+
+
+def log_warning(message):
+    print(
+        COLOR_YELLOW + '(warn)' + COLOR_NONE + ' ' + message
+    )
+
+
+def log_error(message):
+    print(
+        COLOR_RED + '(error)' + COLOR_NONE + ' ' + message
+    )
+
+
+def log_fatal(message):
+    print(
+        COLOR_PURPLE + '(fatal)' + COLOR_NONE + ' ' + message
+    )
+
+
+def log_debug(message):
+    if not DEBUG_OUTPUT:
+        return
+
+    print(
+        COLOR_DARK_GREEN + '(debug)' + COLOR_NONE + ' ' + message
+    )
 
 
 def ParseParameters():
@@ -16,14 +60,14 @@ def ParseParameters():
 
     for param in range(1, len(sys.argv)):
         if sys.argv[param] == '-debug':  # 调试模式
-            proj_conf.DEBUG_MODE = True
+            DEBUG_MODE = True
         elif '-O' in sys.argv[param]:  # 设置优化
-            proj_conf.OPTIMIZE_LEVEL = sys.argv[param][2:]
+            OPTIMIZE_LEVEL = sys.argv[param][2:]
         # 使用clang
         elif sys.argv[param] == '-clang' or sys.argv[param] == '-clang++':
-            proj_conf.COMPILER = 'clang++'
+            COMPILER = 'clang++'
         elif sys.argv[param] == '-gcc' or sys.argv[param] == '-g++':  # 使用GCC
-            proj_conf.COMPILER = 'g++'
+            COMPILER = 'g++'
         elif sys.argv[param] == '--help' or sys.argv[param] == '-h':  # 显示帮助
             print(
                 """Usage:
@@ -32,7 +76,7 @@ def ParseParameters():
             )
             exit()
         else:
-            print('Unknown parameter: {}'.format(sys.argv[param]))
+            log_error('Unknown parameter: {}'.format(sys.argv[param]))
             exit()
 
 
@@ -41,12 +85,12 @@ if __name__ != '__main__':
     raise RuntimeWarning("It's not a module to load!")
 else:
     # 执行准备脚本
-    if proj_conf.PREPARE_SHELL != '':
-        print('(info) Performing preparation shell...')
-        result = os.system('sh ' + proj_conf.PREPARE_SHELL)
+    if PREPARE_SHELL != '':
+        log_info('Performing preparation shell...')
+        result = os.system('sh ' + PREPARE_SHELL)
         if result != 0:
-            print(
-                '(error) Preparation shell failed with return code {}'.format(
+            log_error(
+                'Preparation shell failed with return code {}'.format(
                     result
                 )
             )
@@ -59,77 +103,77 @@ else:
     command = ''
 
     # 展示版本号
-    print('(info) Program version: V{}'.format(proj_conf.VERSION))
+    log_info('Program version: V{}'.format(VERSION))
 
     # 确定编译器
-    print('(info) Compiler: {}'.format(proj_conf.COMPILER))
-    command += proj_conf.COMPILER + ' '
+    log_info('Compiler: {}'.format(COMPILER))
+    command += COMPILER + ' '
 
     # 确定C++版本
-    print('(info) C++ version: {}'.format(proj_conf.CXX_VERSION))
-    command += '-std=' + proj_conf.CXX_VERSION + ' '
+    log_info('C++ version: {}'.format(CXX_VERSION))
+    command += '-std=' + CXX_VERSION + ' '
 
     # 确定STL库（libstdc++或libc++）
-    if 'clang' in proj_conf.COMPILER:
-        print('(info) STL library: {}'.format(proj_conf.CXX_STDLIB))
-        command += '-stdlib=' + proj_conf.CXX_STDLIB + ' '
-    elif 'gcc' in proj_conf.COMPILER or 'g++' in proj_conf.COMPILER:
-        print("(warning) STL library setting ignored")
+    if 'clang' in COMPILER:
+        log_info('STL library: {}'.format(CXX_STDLIB))
+        command += '-stdlib=' + CXX_STDLIB + ' '
+    elif 'gcc' in COMPILER or 'g++' in COMPILER:
+        log_warning("STL library setting ignored")
 
     # 加入源码路径
-    for source in proj_conf.SOURCES:
-        print('(info) Add source: {}'.format(source))
+    for source in SOURCES:
+        log_info('Add source: {}'.format(source))
         command += source + ' '
 
     # 添加警告参数
-    print('(info) Add warning parameters...')
-    for warning in proj_conf.COMPILER_WARNINGS:
+    log_info('Add warning parameters...')
+    for warning in COMPILER_WARNINGS:
         command += '-W' + warning + ' '
-    for ignoredWarning in proj_conf.COMPILER_IGNORE_WARNINGS:
+    for ignoredWarning in COMPILER_IGNORE_WARNINGS:
         command += '-Wno-' + ignoredWarning + ' '
 
     # 添加链接库参数
-    print('(info) Add link parameters...')
-    for library in proj_conf.COMPILER_LIBRARYS:
+    log_info('Add link parameters...')
+    for library in COMPILER_LIBRARYS:
         command += '-l' + library + ' '
-    for libraryDirectory in proj_conf.COMPILER_LIBRARYS_DIRECTORY:
+    for libraryDirectory in COMPILER_LIBRARYS_DIRECTORY:
         command += '-L' + libraryDirectory + ' '
 
     # 添加头文件参数
-    print('(info) Add include parameters...')
-    for include in proj_conf.COMPILER_INCLUDES_DIRECTORY:
+    log_info('Add include parameters...')
+    for include in COMPILER_INCLUDES_DIRECTORY:
         command += '-I' + include + ' '
-    for systemInclude in proj_conf.COMPILER_SYSTEM_INCLUDES_DIRECTORY:
+    for systemInclude in COMPILER_SYSTEM_INCLUDES_DIRECTORY:
         command += '-isystem' + ' ' + systemInclude + ' '
 
     # 添加文件输出参数
-    print('(info) Add other parameters...')
-    output = proj_conf.OUTPUT_LOCATION
-    if proj_conf.OUTPUT_WITH_VERSION:
-        if proj_conf.OUTPUT_MODE == 'shared':
+    log_info('Add other parameters...')
+    output = OUTPUT_LOCATION
+    if OUTPUT_WITH_VERSION:
+        if OUTPUT_MODE == 'shared':
             # libXXX.so.version
-            output += '.' + proj_conf.VERSION
-        elif proj_conf.OUTPUT_MODE == 'executable':
+            output += '.' + VERSION
+        elif OUTPUT_MODE == 'executable':
             indexDot = os.path.basename(output).rfind('.')
             if indexDot == -1:
                 # filename.version
-                output += '.' + proj_conf.VERSION
+                output += '.' + VERSION
             else:
                 # filename.version.extension
                 output = '{}.{}.{}'.format(
                     output[:len(os.path.dirname(output)) + indexDot + 1],
-                    proj_conf.VERSION,
+                    VERSION,
                     output[len(os.path.dirname(output)) + indexDot + 2:]
                 )
 
     command += '-o ' + output + ' '
 
     # 添加动态库参数
-    if proj_conf.OUTPUT_MODE == 'shared':
+    if OUTPUT_MODE == 'shared':
         command += '-fPIC -shared '
 
     # 调试和优化参数
-    if proj_conf.DEBUG_MODE:
+    if DEBUG_MODE:
         command += '-g '
     else:  # 如果是调试模式则不开启优化，因为优化可能会打乱代码顺序
         command += {
@@ -138,64 +182,64 @@ else:
             '2': '-O2',
             '2.5': '-Os',
             '3': '-O3'
-        }.get(proj_conf.OPTIMIZE_LEVEL, '-O0')  # 默认为无优化
+        }.get(OPTIMIZE_LEVEL, '-O0')  # 默认为无优化
 
     command += ' '
 
     # 加入其余的参数
-    command += ' '.join(proj_conf.COMPILER_OTHER_PARAMETERS)
+    command += ' '.join(COMPILER_OTHER_PARAMETERS)
 
     # 打印最终结果
-    print('(info) Final shell: {}'.format(command))
+    log_debug('Final shell: {}'.format(command))
+
+    terminal_width, terminal_height = os.get_terminal_size()
 
     # 执行命令，开始编译
-    print('(info) Going to compile...')
-    # print('==================================================BEGIN=====')
-    print('{:=^100}'.format('BEGIN'))
+    log_info('Going to compile...')
+    print(('{:=^' + str(terminal_width) + '}').format('BEGIN'))
 
     result = os.system(command)
 
-    # print('===================================================END======')
-    print('{:=^100}'.format('END'))
+    print(('{:=^' + str(terminal_width) + '}').format('END'))
 
     # 报告错误
     if result != 0:
-        print('(error) Compilion failed with return code {}'.format(result))
+        log_error('Compilion failed with return code {}'.format(result))
 
     # 链接程序到latest
-    if proj_conf.OUTPUT_LINK_TO_LATEST and result == 0:
+    if OUTPUT_LINK_TO_LATEST and result == 0:
 
         # 如果已存在，则先删除，防止发生错误
-        if os.path.exists(proj_conf.OUTPUT_LOCATION):
-            os.remove(proj_conf.OUTPUT_LOCATION)
+        if os.path.exists(OUTPUT_LOCATION):
+            os.remove(OUTPUT_LOCATION)
 
         result = os.system(
             'ln {} {}'.format(
                 output,
-                proj_conf.OUTPUT_LOCATION
+                OUTPUT_LOCATION
             )
         )
 
         # 检查返回值
         if result != 0:
-            print(
-                '(error) Output link failed with return code {}'.format(
+            log_error(
+                'Output link failed with return code {}'.format(
                     result
                 )
             )
             exit()
 
     # 执行清理脚本
-    if proj_conf.CLEANUP_SHELL != '':
-        print('(info) Performing clean-up shell...')
-        result = os.system('sh ' + proj_conf.CLEANUP_SHELL)
+    if CLEANUP_SHELL != '':
+        log_info('Performing clean-up shell...')
+        result = os.system('sh ' + CLEANUP_SHELL)
         if result != 0:
-            print(
-                '(error) Clean-up shell failed with return code {}'.format(
+            log_error(
+                'Clean-up shell failed with return code {}'.format(
                     result
                 )
             )
             exit()
 
     # 报告结束
-    print('(info) Compilion end')
+    log_info('Compilion end')

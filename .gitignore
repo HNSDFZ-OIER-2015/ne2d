@@ -21,3 +21,6 @@
 *.pyx
 *.pyo
 __pycache__/*
+
+# Build files
+*.plist

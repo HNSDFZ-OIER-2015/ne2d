@@ -4,6 +4,50 @@ import sys
 import proj_conf
 
 
+COLOR_NONE = '\033[0m'
+COLOR_BLACK = '\033[30m'
+COLOR_RED = '\033[31m'
+COLOR_GREEN = '\033[32m'
+COLOR_YELLOW = '\033[33m'
+COLOR_BLUE = '\033[34m'
+COLOR_PURPLE = '\033[35m'
+COLOR_DARK_GREEN = '\033[36m'
+COLOR_WHITE = '\033[37m'
+
+
+def log_info(message):
+    print(
+        COLOR_GREEN + '(info)' + COLOR_NONE + ' ' + message
+    )
+
+
+def log_warning(message):
+    print(
+        COLOR_YELLOW + '(warn)' + COLOR_NONE + ' ' + message
+    )
+
+
+def log_error(message):
+    print(
+        COLOR_RED + '(error)' + COLOR_NONE + ' ' + message
+    )
+
+
+def log_fatal(message):
+    print(
+        COLOR_PURPLE + '(fatal)' + COLOR_NONE + ' ' + message
+    )
+
+
+def log_debug(message):
+    if not DEBUG_OUTPUT:
+        return
+
+    print(
+        COLOR_DARK_GREEN + '(debug)' + COLOR_NONE + ' ' + message
+    )
+
+
 def decide_compiler(config):
     """确定使用的编译器
     如果设置中使用的是clang，则使用设置中的编译器
@@ -74,12 +118,14 @@ def clang_syntax_check():
     该函数自己会有文字输出
     """
 
+    terminal_width, terminal_height = os.get_terminal_size()
+
     if not proj_conf.CHECK_USE_CLANG_SYNTAX:
-        print('(info) Clang syntax ignored')
+        log_info('Clang syntax ignored')
         return 0
 
     # 编译器，源文件，C++标准，头文件目录
-    command = '{} -fsyntax-only {} -std={} {}'
+    command = '{} -fsyntax-only {} -stdlib=libc++ -std={} {}'
     compiler = decide_compiler(proj_conf.COMPILER)
     sources = gen_source_parameters(proj_conf.SOURCES)
     includes = gen_include_parameters(
@@ -87,8 +133,7 @@ def clang_syntax_check():
         proj_conf.COMPILER_SYSTEM_INCLUDES_DIRECTORY
     )
 
-    # print('=' * 20 + 'BEGIN clang syntax check' + '=' * 20)
-    print('{:=^100}'.format('BEGIN clang syntax check'))
+    print(('{:=^' + str(terminal_width) + '}').format('BEGIN clang syntax check'))
 
     result = os.system(command.format(
         compiler,
@@ -97,10 +142,9 @@ def clang_syntax_check():
         includes
     ))
 
-    # print('=' * 21 + 'END clang syntax check' + '=' * 21)
-    print('{:=^100}'.format('END clang syntax check'))
+    print(('{:=^' + str(terminal_width) + '}').format('END clang syntax check'))
 
-    print('(info) Command clang -fsyntax-only returned {}'.format(result))
+    log_info('Command clang -fsyntax-only returned {}'.format(result))
 
     # 添加一个额外的行来分隔各部分的输出
     print('')
@@ -113,12 +157,14 @@ def clang_static_analyze():
     该函数会有文字输出
     """
 
+    terminal_width, terminal_height = os.get_terminal_size()
+
     if not proj_conf.CHECK_USE_CLANG_ANALYZE:
-        print('(info) Clang static analyze ignored')
+        log_info('Clang static analyze ignored')
         return 0
 
     # 编译器，源文件，C++标准，头文件目录
-    command = '{} --analyze {} -std={} {}'
+    command = '{} --analyze {} -stdlib=libc++ -std={} {}'
     compiler = decide_compiler(proj_conf.COMPILER)
     sources = gen_source_parameters(proj_conf.SOURCES)
     includes = gen_include_parameters(
@@ -126,8 +172,7 @@ def clang_static_analyze():
         proj_conf.COMPILER_SYSTEM_INCLUDES_DIRECTORY
     )
 
-    # print('=' * 20 + 'BEGIN clang static analyze' + '=' * 20)
-    print('{:=^100}'.format('BEGIN clang static analyze'))
+    print(('{:=^' + str(terminal_width) + '}').format('BEGIN clang static analyze'))
 
     result = os.system(command.format(
         compiler,
@@ -136,10 +181,9 @@ def clang_static_analyze():
         includes
     ))
 
-    # print('=' * 21 + 'END clang static analyze' + '=' * 21)
-    print('{:=^100}'.format('END clang static analyze'))
+    print(('{:=^' + str(terminal_width) + '}').format('END clang static analyze'))
 
-    print('(info) Command clang --analyze returned {}'.format(result))
+    log_info('Command clang --analyze returned {}'.format(result))
 
     # 添加一个额外的行来分隔各部分的输出
     print('')
@@ -152,8 +196,10 @@ def cppcheck_static_check():
     该函数会有文字输出
     """
 
+    terminal_width, terminal_height = os.get_terminal_size()
+
     if not proj_conf.CHECK_USE_CPPCHECK:
-        print('(info) Cppcheck static check ignored')
+        log_info('Cppcheck static check ignored')
         return 0
 
     # C++标准，检查项（enable），源文件，头文件目录
@@ -166,8 +212,7 @@ def cppcheck_static_check():
         proj_conf.COMPILER_SYSTEM_INCLUDES_DIRECTORY
     )
 
-    # print('=' * 20 + 'BEGIN cppcheck static check' + '=' * 20)
-    print('{:=^100}'.format('BEGIN cppcheck static check'))
+    print(('{:=^' + str(terminal_width) + '}').format('BEGIN cppcheck static check'))
 
     result = os.system(command.format(
         stds,
@@ -176,10 +221,9 @@ def cppcheck_static_check():
         includes
     ))
 
-    # print('=' * 21 + 'END cppcheck static check' + '=' * 21)
-    print('{:=^100}'.format('END cppcehck static check'))
+    print(('{:=^' + str(terminal_width) + '}').format('END cppcehck static check'))
 
-    print('(info) Command cppcheck returned {}'.format(result))
+    log_info('Command cppcheck returned {}'.format(result))
 
     # 添加一个额外的行来分隔各部分的输出
     print('')
@@ -193,15 +237,15 @@ def main(argc, argv):
     避免不必要的麻烦
     """
 
-    print('(info) Start checking...')
+    log_info('Start checking...')
 
     if clang_syntax_check() == 0:
         clang_static_analyze()
         cppcheck_static_check()
     else:
-        print('(error) Clang syntax check failed')
+        log_error('Clang syntax check failed')
 
-    print('(info) Exited')
+    log_info('Exited')
 
 
 if __name__ == '__main__':

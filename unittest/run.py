@@ -63,11 +63,15 @@ def match_test(filename):
 def compile_test(filename):
     log_info('Compiling {}...'.format(filename))
 
-    attach = None
+    attach = []
     for key in ATTACH_SOURCE:
         if key in filename:
             attach = ATTACH_SOURCE[key]
             break
+
+    if len(ATTACH_LIBRARY) > 0:
+        for i in range(0,len(ATTACH_LIBRARY)):
+            attach.append('-l{}'.format(ATTACH_LIBRARY[i]))
 
     attached_files = ''
     if attach is not None:

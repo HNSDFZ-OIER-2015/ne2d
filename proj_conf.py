@@ -1,6 +1,11 @@
 #  ==========设置部分==========
+DEBUG_OUTPUT = True 
+ 
 # 源代码和版本
 SOURCES = [
+    # './src/*.cpp',
+    './src/math/*.cpp',
+    # './src/utility/*.cpp'
 ]
 
 VERSION = '0.0.1-beta'
@@ -20,7 +25,10 @@ COMPILER_IGNORE_WARNINGS = [
     'undef',
     'switch-enum',
     'global-constructors',
-    'exit-time-destructors'
+    'exit-time-destructors',
+    'sign-conversion',
+    'conversion',
+    'weak-vtables'
 ]
 
 COMPILER_LIBRARYS = [
@@ -33,7 +41,7 @@ COMPILER_LIBRARYS_DIRECTORY = [
 ]
 
 COMPILER_INCLUDES_DIRECTORY = [
-
+    './src/'
 ]
 COMPILER_SYSTEM_INCLUDES_DIRECTORY = [
 
@@ -70,7 +78,7 @@ CLEANUP_SHELL = ''
 
 # 语言设置
 CXX_VERSION = 'c++1z'  # c++17 preview
-CXX_STDLIB = 'libstdc++'
+CXX_STDLIB = 'libc++'
 
 # check.py的设置
 CHECK_USE_CLANG_SYNTAX = True
