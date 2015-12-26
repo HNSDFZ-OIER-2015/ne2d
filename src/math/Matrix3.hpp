@@ -5,7 +5,6 @@
 #ifndef NE2D_MATH_MATRIX3_HPP_
 #define NE2D_MATH_MATRIX3_HPP_
 
-#include <utility>
 #include <initializer_list>
 
 #include "ClassAttribute.hpp"
@@ -19,40 +18,27 @@ namespace ne::math {
     /**
      * 表示一个3x3的矩阵
      */
-    struct Matrix3 : public ne::IObject {
+    struct Matrix3 final : public ne::IObject {
         NONCOMPARABLE(Matrix3)
 
         typedef Float ValueType;
         typedef Vector2D VectorType;
 
-        Matrix3() {
-            m_pMatrix = new ValueType[ArraySize];
-
-            SetMatrix(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-        }
+        Matrix3();
         Matrix3(const ValueType &m11, const ValueType &m12,
                 const ValueType &m13, const ValueType &m21,
                 const ValueType &m22, const ValueType &m23,
                 const ValueType &m31, const ValueType &m32,
-                const ValueType &m33) {
-            m_pMatrix = new ValueType[ArraySize];
+                const ValueType &m33);
+        Matrix3(const std::initializer_list<ValueType> &li);
 
-            SetMatrix(m11, m12, m13, m21, m22, m23, m31, m32, m33);
+        Matrix3(const Matrix3 &lhs);
+        auto operator=(const Matrix3 &lhs) -> Matrix3 &;
 
-            m_bIsTransposed = false;
-        }
-        Matrix3(const std::initializer_list<ValueType> &li) {
-            if (li.size() != ArraySize)
-                throw std::invalid_argument("Wrong initializer list.");
+        Matrix3(Matrix3 &&lhs);
+        auto operator=(Matrix3 &&lhs) -> Matrix3 &;
 
-            m_pMatrix = new ValueType[ArraySize];
-
-            SetMatrix(*(li.begin() + 0), *(li.begin() + 1), *(li.begin() + 2),
-                      *(li.begin() + 3), *(li.begin() + 4), *(li.begin() + 5),
-                      *(li.begin() + 6), *(li.begin() + 7), *(li.begin() + 8));
-
-            m_bIsTransposed = false;
-        }
+        ~Matrix3() noexcept;
 
         /**
          * M11() ~ M33(): 访问矩阵上的元素
@@ -98,7 +84,7 @@ namespace ne::math {
          * @remark:
          *     在std::move之后会导致矩阵失效
          */
-        auto IsVaild() const noexcept -> bool;
+        auto IsVaild() const noexcept -> Bool;
 
         /**
          * 获取矩阵的底层数组
@@ -108,42 +94,11 @@ namespace ne::math {
          */
         auto GetMatrixArray() const noexcept -> ValueType *;
 
-        Matrix3(const Matrix3 &lhs) {
-            m_pMatrix = new ValueType[ArraySize];
-
-            SetMatrix(lhs.M11(), lhs.M12(), lhs.M13(), lhs.M21(), lhs.M22(),
-                      lhs.M23(), lhs.M31(), lhs.M32(), lhs.M33());
-        }
-        auto operator=(const Matrix3 &lhs) -> Matrix3 & {
-            if (m_pMatrix == nullptr) m_pMatrix = new ValueType[ArraySize];
-
-            SetMatrix(lhs.M11(), lhs.M12(), lhs.M13(), lhs.M21(), lhs.M22(),
-                      lhs.M23(), lhs.M31(), lhs.M32(), lhs.M33());
-
-            return *this;
-        }
-
-        Matrix3(Matrix3 &&lhs) : m_pMatrix(lhs.m_pMatrix) {
-            lhs.m_pMatrix = nullptr;
-        }
-        auto operator=(Matrix3 &&lhs) -> Matrix3 & {
-            if (m_pMatrix != nullptr) delete[] m_pMatrix;
-
-            m_pMatrix = lhs.m_pMatrix;
-            lhs.m_pMatrix = nullptr;
-
-            return *this;
-        }
-
-        virtual ~Matrix3() noexcept {
-            if (m_pMatrix != nullptr) delete[] m_pMatrix;
-        }
-
         /**
          * 矩阵的比较运算
          */
-        friend auto operator==(const Matrix3 &a, const Matrix3 &b) -> bool;
-        friend auto operator!=(const Matrix3 &a, const Matrix3 &b) -> bool;
+        friend auto operator==(const Matrix3 &a, const Matrix3 &b) -> Bool;
+        friend auto operator!=(const Matrix3 &a, const Matrix3 &b) -> Bool;
 
         /**
          * 矩阵的加法与减法
@@ -189,25 +144,17 @@ namespace ne::math {
          *     格式为：
          *     [[$M11, $M12, $M13] [$M21, $M22, $M23] [$M31, $M32, $M33]]
          */
-        virtual auto ToString() const -> std::string {
-            return ne::utility::Format(
-                "[[{}, {}, {}] [{}, {}, {}] [{}, {}, {}]]", M11(), M12(), M13(),
-                M21(), M22(), M23(), M31(), M32(), M33());
-        }
+        auto ToString() const -> std::string;
 
         /**
          * 计算矩阵的哈希值
          * @return 哈希值
          */
-        virtual auto HashCode() const -> ne::SizeType {
-            return (static_cast<SizeType>(M11() + M12() + M21()) *
-                    static_cast<SizeType>(M33() + M23() + M32())) *
-                   static_cast<SizeType>(M13() + M22() + M31());
-        }
+        auto HashCode() const -> ne::SizeType;
 
      private:
         constexpr static SizeType ArraySize = 9;
-        constexpr static bool GL_IsTransposed = true;
+        constexpr static Bool GL_IsTransposed = true;
 
         void SetMatrix(const ValueType &m11, const ValueType &m12,
                        const ValueType &m13, const ValueType &m21,
@@ -216,7 +163,7 @@ namespace ne::math {
                        const ValueType &m33);
 
         ValueType *m_pMatrix = nullptr;
-        bool m_bIsTransposed = false;
+        Bool m_bIsTransposed = false;
     };  // struct Matrix3
 }  // namespace ne::math
 

@@ -7,6 +7,69 @@
 #include "utility/FloatComparison.hpp"
 
 namespace ne::math {
+    Matrix3::Matrix3() {
+        m_pMatrix = new ValueType[ArraySize];
+
+        SetMatrix(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+
+    Matrix3::Matrix3(
+        const ValueType &m11, const ValueType &m12, const ValueType &m13,
+        const ValueType &m21, const ValueType &m22, const ValueType &m23,
+        const ValueType &m31, const ValueType &m32, const ValueType &m33) {
+        m_pMatrix = new ValueType[ArraySize];
+
+        SetMatrix(m11, m12, m13, m21, m22, m23, m31, m32, m33);
+
+        m_bIsTransposed = false;
+    }
+
+    Matrix3::Matrix3(const std::initializer_list<ValueType> &li) {
+        if (li.size() != ArraySize)
+            throw std::invalid_argument("Wrong initializer list.");
+
+        m_pMatrix = new ValueType[ArraySize];
+
+        SetMatrix(*(li.begin() + 0), *(li.begin() + 1), *(li.begin() + 2),
+                  *(li.begin() + 3), *(li.begin() + 4), *(li.begin() + 5),
+                  *(li.begin() + 6), *(li.begin() + 7), *(li.begin() + 8));
+
+        m_bIsTransposed = false;
+    }
+
+    Matrix3::Matrix3(const Matrix3 &lhs) {
+        m_pMatrix = new ValueType[ArraySize];
+
+        SetMatrix(lhs.M11(), lhs.M12(), lhs.M13(), lhs.M21(), lhs.M22(),
+                  lhs.M23(), lhs.M31(), lhs.M32(), lhs.M33());
+    }
+
+    auto Matrix3::operator=(const Matrix3 &lhs)->Matrix3 & {
+        if (m_pMatrix == nullptr) m_pMatrix = new ValueType[ArraySize];
+
+        SetMatrix(lhs.M11(), lhs.M12(), lhs.M13(), lhs.M21(), lhs.M22(),
+                  lhs.M23(), lhs.M31(), lhs.M32(), lhs.M33());
+
+        return *this;
+    }
+
+    Matrix3::Matrix3(Matrix3 && lhs) : m_pMatrix(lhs.m_pMatrix) {
+        lhs.m_pMatrix = nullptr;
+    }
+
+    auto Matrix3::operator=(Matrix3 && lhs)->Matrix3 & {
+        if (m_pMatrix != nullptr) delete[] m_pMatrix;
+
+        m_pMatrix = lhs.m_pMatrix;
+        lhs.m_pMatrix = nullptr;
+
+        return *this;
+    }
+
+    Matrix3::~Matrix3() noexcept {
+        if (m_pMatrix != nullptr) delete[] m_pMatrix;
+    }
+
     // 索引方式为先行后列
     // 数组索引表
     //  |0 1 2
@@ -77,7 +140,7 @@ namespace ne::math {
 
     void Matrix3::Transpose() noexcept { m_bIsTransposed = !m_bIsTransposed; }
 
-    auto Matrix3::IsVaild() const noexcept->bool {
+    auto Matrix3::IsVaild() const noexcept->Bool {
         return m_pMatrix != nullptr;
     }
 
@@ -85,7 +148,7 @@ namespace ne::math {
         return m_pMatrix;
     }
 
-    auto operator==(const Matrix3 &a, const Matrix3 &b)->bool {
+    auto operator==(const Matrix3 &a, const Matrix3 &b)->Bool {
         return ne::utility::IsSame(a.M11(), b.M11()) and
                ne::utility::IsSame(a.M12(), b.M12()) and
                ne::utility::IsSame(a.M13(), b.M13()) and
@@ -97,7 +160,7 @@ namespace ne::math {
                ne::utility::IsSame(a.M33(), b.M33());
     }
 
-    auto operator!=(const Matrix3 &a, const Matrix3 &b)->bool {
+    auto operator!=(const Matrix3 &a, const Matrix3 &b)->Bool {
         return !(a == b);
     }
 
@@ -224,5 +287,17 @@ namespace ne::math {
         M11() = m11, M12() = m12, M13() = m13;
         M21() = m21, M22() = m22, M23() = m23;
         M31() = m31, M32() = m32, M33() = m33;
+    }
+
+    auto Matrix3::ToString() const->std::string {
+        return ne::utility::Format("[[{}, {}, {}] [{}, {}, {}] [{}, {}, {}]]",
+                                   M11(), M12(), M13(), M21(), M22(), M23(),
+                                   M31(), M32(), M33());
+    }
+
+    auto Matrix3::HashCode() const->ne::SizeType {
+        return (static_cast<SizeType>(M11() + M12() + M21()) *
+                static_cast<SizeType>(M33() + M23() + M32())) *
+               static_cast<SizeType>(M13() + M22() + M31());
     }
 }  // namespace ne::math

@@ -18,18 +18,22 @@ namespace ne::math {
     /**
      * 表示一个矩形
      */
-    struct Rectangle : public ne::IObject {
+    struct Rectangle final : public ne::IObject {
         NONCOMPARABLE(Rectangle)
 
         typedef Float ValueType;
         typedef Vector2D VectorType;
 
-        Rectangle() : Position(), Size() {}
-        Rectangle(const VectorType &position, const VectorType &size)
-                : Position(position), Size(size) {}
+        Rectangle();
+        Rectangle(const VectorType &position, const VectorType &size);
         Rectangle(const ValueType &x, const ValueType &y, const ValueType &w,
-                  const ValueType &h)
-                : Position(x, y), Size(w, h) {}
+                  const ValueType &h);
+
+        Rectangle(const Rectangle &lhs);
+        auto operator=(const Rectangle &lhs) -> Rectangle &;
+
+        Rectangle(Rectangle &&rhs);
+        auto operator=(Rectangle &&rhs) -> Rectangle &;
 
         /**
          * 表示矩形的位置
@@ -92,21 +96,21 @@ namespace ne::math {
          * @return   返回一个布尔值
          */
         auto Contain(const ValueType &x, const ValueType &y) const noexcept
-            -> bool;
+            -> Bool;
 
         /**
          * 检测点是否在矩形内
          * @param  vec 二维向量表示点
          * @return     返回一个布尔值
          */
-        auto Contain(const VectorType &vec) const noexcept -> bool;
+        auto Contain(const VectorType &vec) const noexcept -> Bool;
 
         /**
          * 检测矩形是否在本矩形内
          * @param  rect 目标矩形
          * @return      返回一个布尔值
          */
-        auto Contain(const Rectangle &rect) const noexcept -> bool;
+        auto Contain(const Rectangle &rect) const noexcept -> Bool;
 
         /**
          * 检测该矩形是否与另外一个矩形相交
@@ -115,7 +119,7 @@ namespace ne::math {
          * @remark:
          *     如果需求出相交矩形，请使用ne::math::Intersect。
          */
-        auto IntersectWith(const Rectangle &rect) const noexcept -> bool;
+        auto IntersectWith(const Rectangle &rect) const noexcept -> Bool;
 
         /**
          * 将矩形平移
@@ -151,28 +155,11 @@ namespace ne::math {
          */
         void Inflate(const VectorType &size) noexcept;
 
-        Rectangle(const Rectangle &lhs)
-                : Position(lhs.Position), Size(lhs.Size) {}
-        auto operator=(const Rectangle &lhs) -> Rectangle & {
-            Position = lhs.Position;
-            Size = lhs.Size;
-
-            return *this;
-        }
-
-        Rectangle(Rectangle &&rhs) : Position(rhs.Position), Size(rhs.Size) {}
-        auto operator=(Rectangle &&rhs) -> Rectangle & {
-            Position = rhs.Position;
-            Size = rhs.Size;
-
-            return *this;
-        }
-
         /**
          * 矩形的比较函数
          */
-        friend auto operator==(const Rectangle &a, const Rectangle &b) -> bool;
-        friend auto operator!=(const Rectangle &a, const Rectangle &b) -> bool;
+        friend auto operator==(const Rectangle &a, const Rectangle &b) -> Bool;
+        friend auto operator!=(const Rectangle &a, const Rectangle &b) -> Bool;
 
         /**
          * 返回矩形的字符串形式
@@ -181,18 +168,13 @@ namespace ne::math {
          *     格式为：
          *     (X = $X, Y = $Y, Width = $Width, Height = $Height)
          */
-        virtual auto ToString() const -> std::string {
-            return ne::utility::Format("(X = {}, Y = {}, Width = {}, Height = {})", Position.X(),
-                          Position.Y(), Size.X(), Size.Y());
-        }
+        auto ToString() const -> std::string;
 
         /**
          * 计算矩形的哈希值
          * @return 哈希值
          */
-        virtual auto HashCode() const -> ne::SizeType {
-            return Position.HashCode() * Size.HashCode();
-        }
+        auto HashCode() const -> ne::SizeType;
     };  // struct Rectangle
 }  // namespace ne::math
 

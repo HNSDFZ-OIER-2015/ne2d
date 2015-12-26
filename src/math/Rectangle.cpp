@@ -5,6 +5,35 @@
 #include "Rectangle.hpp"
 
 namespace ne::math {
+    Rectangle::Rectangle() : Position(), Size() {}
+
+    Rectangle::Rectangle(const VectorType &position, const VectorType &size)
+            : Position(position), Size(size) {}
+
+    Rectangle::Rectangle(const ValueType &x, const ValueType &y,
+                         const ValueType &w, const ValueType &h)
+            : Position(x, y), Size(w, h) {}
+
+    Rectangle::Rectangle(const Rectangle &lhs)
+            : Position(lhs.Position), Size(lhs.Size) {}
+
+    auto Rectangle::operator=(const Rectangle &lhs)->Rectangle & {
+        Position = lhs.Position;
+        Size = lhs.Size;
+
+        return *this;
+    }
+
+    Rectangle::Rectangle(Rectangle && rhs)
+            : Position(rhs.Position), Size(rhs.Size) {}
+
+    auto Rectangle::operator=(Rectangle && rhs)->Rectangle & {
+        Position = rhs.Position;
+        Size = rhs.Size;
+
+        return *this;
+    }
+
     auto Rectangle::X() const noexcept->ValueType { return Position.X(); }
     auto Rectangle::Y() const noexcept->ValueType { return Position.Y(); }
     auto Rectangle::Width() const noexcept->ValueType { return Size.X(); }
@@ -42,19 +71,19 @@ namespace ne::math {
     }
 
     auto Rectangle::Rectangle::Contain(const ValueType &x, const ValueType &y)
-        const noexcept->bool {
+        const noexcept->Bool {
         return Left() <= x && x <= Right() && Top() <= y && y <= Bottom();
     }
 
-    auto Rectangle::Contain(const VectorType &vec) const noexcept->bool {
+    auto Rectangle::Contain(const VectorType &vec) const noexcept->Bool {
         return Contain(vec.X(), vec.Y());
     }
 
-    auto Rectangle::Contain(const Rectangle &rect) const noexcept->bool {
+    auto Rectangle::Contain(const Rectangle &rect) const noexcept->Bool {
         return Contain(rect.LeftTop()) && Contain(rect.RightBottom());
     }
 
-    auto Rectangle::IntersectWith(const Rectangle &rect) const noexcept->bool {
+    auto Rectangle::IntersectWith(const Rectangle &rect) const noexcept->Bool {
         ValueType nx1 = std::max(Left(), rect.Left());
         ValueType ny1 = std::max(Top(), rect.Top());
         ValueType nx2 = std::min(Right(), rect.Right());
@@ -81,11 +110,20 @@ namespace ne::math {
         Inflate(size.X(), size.Y());
     }
 
-    auto operator==(const Rectangle &a, const Rectangle &b)->bool {
+    auto operator==(const Rectangle &a, const Rectangle &b)->Bool {
         return a.Position == b.Position && a.Size == b.Size;
     }
 
-    auto operator!=(const Rectangle &a, const Rectangle &b)->bool {
+    auto operator!=(const Rectangle &a, const Rectangle &b)->Bool {
         return !(a == b);
+    }
+
+    auto Rectangle::ToString() const->std::string {
+        return ne::utility::Format("(X = {}, Y = {}, Width = {}, Height = {})",
+                                   Position.X(), Position.Y(), Size.X(),
+                                   Size.Y());
+    }
+    auto Rectangle::HashCode() const->ne::SizeType {
+        return Position.HashCode() * Size.HashCode();
     }
 }  // namespace ne::math

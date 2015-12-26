@@ -18,29 +18,19 @@ namespace ne::math {
      *     其中Z仅用于辅助与矩阵运算，
      *     不会参与二维向量的运算和比较运算
      */
-    struct Vector2D : public ne::IObject {
+    struct Vector2D final : public ne::IObject {
         NONCOMPARABLE(Vector2D)
 
         typedef Float ValueType;
 
-        Vector2D() : m_x(0.0f), m_y(0.0f) {}
-        Vector2D(const ValueType &x, const ValueType &y) : m_x(x), m_y(y) {}
+        Vector2D();
+        Vector2D(const ValueType &x, const ValueType &y);
 
-        Vector2D(const Vector2D &lhs) : m_x(lhs.X()), m_y(lhs.Y()) {}
-        auto operator=(const Vector2D &lhs) -> Vector2D & {
-            m_x = lhs.X();
-            m_y = lhs.Y();
+        Vector2D(const Vector2D &lhs);
+        auto operator=(const Vector2D &lhs) -> Vector2D &;
 
-            return *this;
-        }
-
-        Vector2D(Vector2D &&rhs) : m_x(rhs.X()), m_y(rhs.Y()) {}
-        auto operator=(Vector2D &&rhs) -> Vector2D & {
-            m_x = rhs.X();
-            m_y = rhs.Y();
-
-            return *this;
-        }
+        Vector2D(Vector2D &&rhs);
+        auto operator=(Vector2D &&rhs) -> Vector2D &;
 
         /**
          * 访问二维向量的X与Y
@@ -64,8 +54,8 @@ namespace ne::math {
         /**
          * 二维向量的比较运算
          */
-        friend auto operator==(const Vector2D &a, const Vector2D &b) -> bool;
-        friend auto operator!=(const Vector2D &a, const Vector2D &b) -> bool;
+        friend auto operator==(const Vector2D &a, const Vector2D &b) -> Bool;
+        friend auto operator!=(const Vector2D &a, const Vector2D &b) -> Bool;
 
         /**
          * 二维向量的正与负
@@ -112,18 +102,13 @@ namespace ne::math {
          *     格式为：
          *     (X = $X, Y = $Y)
          */
-        virtual auto ToString() const -> std::string {
-            return ne::utility::Format("(X = {}, Y = {})", X(), Y());
-        }
+        auto ToString() const -> std::string;
 
         /**
          * 计算二维向量的哈希值
          * @return 哈希值
          */
-        virtual auto HashCode() const -> ne::SizeType {
-            return static_cast<SizeType>(X() * Y()) /
-                   (static_cast<SizeType>(X()) % 31);
-        }
+         auto HashCode() const -> ne::SizeType;
 
      private:
         ValueType m_x;

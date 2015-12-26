@@ -2,8 +2,8 @@
 // Copyright 2015 riteme
 //
 
-#ifndef NE2D_STRING_FORMAT_HPP_
-#define NE2D_STRING_FORMAT_HPP_
+#ifndef NE2D_UTILITY_STRING_FORMAT_HPP_
+#define NE2D_UTILITY_STRING_FORMAT_HPP_
 
 #include <string>
 
@@ -25,4 +25,4 @@ namespace ne::utility {
     }
 }  // namespace ne::utility
 
-#endif  // NE2D_STRING_FORMAT_HPP_
+#endif  // NE2D_UTILITY_STRING_FORMAT_HPP_

@@ -2,8 +2,8 @@
 // Copyright 2015 riteme
 //
 
-#ifndef NE2D_MATH_HPP_
-#define NE2D_MATH_HPP_
+#ifndef NE2D_MATH_MATH_HPP_
+#define NE2D_MATH_MATH_HPP_
 
 #include "Vector2D.hpp"
 #include "Rectangle.hpp"
@@ -381,4 +381,4 @@ namespace ne::math {
                 const Rectangle &rect2) noexcept->Rectangle;
 }  // namespace ne::math
 
-#endif  // NE2D_MATH_HPP_
+#endif  // NE2D_MATH_MATH_HPP_

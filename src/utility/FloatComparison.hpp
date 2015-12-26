@@ -2,8 +2,8 @@
 // Copyright 2015 riteme
 //
 
-#ifndef NE2D_FLOAT_COMPARISON_HPP_
-#define NE2D_FLOAT_COMPARISON_HPP_
+#ifndef NE2D_UTILITY_FLOAT_COMPARISON_HPP_
+#define NE2D_UTILITY_FLOAT_COMPARISON_HPP_
 
 #include <cmath>
 #include <limits>
@@ -40,27 +40,27 @@ namespace ne::utility {
     };  // struct Epsilon<LongDouble>
 
     template <typename TFloat>
-    auto IsSame(const TFloat &a, const TFloat &b) noexcept->bool {
+    auto IsSame(const TFloat &a, const TFloat &b) noexcept->Bool {
         return std::fabs(a - b) < Epsilon<TFloat>::Value();
     }
 
     template <typename TFloat>
-    auto IsGreater(const TFloat &a, const TFloat &b) noexcept->bool {
+    auto IsGreater(const TFloat &a, const TFloat &b) noexcept->Bool {
         return a > b && !IsSame(a, b);
     }
 
     template <typename TFloat>
-    auto IsLess(const TFloat &a, const TFloat &b) noexcept->bool {
+    auto IsLess(const TFloat &a, const TFloat &b) noexcept->Bool {
         return a < b && !IsSame(a, b);
     }
 
     template <typename TFloat>
-    auto IsGreaterEqual(const TFloat &a, const TFloat &b) noexcept->bool {
+    auto IsGreaterEqual(const TFloat &a, const TFloat &b) noexcept->Bool {
         return a > b || IsSame(a, b);
     }
 
     template <typename TFloat>
-    auto IsLessEqual(const TFloat &a, const TFloat &b) noexcept->bool {
+    auto IsLessEqual(const TFloat &a, const TFloat &b) noexcept->Bool {
         return a < b || IsSame(a, b);
     }
 
@@ -68,29 +68,29 @@ namespace ne::utility {
      * 用于浮点型与整形比较
      */
     template <typename TFloat, typename TOther>
-    auto IsSame(const TFloat &a, const TOther &b) noexcept->bool {
+    auto IsSame(const TFloat &a, const TOther &b) noexcept->Bool {
         return std::fabs(a - static_cast<TFloat>(b)) < Epsilon<TFloat>::Value();
     }
 
     template <typename TFloat, typename TOther>
-    auto IsGreater(const TFloat &a, const TOther &b) noexcept->bool {
+    auto IsGreater(const TFloat &a, const TOther &b) noexcept->Bool {
         return a > static_cast<TFloat>(b) && !IsSame(a, static_cast<TFloat>(b));
     }
 
     template <typename TFloat, typename TOther>
-    auto IsLess(const TFloat &a, const TOther &b) noexcept->bool {
+    auto IsLess(const TFloat &a, const TOther &b) noexcept->Bool {
         return a < static_cast<TFloat>(b) && !IsSame(a, static_cast<TFloat>(b));
     }
 
     template <typename TFloat, typename TOther>
-    auto IsGreaterEqual(const TFloat &a, const TOther &b) noexcept->bool {
+    auto IsGreaterEqual(const TFloat &a, const TOther &b) noexcept->Bool {
         return a > static_cast<TFloat>(b) || IsSame(a, static_cast<TFloat>(b));
     }
 
     template <typename TFloat, typename TOther>
-    auto IsLessEqual(const TFloat &a, const TOther &b) noexcept->bool {
+    auto IsLessEqual(const TFloat &a, const TOther &b) noexcept->Bool {
         return a < static_cast<TFloat>(b) || IsSame(a, static_cast<TFloat>(b));
     }
 }  // namespace ne::utility
 
-#endif  // NE2D_FLOAT_COMPARISON_HPP_
+#endif  // NE2D_UTILITY_FLOAT_COMPARISON_HPP_
