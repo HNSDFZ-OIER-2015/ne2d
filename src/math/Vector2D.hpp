@@ -5,6 +5,7 @@
 #ifndef NE2D_MATH_VECTOR2D_HPP_
 #define NE2D_MATH_VECTOR2D_HPP_
 
+#include "Interface.hpp"
 #include "ClassAttribute.hpp"
 #include "TypeConfiguration.hpp"
 

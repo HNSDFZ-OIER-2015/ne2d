@@ -27,8 +27,8 @@ COMPILER_IGNORE_WARNINGS = [
     'global-constructors',
     'exit-time-destructors',
     'sign-conversion',
-    'conversion',
-    'weak-vtables'
+    'conversion'
+    # 'weak-vtables'
 ]
 
 COMPILER_LIBRARYS = [

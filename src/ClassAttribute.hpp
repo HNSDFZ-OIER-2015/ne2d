@@ -50,24 +50,4 @@
     bool operator>=(const className &) = delete; \
     bool operator<=(const className &) = delete;
 
-namespace ne {
-
-/**
- * 基础接口
- */
-class IObject {
- public:
-    virtual ~IObject() = default;
-
-    virtual auto ToString() const -> std::string {
-        return std::string(typeid(*this).name());
-    }
-
-    virtual auto HashCode() const -> ne::SizeType {
-        return reinterpret_cast<SizeType>(this);
-    }
-};  // class IObject
-
-}  // namespace ne
-
 #endif  // NE2D_CLASS_ATTRIBUTE_HPP_

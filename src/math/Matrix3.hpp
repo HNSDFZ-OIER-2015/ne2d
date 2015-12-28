@@ -7,6 +7,7 @@
 
 #include <initializer_list>
 
+#include "Interface.hpp"
 #include "ClassAttribute.hpp"
 #include "TypeConfiguration.hpp"
 

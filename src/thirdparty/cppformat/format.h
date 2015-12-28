@@ -44,6 +44,11 @@
 # include <iterator>
 #endif
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wweak-vtables"
+#endif
+
 #ifdef _MSC_VER
 # include <intrin.h>  // _BitScanReverse, _BitScanReverse64
 
@@ -2644,6 +2649,10 @@ FMT_VARIADIC(int, fprintf, std::FILE *, StringRef)
 
 #ifdef FMT_HEADER_ONLY
 # include "format.cc"
+#endif
+
+#ifdef __clang__
+#pragma clang diagnostic pop
 #endif
 
 #endif  // FMT_FORMAT_H_

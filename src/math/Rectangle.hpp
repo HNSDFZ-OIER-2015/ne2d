@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "Interface.hpp"
 #include "ClassAttribute.hpp"
 #include "TypeConfiguration.hpp"
 
