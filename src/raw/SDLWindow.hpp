@@ -24,12 +24,12 @@ namespace ne::raw {
      public:
         NONCOMPARABLE(SDLWindow)
 
-        constexpr static Char DefaultTitle[] = "Window";
-        const static Integer DefaultXPos = Undefined;
-        const static Integer DefaultYPos = Undefined;
-        const static Integer DefaultWidth = 800;
-        const static Integer DefaultHeight = 600;
-        const static UInt32 DefaultFlags = OpenGL | Resizable;
+        static std::string DefaultTitle;
+        static Integer DefaultXPos;
+        static Integer DefaultYPos;
+        static Integer DefaultWidth;
+        static Integer DefaultHeight;
+        static UInt32 DefaultFlags;
 
         SDLWindow();
         SDLWindow(const std::string &title, const Integer x, const Integer y,
@@ -54,6 +54,9 @@ namespace ne::raw {
         auto GetWidth() const -> Integer;
         auto GetHeight() const -> Integer;
         auto GetTitle() const -> std::string;
+        auto GetFlags() const -> UInt32;
+
+        auto IsVaild() const -> Bool;
 
         void SetPosition(const ne::math::Vector2D &pos);
         void SetPosition(const Integer x, const Integer y);
@@ -64,29 +67,24 @@ namespace ne::raw {
         void SetWidth(const Integer width);
         void SetHeight(const Integer height);
         void SetTitle(const std::string &title);
+        void SetFullscreen(const SDLWindowFlags &mode);
 
         // TODO(riteme): Complete SDLSurface first.
         void SetIcon();
 
-        void SetFullscreen(const SDLWindowFlags &mode);
-
         void Hide();
         void Show();
         void Raise();
-        void Restoe();
+        void Restore();
         void Maximize();
         void Minimize();
+        void Destroy();
 
         friend auto operator==(const SDLWindow &a, const SDLWindow &b) -> Bool;
         friend auto operator!=(const SDLWindow &a, const SDLWindow &b) -> Bool;
 
-        virtual auto ToString() const -> std::string {
-            return std::string(typeid(*this).name());
-        }
-
-        virtual auto HashCode() const -> ne::SizeType {
-            return reinterpret_cast<SizeType>(this);
-        }
+        virtual auto ToString() const -> std::string;
+        virtual auto HashCode() const -> ne::SizeType;
 
      private:
         SDL_Window *m_pWindow;

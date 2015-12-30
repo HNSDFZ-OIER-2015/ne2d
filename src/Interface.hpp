@@ -18,9 +18,15 @@ class IObject {
     virtual ~IObject();
 
     virtual auto ToString() const -> std::string = 0;
-
     virtual auto HashCode() const -> ne::SizeType = 0;
 };  // class IObject
+
+class IException : public IObject {
+ public:
+    virtual ~IException();
+
+    virtual auto Description() const -> std::string = 0;
+};  // class IException
 }  // namespace ne
 
 #endif  // NE2D_INTERFACE_HPP_

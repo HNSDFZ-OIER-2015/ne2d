@@ -20,6 +20,8 @@ struct Testcase {
 };  // struct Test
 
 static std::vector<Testcase> tests;
+static FunctionType prepare = []() -> bool { return true; };
+static FunctionType cleanup = []() -> bool { return true; };
 
 void initialize();
 
@@ -55,15 +57,31 @@ void initialize();
     }                \
     });
 
+#define FATAL return false
+
+#define PREPARE_BEGIN prepare = [&]() -> bool { bool prepare_status = true;
+#define PREPARE_END        \
+    return prepare_status; \
+    }                      \
+    ;
+
+#define CLEANUP_BEGIN cleanup = [&]() -> bool { bool cleanup_status = true;
+#define CLEANUP_END        \
+    return cleanup_status; \
+    }                      \
+    ;
+
 #define RUN(output)                                                       \
     initialize();                                                         \
     bool flag = true;                                                     \
+    if (!prepare()) return -1;                                            \
     for (auto &t : tests) {                                               \
         if ((output))                                                     \
             cout << COLOR_GREEN << "(unittest:info)" << COLOR_NONE << " " \
                  << t.name << endl;                                       \
         flag &= t.function();                                             \
     }                                                                     \
+    if (!cleanup()) return -1;                                            \
     if (!flag) return -1;
 
 #endif  // NE2D_TEST_HPP_

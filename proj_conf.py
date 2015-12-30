@@ -3,8 +3,9 @@ DEBUG_OUTPUT = True
  
 # 源代码和版本
 SOURCES = [
-    # './src/*.cpp',
+    './src/*.cpp',
     './src/math/*.cpp',
+    './src/raw/*.cpp'
     # './src/utility/*.cpp'
 ]
 
@@ -27,7 +28,8 @@ COMPILER_IGNORE_WARNINGS = [
     'global-constructors',
     'exit-time-destructors',
     'sign-conversion',
-    'conversion'
+    'conversion',
+    'deprecated'
     # 'weak-vtables'
 ]
 

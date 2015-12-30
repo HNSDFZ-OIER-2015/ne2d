@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
-import proj_conf
+from proj_conf import *
 
 
 COLOR_NONE = '\033[0m'
@@ -90,6 +90,17 @@ def gen_include_parameters(includes, systenIncludes):
     return include_parameters
 
 
+def gen_clang_warning_parameters(warnings,ignored_warnings):
+    warning_parameter = ''
+
+    for warning in warnings:
+        warning_parameter += '-W' + warning + ' '
+    for ignoredWarning in ignored_warnings:
+        warning_parameter += '-Wno-' + ignoredWarning + ' '
+
+    return warning_parameter
+
+
 def gen_cppcheck_stds(stds):
     """生成cppcheck的std参数
     格式：--std=std1 --std=std2 ...
@@ -120,17 +131,21 @@ def clang_syntax_check():
 
     terminal_width, terminal_height = os.get_terminal_size()
 
-    if not proj_conf.CHECK_USE_CLANG_SYNTAX:
+    if not CHECK_USE_CLANG_SYNTAX:
         log_info('Clang syntax ignored')
         return 0
 
     # 编译器，源文件，C++标准，头文件目录
-    command = '{} -fsyntax-only {} -stdlib=libc++ -std={} {}'
-    compiler = decide_compiler(proj_conf.COMPILER)
-    sources = gen_source_parameters(proj_conf.SOURCES)
+    command = '{} -fsyntax-only {} -stdlib=libc++ -std={} {} {}'
+    compiler = decide_compiler(COMPILER)
+    sources = gen_source_parameters(SOURCES)
     includes = gen_include_parameters(
-        proj_conf.COMPILER_INCLUDES_DIRECTORY,
-        proj_conf.COMPILER_SYSTEM_INCLUDES_DIRECTORY
+        COMPILER_INCLUDES_DIRECTORY,
+        COMPILER_SYSTEM_INCLUDES_DIRECTORY
+    )
+    warnings = gen_clang_warning_parameters(
+        COMPILER_WARNINGS,
+        COMPILER_IGNORE_WARNINGS
     )
 
     print(('{:=^' + str(terminal_width) + '}').format('BEGIN clang syntax check'))
@@ -138,8 +153,9 @@ def clang_syntax_check():
     result = os.system(command.format(
         compiler,
         sources,
-        proj_conf.CXX_VERSION,
-        includes
+        CXX_VERSION,
+        includes,
+        warnings
     ))
 
     print(('{:=^' + str(terminal_width) + '}').format('END clang syntax check'))
@@ -159,17 +175,17 @@ def clang_static_analyze():
 
     terminal_width, terminal_height = os.get_terminal_size()
 
-    if not proj_conf.CHECK_USE_CLANG_ANALYZE:
+    if not CHECK_USE_CLANG_ANALYZE:
         log_info('Clang static analyze ignored')
         return 0
 
     # 编译器，源文件，C++标准，头文件目录
     command = '{} --analyze {} -stdlib=libc++ -std={} {}'
-    compiler = decide_compiler(proj_conf.COMPILER)
-    sources = gen_source_parameters(proj_conf.SOURCES)
+    compiler = decide_compiler(COMPILER)
+    sources = gen_source_parameters(SOURCES)
     includes = gen_include_parameters(
-        proj_conf.COMPILER_INCLUDES_DIRECTORY,
-        proj_conf.COMPILER_SYSTEM_INCLUDES_DIRECTORY
+        COMPILER_INCLUDES_DIRECTORY,
+        COMPILER_SYSTEM_INCLUDES_DIRECTORY
     )
 
     print(('{:=^' + str(terminal_width) + '}').format('BEGIN clang static analyze'))
@@ -177,7 +193,7 @@ def clang_static_analyze():
     result = os.system(command.format(
         compiler,
         sources,
-        proj_conf.CXX_VERSION,
+        CXX_VERSION,
         includes
     ))
 
@@ -198,18 +214,18 @@ def cppcheck_static_check():
 
     terminal_width, terminal_height = os.get_terminal_size()
 
-    if not proj_conf.CHECK_USE_CPPCHECK:
+    if not CHECK_USE_CPPCHECK:
         log_info('Cppcheck static check ignored')
         return 0
 
     # C++标准，检查项（enable），源文件，头文件目录
     command = 'cppcheck {} {} {} {}'
-    stds = gen_cppcheck_stds(proj_conf.CPPCHECK_STD)
-    enables = gen_cppcheck_enables(proj_conf.CPPCHECK_ENABLE)
-    sources = gen_source_parameters(proj_conf.SOURCES)
+    stds = gen_cppcheck_stds(CPPCHECK_STD)
+    enables = gen_cppcheck_enables(CPPCHECK_ENABLE)
+    sources = gen_source_parameters(SOURCES)
     includes = gen_include_parameters(
-        proj_conf.COMPILER_INCLUDES_DIRECTORY,
-        proj_conf.COMPILER_SYSTEM_INCLUDES_DIRECTORY
+        COMPILER_INCLUDES_DIRECTORY,
+        COMPILER_SYSTEM_INCLUDES_DIRECTORY
     )
 
     print(('{:=^' + str(terminal_width) + '}').format('BEGIN cppcheck static check'))

@@ -10,7 +10,6 @@ using namespace std;
 using namespace ne;
 
 int main(/*int argc, char *argv[]*/) {
-    // assert(expr)
     // ...
 
     return 0;
