@@ -13,21 +13,25 @@
 #include "TypeConfiguration.hpp"
 #include "ClassAttribute.hpp"
 
-namespace ne::raw {
-    class SDLException : public IException {
-     public:
-        SDLException();
-        SDLException(const std::string &desc);
+namespace ne {
+namespace raw {
 
-        auto Description() const -> std::string;
+class SDLException : public IException {
+ public:
+    SDLException();
+    SDLException(const std::string &desc);
 
-        auto ToString() const -> std::string;
-        auto HashCode() const -> ne::SizeType;
+    auto Description() const -> std::string;
 
-     private:
-        std::string m_description;
-        std::string m_error;
-    };  // class SDLException
-}  // namespace ne::raw
+    auto ToString() const -> std::string;
+    auto HashCode() const -> ne::SizeType;
+
+ private:
+    std::string m_description;
+    std::string m_error;
+};  // class SDLException
+
+}  // namespace raw
+}  // namespace ne
 
 #endif  // NE2D_RAW_SDL_EXCEPTION_HPP_

@@ -19,76 +19,79 @@
 
 #include "utility/StringFormat.hpp"
 
-namespace ne::raw {
-    class SDLWindow : public ne::IObject {
-     public:
-        NONCOMPARABLE(SDLWindow)
+namespace ne {
+namespace raw {
 
-        static std::string DefaultTitle;
-        static Integer DefaultXPos;
-        static Integer DefaultYPos;
-        static Integer DefaultWidth;
-        static Integer DefaultHeight;
-        static UInt32 DefaultFlags;
+class SDLWindow : public ne::IObject {
+ public:
+    NONCOMPARABLE(SDLWindow)
 
-        SDLWindow();
-        SDLWindow(const std::string &title, const Integer x, const Integer y,
-                  const Integer width, const Integer height);
-        SDLWindow(const std::string &title, const Integer x, const Integer y,
-                  const Integer width, const Integer height,
-                  const Uint32 flags);
+    static std::string DefaultTitle;
+    static Integer DefaultXPos;
+    static Integer DefaultYPos;
+    static Integer DefaultWidth;
+    static Integer DefaultHeight;
+    static UInt32 DefaultFlags;
 
-        virtual ~SDLWindow();
+    SDLWindow();
+    SDLWindow(const std::string &title, const Integer x, const Integer y,
+              const Integer width, const Integer height);
+    SDLWindow(const std::string &title, const Integer x, const Integer y,
+              const Integer width, const Integer height, const Uint32 flags);
 
-        SDLWindow(const SDLWindow &lhs);
-        auto operator=(const SDLWindow &lhs) -> SDLWindow &;
+    virtual ~SDLWindow();
 
-        SDLWindow(SDLWindow &&rhs);
-        auto operator=(SDLWindow &&rhs) -> SDLWindow &;
+    SDLWindow(const SDLWindow &lhs);
+    auto operator=(const SDLWindow &lhs) -> SDLWindow &;
 
-        auto GetID() const -> Uint32;
-        auto GetPosition() const -> ne::math::Vector2D;
-        auto GetSize() const -> ne::math::Vector2D;
-        auto GetX() const -> Integer;
-        auto GetY() const -> Integer;
-        auto GetWidth() const -> Integer;
-        auto GetHeight() const -> Integer;
-        auto GetTitle() const -> std::string;
-        auto GetFlags() const -> UInt32;
+    SDLWindow(SDLWindow &&rhs);
+    auto operator=(SDLWindow &&rhs) -> SDLWindow &;
 
-        auto IsVaild() const -> Bool;
+    auto GetID() const -> Uint32;
+    auto GetPosition() const -> ne::math::Vector2D;
+    auto GetSize() const -> ne::math::Vector2D;
+    auto GetX() const -> Integer;
+    auto GetY() const -> Integer;
+    auto GetWidth() const -> Integer;
+    auto GetHeight() const -> Integer;
+    auto GetTitle() const -> std::string;
+    auto GetFlags() const -> UInt32;
 
-        void SetPosition(const ne::math::Vector2D &pos);
-        void SetPosition(const Integer x, const Integer y);
-        void SetSize(const ne::math::Vector2D &size);
-        void SetSize(const Integer width, const Integer height);
-        void SetX(const Integer x);
-        void SetY(const Integer y);
-        void SetWidth(const Integer width);
-        void SetHeight(const Integer height);
-        void SetTitle(const std::string &title);
-        void SetFullscreen(const SDLWindowFlags &mode);
+    auto IsVaild() const -> Bool;
 
-        // TODO(riteme): Complete SDLSurface first.
-        void SetIcon();
+    void SetPosition(const ne::math::Vector2D &pos);
+    void SetPosition(const Integer x, const Integer y);
+    void SetSize(const ne::math::Vector2D &size);
+    void SetSize(const Integer width, const Integer height);
+    void SetX(const Integer x);
+    void SetY(const Integer y);
+    void SetWidth(const Integer width);
+    void SetHeight(const Integer height);
+    void SetTitle(const std::string &title);
+    void SetFullscreen(const SDLWindowFlags &mode);
 
-        void Hide();
-        void Show();
-        void Raise();
-        void Restore();
-        void Maximize();
-        void Minimize();
-        void Destroy();
+    // TODO(riteme): Complete SDLSurface first.
+    void SetIcon();
 
-        friend auto operator==(const SDLWindow &a, const SDLWindow &b) -> Bool;
-        friend auto operator!=(const SDLWindow &a, const SDLWindow &b) -> Bool;
+    void Hide();
+    void Show();
+    void Raise();
+    void Restore();
+    void Maximize();
+    void Minimize();
+    void Destroy();
 
-        virtual auto ToString() const -> std::string;
-        virtual auto HashCode() const -> ne::SizeType;
+    friend auto operator==(const SDLWindow &a, const SDLWindow &b) -> Bool;
+    friend auto operator!=(const SDLWindow &a, const SDLWindow &b) -> Bool;
 
-     private:
-        SDL_Window *m_pWindow;
-    };  // class SDLWindow
-}  // namespace ne::raw
+    virtual auto ToString() const -> std::string;
+    virtual auto HashCode() const -> ne::SizeType;
+
+ private:
+    SDL_Window *m_pWindow;
+};  // class SDLWindow
+
+}  // namespace raw
+}  // namespace ne
 
 #endif  // NE2D_RAW_SDL_WINDOW_HPP_

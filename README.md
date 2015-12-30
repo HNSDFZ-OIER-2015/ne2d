@@ -9,9 +9,17 @@ A 2D render engine.
 Version: 0.0.2.2 beta (unstable)
 
 # Build (beta/linux)
-You should have clang(>= 3.5), libc++(>= 1.0) and libsdl2.
+You should have g++(>= 4.8, support for C++11) and SDL2.  
+On Ubuntu(14.04 or above), just use ```apt-get``` to get them.
 ```shell
-apt-get install clang++ libc++1 libsdl2-*
+# May require root
+apt-get install build-essential libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+```
+
+Clone this repo.
+```shell
+git clone https://github.com/riteme/ne2d.git
+cd [PATH TO REPO]
 ```
 
 Then, run build.py at the root folder of ne2d.
@@ -19,11 +27,11 @@ Then, run build.py at the root folder of ne2d.
 ./build.py
 ```
 
-Finally, copy the .so file to /usr/lib.
+Finally, install it.
 ```shell
 # May require root
 mkdir /usr/include/ne2d/
-./copy.sh
+./install.sh
 ```
 
 # TODO-list

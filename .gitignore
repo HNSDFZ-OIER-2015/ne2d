@@ -24,4 +24,5 @@ __pycache__/*
 
 # Build files
 *.plist
-./release/*
+release/*
+*.so*

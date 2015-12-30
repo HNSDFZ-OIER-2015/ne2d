@@ -6,6 +6,7 @@
 
 import sys
 import os
+from stat import *
 from proj_conf import *
 
 
@@ -105,9 +106,25 @@ else:
     # 展示版本号
     log_info('Program version: V{}'.format(VERSION))
 
+    # 检查release目录是否存在
+    st = os.stat('./release/').st_mode 
+    if S_ISDIR(st) == 0:
+        os.mkdir('./release/')
+
     # 确定编译器
     log_info('Compiler: {}'.format(COMPILER))
     command += COMPILER + ' '
+
+    # 为g++转换-Weverything
+    if 'g' in COMPILER:
+        new_list = []
+        for item in COMPILER_WARNINGS:
+            if item != 'everything':
+                new_list.append(item)
+            else:
+                new_list.append('all')
+                new_list.append('extra')
+        COMPILER_WARNINGS = new_list
 
     # 确定C++版本
     log_info('C++ version: {}'.format(CXX_VERSION))

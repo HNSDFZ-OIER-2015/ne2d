@@ -9,24 +9,24 @@ SOURCES = [
     # './src/utility/*.cpp'
 ]
 
-VERSION = '0.0.1-beta'
+VERSION = '0.0.2.2-beta'
 
 # 指定编译器
-COMPILER = 'clang++'
+COMPILER = 'g++'
 
 # 编译器设置
 COMPILER_WARNINGS = [
     'everything'
 ]
 COMPILER_IGNORE_WARNINGS = [
-    'c++98-compat',
-    'c++98-compat-pedantic',
+    # 'c++98-compat',
+    # 'c++98-compat-pedantic',
     'padded',
-    'gnu-zero-variadic-macro-arguments',
+    # 'gnu-zero-variadic-macro-arguments',
     'undef',
     'switch-enum',
-    'global-constructors',
-    'exit-time-destructors',
+    # 'global-constructors',
+    # 'exit-time-destructors',
     'sign-conversion',
     'conversion',
     'deprecated'
@@ -79,8 +79,8 @@ PREPARE_SHELL = ''
 CLEANUP_SHELL = ''
 
 # 语言设置
-CXX_VERSION = 'c++1z'  # c++17 preview
-CXX_STDLIB = 'libc++'
+CXX_VERSION = 'c++11'
+CXX_STDLIB = 'libstdc++'
 
 # check.py的设置
 CHECK_USE_CLANG_SYNTAX = True
