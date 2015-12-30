@@ -4,8 +4,8 @@
 
 #include "test.hpp"
 
-#include "../src/raw/SDL.hpp"
-#include "../src/raw/SDLWindow.hpp"
+#include <ne2d/raw/SDL.hpp>
+#include <ne2d/raw/SDLWindow.hpp>
 
 #include <utility>
 #include <chrono>

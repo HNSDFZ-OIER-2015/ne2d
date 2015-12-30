@@ -4,9 +4,9 @@
 
 #include "test.hpp"
 
-#include "../src/math/Math.hpp"
-#include "../src/math/Vector2D.hpp"
-#include "../src/utility/FloatComparison.hpp"
+#include <ne2d/math/Math.hpp>
+#include <ne2d/math/Vector2D.hpp>
+#include <ne2d/utility/FloatComparison.hpp>
 
 using namespace std;
 using namespace ne;

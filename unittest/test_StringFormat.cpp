@@ -4,7 +4,7 @@
 
 #include "test.hpp"
 
-#include "../src/utility/StringFormat.hpp"
+#include <ne2d/utility/StringFormat.hpp>
 
 using namespace std;
 using namespace ne;

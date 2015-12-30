@@ -4,8 +4,8 @@
 
 #include "test.hpp"
 
-#include "../src/math/Rectangle.hpp"
-#include "../src/utility/FloatComparison.hpp"
+#include <ne2d/math/Rectangle.hpp>
+#include <ne2d/utility/FloatComparison.hpp>
 
 using namespace std;
 using namespace ne;

@@ -7,8 +7,8 @@
 #include <cmath>
 #include <cfloat>
 
-#include "../src/math/Vector2D.hpp"
-#include "../src/utility/FloatComparison.hpp"
+#include <ne2d/math/Vector2D.hpp>
+#include <ne2d/utility/FloatComparison.hpp>
 
 using namespace std;
 using namespace ne;

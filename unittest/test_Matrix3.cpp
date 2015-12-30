@@ -4,8 +4,8 @@
 
 #include "test.hpp"
 
-#include "../src/math/Matrix3.hpp"
-#include "../src/utility/FloatComparison.hpp"
+#include <ne2d/math/Matrix3.hpp>
+#include <ne2d/utility/FloatComparison.hpp>
 
 using namespace std;
 using namespace ne;
