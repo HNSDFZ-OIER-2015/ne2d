@@ -6,7 +6,7 @@ A 2D render engine.
 |:---------:|:---------:|:---------:|
 | PASS      | Unknown   | Unknown   |
 
-Version: 0.0.2.2 beta (unstable)
+Version: 0.2.2 beta (unstable)
 
 # Build (beta/linux)
 You should have g++(>= 4.8, support for C++11) and SDL2.  

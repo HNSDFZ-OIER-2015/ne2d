@@ -144,8 +144,8 @@ def clang_syntax_check():
         COMPILER_SYSTEM_INCLUDES_DIRECTORY
     )
     warnings = gen_clang_warning_parameters(
-        COMPILER_WARNINGS,
-        COMPILER_IGNORE_WARNINGS
+        CHECK_WARNINGS,
+        CHECK_IGNORE_WARNINGS
     )
 
     print(('{:=^' + str(terminal_width) + '}').format('BEGIN clang syntax check'))

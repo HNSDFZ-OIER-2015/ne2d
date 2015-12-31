@@ -9,7 +9,7 @@ SOURCES = [
     # './src/utility/*.cpp'
 ]
 
-VERSION = '0.0.2.2-beta'
+VERSION = '0.2.2-beta'
 
 # 指定编译器
 COMPILER = 'g++'
@@ -86,6 +86,24 @@ CXX_STDLIB = 'libstdc++'
 CHECK_USE_CLANG_SYNTAX = True
 CHECK_USE_CLANG_ANALYZE = True
 CHECK_USE_CPPCHECK = True
+
+CHECK_WARNINGS = [
+    'everything'
+]
+CHECK_IGNORE_WARNINGS = [
+    'c++98-compat',
+    'c++98-compat-pedantic',
+    'padded',
+    'gnu-zero-variadic-macro-arguments',
+    'undef',
+    'switch-enum',
+    'global-constructors',
+    'exit-time-destructors',
+    'sign-conversion',
+    'conversion',
+    'deprecated'
+    # 'weak-vtables'
+]
 
 # Cppcheck设置
 # --std可供设置（来自cppcheck --help）：
