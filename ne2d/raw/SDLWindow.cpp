@@ -4,8 +4,10 @@
 
 #include <stdexcept>
 
-#include "SDLWindow.hpp"
-#include "SDLException.hpp"
+#include "ne2d/InvaildOperatorException.hpp"
+
+#include "ne2d/raw/SDLWindow.hpp"
+#include "ne2d/raw/SDLException.hpp"
 
 namespace ne {
 namespace raw {
@@ -44,27 +46,6 @@ SDLWindow::SDLWindow(const std::string &title, const Integer x, const Integer y,
 
 SDLWindow::~SDLWindow() { Destroy(); }
 
-SDLWindow::SDLWindow(const SDLWindow &lhs) {
-    m_pWindow =
-        SDL_CreateWindow(lhs.GetTitle().c_str(), lhs.GetX(), lhs.GetY(),
-                         lhs.GetWidth(), lhs.GetHeight(), lhs.GetFlags());
-
-    if (m_pWindow == nullptr) throw SDLException("Cannot copy a SDL window.");
-}
-
-auto SDLWindow::operator=(const SDLWindow &lhs) -> SDLWindow & {
-    // Destroy origin window.
-    Destroy();
-
-    m_pWindow =
-        SDL_CreateWindow(lhs.GetTitle().c_str(), lhs.GetX(), lhs.GetY(),
-                         lhs.GetWidth(), lhs.GetHeight(), lhs.GetFlags());
-
-    if (m_pWindow == nullptr) throw SDLException("Cannot copy a SDL window.");
-
-    return *this;
-}
-
 SDLWindow::SDLWindow(SDLWindow &&rhs) : m_pWindow(rhs.m_pWindow) {
     rhs.m_pWindow = nullptr;
 }
@@ -80,15 +61,16 @@ auto SDLWindow::operator=(SDLWindow &&rhs) -> SDLWindow & {
 
 auto SDLWindow::GetID() const -> Uint32 {
     if (!IsVaild())
-        throw SDLException("Cannot get window id, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::GetID()",
+                                       "SDL window is invaild.");
 
     return SDL_GetWindowID(m_pWindow);
 }
 
 auto SDLWindow::GetPosition() const -> ne::math::Vector2D {
     if (!IsVaild())
-        throw SDLException(
-            "Cannot get window position, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::GetPosition()",
+                                       "SDL window is invaild.");
 
     int x, y;
     SDL_GetWindowPosition(m_pWindow, &x, &y);
@@ -98,7 +80,8 @@ auto SDLWindow::GetPosition() const -> ne::math::Vector2D {
 
 auto SDLWindow::GetSize() const -> ne::math::Vector2D {
     if (!IsVaild())
-        throw SDLException("Cannot get window size, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::GetSize()",
+                                       "SDL window is invaild.");
 
     int w, h;
     SDL_GetWindowSize(m_pWindow, &w, &h);
@@ -108,44 +91,48 @@ auto SDLWindow::GetSize() const -> ne::math::Vector2D {
 
 auto SDLWindow::GetX() const -> Integer {
     if (!IsVaild())
-        throw SDLException(
-            "Cannot get window X position, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::GetX()",
+                                       "Cannot SDL window is invaild.");
 
     return GetPosition().X();
 }
 
 auto SDLWindow::GetY() const -> Integer {
     if (!IsVaild())
-        throw SDLException(
-            "Cannot get window Y position, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::GetY()",
+                                       "Cannot SDL window is invaild.");
 
     return GetPosition().Y();
 }
 
 auto SDLWindow::GetWidth() const -> Integer {
     if (!IsVaild())
-        throw SDLException("Cannot get window width, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::GetWidth()",
+                                       "SDL window is invaild.");
 
     return GetSize().X();
 }
 
 auto SDLWindow::GetHeight() const -> Integer {
     if (!IsVaild())
-        throw SDLException("Cannot get window height, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::GetHeight()",
+                                       "SDL window is invaild.");
 
     return GetSize().Y();
 }
 
 auto SDLWindow::GetTitle() const -> std::string {
     if (!IsVaild())
-        throw SDLException("Cannot get window title, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::GetTitle()",
+                                       "SDL window is invaild.");
 
     return SDL_GetWindowTitle(m_pWindow);
 }
 
 auto SDLWindow::GetFlags() const -> UInt32 {
     if (!IsVaild())
-        throw SDLException("Cannot get window flags, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::GetFlags()",
+                                       "SDL window is invaild.");
 
     return SDL_GetWindowFlags(m_pWindow);
 }
@@ -154,117 +141,139 @@ auto SDLWindow::IsVaild() const -> Bool { return m_pWindow != nullptr; }
 
 void SDLWindow::SetPosition(const ne::math::Vector2D &pos) {
     if (!IsVaild())
-        throw SDLException(
-            "Cannot set window position, SDL window is invaild.");
+        throw InvaildOperatorException(
+            "ne::raw::SDLWindow::SetPosition(position)",
+            "SDL window is invaild.");
 
     SDL_SetWindowPosition(m_pWindow, pos.X(), pos.Y());
 }
 
 void SDLWindow::SetPosition(const Integer x, const Integer y) {
     if (!IsVaild())
-        throw SDLException(
-            "Cannot set window position, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::SetPosition(x, y)",
+                                       "SDL window is invaild.");
 
     SDL_SetWindowPosition(m_pWindow, x, y);
 }
 
 void SDLWindow::SetSize(const ne::math::Vector2D &size) {
     if (!IsVaild())
-        throw SDLException("Cannot set window size, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::SetSize(size)",
+                                       "SDL window is invaild.");
 
     SDL_SetWindowSize(m_pWindow, size.X(), size.Y());
 }
 
 void SDLWindow::SetSize(const Integer width, const Integer height) {
     if (!IsVaild())
-        throw SDLException("Cannot set window size, SDL window is invaild.");
+        throw InvaildOperatorException(
+            "ne::raw::SDLWindow::SetSize(width, height)",
+            "SDL window is invaild.");
 
     SDL_SetWindowSize(m_pWindow, width, height);
 }
 
 void SDLWindow::SetX(const Integer x) {
     if (!IsVaild())
-        throw SDLException(
-            "Cannot set window X position, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::SetX(x)",
+                                       "SDL window is invaild.");
 
     SDL_SetWindowPosition(m_pWindow, x, GetY());
 }
 
 void SDLWindow::SetY(const Integer y) {
     if (!IsVaild())
-        throw SDLException(
-            "Cannot set window Y position, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::SetY(y)",
+                                       "SDL window is invaild.");
 
     SDL_SetWindowPosition(m_pWindow, GetX(), y);
 }
 
 void SDLWindow::SetWidth(const Integer width) {
     if (!IsVaild())
-        throw SDLException("Cannot set window width, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::SetWidth(width)",
+                                       "SDL window is invaild.");
 
     SDL_SetWindowSize(m_pWindow, width, GetHeight());
 }
 
 void SDLWindow::SetHeight(const Integer height) {
     if (!IsVaild())
-        throw SDLException("Cannot set window height, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::SetHeight(height)",
+                                       "SDL window is invaild.");
 
     SDL_SetWindowSize(m_pWindow, GetWidth(), height);
 }
 
 void SDLWindow::SetTitle(const std::string &title) {
     if (!IsVaild())
-        throw SDLException("Cannot set window title, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::SetTitle(title)",
+                                       "SDL window is invaild.");
 
     SDL_SetWindowTitle(m_pWindow, title.c_str());
 }
 
 void SDLWindow::SetFullscreen(const SDLWindowFlags &mode) {
     if (!IsVaild())
-        throw SDLException(
-            "Cannot set window fullscreen, SDL window is invaild.");
+        throw InvaildOperatorException(
+            "ne::raw::SDLWindow::SetFullscreend(mode)",
+            "SDL window is invaild.");
 
     SDL_SetWindowFullscreen(m_pWindow, mode);
 }
 
+void SDLWindow::SetIcon(const SDLSurface &icon) {
+    if (!IsVaild())
+        throw InvaildOperatorException("ne::raw::SDLWindow::SetIcon(icon)",
+                                       "SDL window is invaild.");
+
+    SDL_SetWindowIcon(m_pWindow, icon.m_pSurface);
+}
+
 void SDLWindow::Hide() {
     if (!IsVaild())
-        throw SDLException("Cannot hide window, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::Hide()",
+                                       "SDL window is invaild.");
 
     SDL_HideWindow(m_pWindow);
 }
 
 void SDLWindow::Show() {
     if (!IsVaild())
-        throw SDLException("Cannot hide window, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::Show()",
+                                       "SDL window is invaild.");
 
     SDL_ShowWindow(m_pWindow);
 }
 
 void SDLWindow::Raise() {
     if (!IsVaild())
-        throw SDLException("Cannot hide window, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::Raise()",
+                                       "SDL window is invaild.");
 
     SDL_RaiseWindow(m_pWindow);
 }
 
 void SDLWindow::Restore() {
     if (!IsVaild())
-        throw SDLException("Cannot hide window, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::Restore()",
+                                       "SDL window is invaild.");
 
     SDL_RestoreWindow(m_pWindow);
 }
 
 void SDLWindow::Maximize() {
     if (!IsVaild())
-        throw SDLException("Cannot hide window, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow::Maximize()",
+                                       "SDL window is invaild.");
 
     SDL_MaximizeWindow(m_pWindow);
 }
 
 void SDLWindow::Minimize() {
     if (!IsVaild())
-        throw SDLException("Cannot hide window, SDL window is invaild.");
+        throw InvaildOperatorException("ne::raw::SDLWindow:Minimize()",
+                                       "SDL window is invaild.");
 
     SDL_MinimizeWindow(m_pWindow);
 }

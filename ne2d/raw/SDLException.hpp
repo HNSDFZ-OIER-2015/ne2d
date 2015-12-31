@@ -9,15 +9,18 @@
 
 #include <string>
 
-#include "Interface.hpp"
-#include "TypeConfiguration.hpp"
-#include "ClassAttribute.hpp"
+#include "ne2d/Interface.hpp"
+#include "ne2d/TypeConfiguration.hpp"
+#include "ne2d/ClassAttribute.hpp"
 
 namespace ne {
 namespace raw {
 
 class SDLException : public IException {
  public:
+    NO_EQUAL_OPERATOR(SDLException)
+    NONCOMPARABLE(SDLException)
+
     SDLException();
     SDLException(const std::string &desc);
 

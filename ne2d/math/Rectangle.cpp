@@ -2,7 +2,7 @@
 // Copyright 2015 riteme
 //
 
-#include "Rectangle.hpp"
+#include "ne2d/math/Rectangle.hpp"
 
 namespace ne {
 namespace math {

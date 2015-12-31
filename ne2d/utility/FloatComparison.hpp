@@ -8,7 +8,7 @@
 #include <cmath>
 #include <limits>
 
-#include "TypeConfiguration.hpp"
+#include "ne2d/TypeConfiguration.hpp"
 
 namespace ne {
 namespace utility {

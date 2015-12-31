@@ -5,9 +5,9 @@
 #ifndef NE2D_MATH_MATH_HPP_
 #define NE2D_MATH_MATH_HPP_
 
-#include "Vector2D.hpp"
-#include "Rectangle.hpp"
-#include "Matrix3.hpp"
+#include "ne2d/math/Vector2D.hpp"
+#include "ne2d/math/Rectangle.hpp"
+#include "ne2d/math/Matrix3.hpp"
 
 namespace ne {
 namespace math {

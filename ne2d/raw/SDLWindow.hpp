@@ -9,15 +9,16 @@
 
 #include <string>
 
-#include "ClassAttribute.hpp"
-#include "TypeConfiguration.hpp"
+#include "ne2d/ClassAttribute.hpp"
+#include "ne2d/TypeConfiguration.hpp"
 
-#include "raw/SDLWindowFlags.hpp"
-#include "raw/SDLWindowPosition.hpp"
+#include "ne2d/raw/SDLWindowFlags.hpp"
+#include "ne2d/raw/SDLWindowPosition.hpp"
+#include "ne2d/raw/SDLSurface.hpp"
 
-#include "math/Vector2D.hpp"
+#include "ne2d/math/Vector2D.hpp"
 
-#include "utility/StringFormat.hpp"
+#include "ne2d/utility/StringFormat.hpp"
 
 namespace ne {
 namespace raw {
@@ -25,6 +26,7 @@ namespace raw {
 class SDLWindow : public ne::IObject {
  public:
     NONCOMPARABLE(SDLWindow)
+    NONCOPYABLE(SDLWindow)
 
     static std::string DefaultTitle;
     static Integer DefaultXPos;
@@ -40,9 +42,6 @@ class SDLWindow : public ne::IObject {
               const Integer width, const Integer height, const Uint32 flags);
 
     virtual ~SDLWindow();
-
-    SDLWindow(const SDLWindow &lhs);
-    auto operator=(const SDLWindow &lhs) -> SDLWindow &;
 
     SDLWindow(SDLWindow &&rhs);
     auto operator=(SDLWindow &&rhs) -> SDLWindow &;
@@ -69,9 +68,7 @@ class SDLWindow : public ne::IObject {
     void SetHeight(const Integer height);
     void SetTitle(const std::string &title);
     void SetFullscreen(const SDLWindowFlags &mode);
-
-    // TODO(riteme): Complete SDLSurface first.
-    void SetIcon();
+    void SetIcon(const SDLSurface &icon);
 
     void Hide();
     void Show();

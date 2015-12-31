@@ -2,7 +2,7 @@
 // Copyright 2015 riteme
 //
 
-#include "SDL.hpp"
+#include "ne2d/raw/SDL.hpp"
 
 namespace ne {
 namespace raw {

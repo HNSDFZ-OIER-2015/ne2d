@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#include "Math.hpp"
+#include "ne2d/math/Math.hpp"
 
 namespace ne {
 namespace math {

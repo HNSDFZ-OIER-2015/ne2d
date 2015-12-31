@@ -4,9 +4,9 @@
 
 #include <functional>
 
-#include "SDLException.hpp"
+#include "ne2d/raw/SDLException.hpp"
 
-#include "utility/StringFormat.hpp"
+#include "ne2d/utility/StringFormat.hpp"
 
 namespace ne {
 namespace raw {

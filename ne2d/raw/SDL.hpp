@@ -7,12 +7,12 @@
 
 #include <SDL2/SDL.h>
 
-#include "TypeConfiguration.hpp"
+#include "ne2d/TypeConfiguration.hpp"
 
-#include "SDLException.hpp"
-#include "SDLInitFlags.hpp"
+#include "ne2d/raw/SDLException.hpp"
+#include "ne2d/raw/SDLInitFlags.hpp"
 
-#include "utility/StringFormat.hpp"
+#include "ne2d/utility/StringFormat.hpp"
 
 namespace ne {
 namespace raw {

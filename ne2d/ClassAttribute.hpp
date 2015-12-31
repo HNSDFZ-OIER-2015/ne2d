@@ -8,7 +8,7 @@
 #include <string>
 #include <typeinfo>
 
-#include "TypeConfiguration.hpp"
+#include "ne2d/TypeConfiguration.hpp"
 
 /**
  * 表示没有默认构造函数

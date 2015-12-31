@@ -4,7 +4,7 @@
 
 #include "Matrix3.hpp"
 
-#include "utility/FloatComparison.hpp"
+#include "ne2d/utility/FloatComparison.hpp"
 
 namespace ne {
 namespace math {

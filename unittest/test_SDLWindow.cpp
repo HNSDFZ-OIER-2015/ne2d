@@ -70,13 +70,6 @@ TESTCASE("Constructor and operator test") {
     CHECK(wnd.IsVaild());
     CHECK(wnd == wnd4);
     CHECK(wnd4 != wnd3);
-
-    SDLWindow wnd5 = wnd;
-
-    sleep_for(milliseconds(200));
-
-    CHECK(wnd5.GetTitle() == wnd.GetTitle());
-    CHECK(wnd5.GetSize() == wnd.GetSize());
 }
 TESTCASE_END
 

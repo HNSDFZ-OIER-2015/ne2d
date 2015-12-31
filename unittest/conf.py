@@ -3,7 +3,7 @@
 #
 
 DEBUG_OUTPUT = True
-COMPILER = 'g++ -std=c++11 -O0 -g -isystem /usr/include/ne2d/'
+COMPILER = 'g++ -std=c++11 -O0 -g'
 RUN_COMMAND = './test.out'
 REGEX_PATTERN = 'test_.*\.cpp'
 

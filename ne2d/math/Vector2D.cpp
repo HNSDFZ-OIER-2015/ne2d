@@ -2,9 +2,9 @@
 // Copyright 2015 riteme
 //
 
-#include "Vector2D.hpp"
+#include "ne2d/math/Vector2D.hpp"
 
-#include "utility/FloatComparison.hpp"
+#include "ne2d/utility/FloatComparison.hpp"
 
 namespace ne {
 namespace math {

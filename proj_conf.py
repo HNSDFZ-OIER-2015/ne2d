@@ -1,12 +1,12 @@
 #  ==========设置部分==========
-DEBUG_OUTPUT = True 
- 
+DEBUG_OUTPUT = True
+
 # 源代码和版本
 SOURCES = [
-    './src/*.cpp',
-    './src/math/*.cpp',
-    './src/raw/*.cpp'
-    # './src/utility/*.cpp'
+    './ne2d/*.cpp',
+    './ne2d/math/*.cpp',
+    './ne2d/raw/*.cpp'
+    # './ne2d/utility/*.cpp'
 ]
 
 VERSION = '0.2.2-beta'
@@ -43,7 +43,7 @@ COMPILER_LIBRARYS_DIRECTORY = [
 ]
 
 COMPILER_INCLUDES_DIRECTORY = [
-    './src/'
+    '.'
 ]
 COMPILER_SYSTEM_INCLUDES_DIRECTORY = [
 

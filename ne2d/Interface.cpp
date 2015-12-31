@@ -2,7 +2,7 @@
 // Copyright 2015 riteme
 //
 
-#include "Interface.hpp"
+#include "ne2d/Interface.hpp"
 
 namespace ne {
 IObject::~IObject() = default;

@@ -7,13 +7,13 @@
 
 #include <initializer_list>
 
-#include "Interface.hpp"
-#include "ClassAttribute.hpp"
-#include "TypeConfiguration.hpp"
+#include "ne2d/Interface.hpp"
+#include "ne2d/ClassAttribute.hpp"
+#include "ne2d/TypeConfiguration.hpp"
 
-#include "Vector2D.hpp"
+#include "ne2d/math/Vector2D.hpp"
 
-#include "utility/StringFormat.hpp"
+#include "ne2d/utility/StringFormat.hpp"
 
 namespace ne {
 namespace math {

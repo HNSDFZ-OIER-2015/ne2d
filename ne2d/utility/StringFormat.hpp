@@ -8,7 +8,7 @@
 #include <string>
 
 #define FMT_HEADER_ONLY
-#include "thirdparty/cppformat/format.h"
+#include "ne2d/thirdparty/cppformat/format.h"
 
 namespace ne {
 namespace utility {
