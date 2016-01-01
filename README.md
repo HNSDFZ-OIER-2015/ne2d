@@ -1,3 +1,6 @@
+**Notice**: this repo is forked from riteme/ne2d.  
+It would update randomly.
+
 # ne2d
 A 2D render engine.
 
